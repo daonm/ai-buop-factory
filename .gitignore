@@ -3,3 +3,6 @@
 node_modules/
 __pycache__/
 scripts/.tmp_post_content_*.txt
+
+# 사용자 로컬 다운로드 파일 (git 제외)
+"이 책은 AI가 썼습니다.pdf"
