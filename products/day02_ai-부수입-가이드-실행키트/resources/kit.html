@@ -108,6 +108,7 @@
     font-size:clamp(2.2rem, 6.5vw, 3.4rem); line-height:1.24; margin:0 0 20px; text-wrap:balance;
   }
   .cover .subtitle{ position:relative; z-index:1; font-size:1.1rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
   .cover .contents-preview{
     position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap;
     font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px;
@@ -240,11 +241,11 @@
     <span class="kicker">AI 부업 시리즈 · VOL. 02 · 실행 키트</span>
     <span class="badge">『이 책은 AI가 썼습니다』 실전 부록</span>
     <h1>AI 부수입 실행 키트</h1>
-    <p class="subtitle">읽고 끝내지 않도록 — 워크시트 6개, 30일 체크리스트, 그대로 쓰는 프롬프트 60개</p>
+    <p class="subtitle">읽고 끝내지 않도록 — 워크시트 <span class="nowrap">6개</span>, <span class="nowrap">30일 체크리스트</span>, 그대로 쓰는 프롬프트 <span class="nowrap">60개</span></p>
     <div class="contents-preview">
-      <div><strong>6</strong>워크시트</div>
-      <div><strong>30</strong>일 체크리스트</div>
-      <div><strong>60</strong>개 프롬프트</div>
+      <div class="nowrap"><strong>6</strong>워크시트</div>
+      <div class="nowrap"><strong>30</strong>일 체크리스트</div>
+      <div class="nowrap"><strong>60</strong>개 프롬프트</div>
     </div>
     <div class="byline">『이 책은 AI가 썼습니다』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
   </div>
