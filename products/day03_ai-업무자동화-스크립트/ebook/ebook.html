@@ -1,0 +1,460 @@
+<title>반복 업무는 이제 그만</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F; --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38; --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74; --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A; --cat-d-tint: #E3E6CE;
+    --cat-e: #7A4B6E; --cat-e-tint: #E7DAE3;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C293B7; --cat-e-tint: #322030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C293B7; --cat-e-tint: #322030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:780px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.3rem, 6.8vw, 3.6rem); line-height:1.22; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.1rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.7rem; font-weight:700; margin:0 0 20px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:18px; width:max-content; max-width:100%; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.1rem; margin:24px 0 10px; color:var(--ink); }
+  section.chapter{ padding:30px 0 34px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 14px; max-width:66ch; }
+  .lede{ font-size:1.02rem; color:var(--ink-soft); max-width:62ch; margin-bottom:18px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  /* ---------- TOC ---------- */
+  .toc{ border-top:3px solid var(--gold); padding:20px 0 8px; margin-bottom:44px; }
+  .toc h2{ font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 16px; break-after:avoid; }
+  .toc ol{ list-style:none; margin:0; padding:0; }
+  .toc li{ display:flex; align-items:baseline; gap:6px; padding:6px 0; font-size:0.94rem; break-inside:avoid; }
+  .toc .n{ font-family:var(--font-mono); font-weight:700; color:var(--gold-strong); flex-shrink:0; }
+  .toc .leader{ flex:1; border-bottom:1px dotted var(--line); margin:0 2px 5px; min-width:16px; }
+  .toc .pg{ font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); flex-shrink:0; }
+
+  /* ---------- Method steps ---------- */
+  .method-meta{ display:inline-block; font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-bottom:16px; }
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; }
+  ol.steps li{ margin-bottom:9px; padding-left:4px; break-inside:avoid; }
+
+  /* ---------- Note callouts ---------- */
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:6px 0 4px; }
+
+  /* ---------- Table ---------- */
+  .table-wrap{ overflow-x:auto; margin-bottom:14px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.88rem; background:var(--paper); }
+  th,td{ text-align:left; padding:8px 13px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.72rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+
+  /* ---------- Prompt cards (categorized grid) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:8px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:5px 12px; margin:0 0 12px; break-after:avoid; }
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:20px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:10px 12px 11px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.76rem; color:var(--accent); font-weight:700; margin-bottom:5px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:9px 11px; font-family:var(--font-mono); font-size:0.78rem; line-height:1.5; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:15px 18px; margin-bottom:10px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.88rem; letter-spacing:0.05em; margin:0 0 12px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.78rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:4px 0; font-size:0.92rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:10px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{
+    .cover{ page-break-after:always; margin-left:0; margin-right:0; }
+  }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 03</span>
+    <span class="badge">CLAUDE가 기획 · 집필</span>
+    <h1>반복 업무는<br>이제 그만</h1>
+    <p class="subtitle">클로드(Claude)로 만드는 <span class="nowrap">나만의 업무 자동화</span> 스크립트 — 코딩 없이 설명만으로 <span class="nowrap">12가지 자동화</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>12</strong>가지 방법</div>
+      <div class="nowrap"><strong>18</strong>개 프롬프트</div>
+      <div class="nowrap"><strong>3</strong>단계 체크리스트</div>
+    </div>
+    <div class="byline">이 책의 목차·본문·프롬프트까지, 전부 <strong>클로드가 기획하고 작성</strong>했습니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">매주 월요일, 똑같은 순서로 엑셀을 정리하고 있다면</em> 이 책이 그 시간을 없애 드립니다.</p>
+    <p>자동화라고 하면 개발자의 영역처럼 느껴지지만, 실제로 돈이 되는 자동화의 90%는 화려한 시스템이 아니라 "엑셀 정리 5분 걸리던 걸 5초로 줄이는" 수준의 작은 스크립트입니다.</p>
+    <p>당신은 "무엇을 반복하고 있는지"만 정확히 설명하면 되고, <strong>스크립트는 클로드가 씁니다.</strong> 이 책은 오늘 컴퓨터 앞에서 바로 따라 할 수 있는 12가지 자동화 방법과, 클로드에게 그대로 던지는 프롬프트를 담았습니다.</p>
+  </section>
+
+  <div class="toc">
+    <h2>목차</h2>
+    <ol>
+      <li>자동화를 코딩 없이 만든다는 것<span class="leader"></span><span class="n">01</span></li>
+      <li>시작 전에 준비할 것<span class="leader"></span><span class="n">02</span></li>
+      <li>방법 1 — 반복 업무 진단표 만들기<span class="leader"></span><span class="n">03</span></li>
+      <li>방법 2 — 구글 시트 + Apps Script로 보고서 자동화<span class="leader"></span><span class="n">04</span></li>
+      <li>방법 3 — 이메일 자동 분류 · 요약<span class="leader"></span><span class="n">05</span></li>
+      <li>방법 4 — 노코드 자동화 툴에 클로드 연결하기<span class="leader"></span><span class="n">06</span></li>
+      <li>방법 5 — 엑셀/스프레드시트 데이터 정리 스크립트<span class="leader"></span><span class="n">07</span></li>
+      <li>방법 6 — 견적서 · 인보이스 자동 생성<span class="leader"></span><span class="n">08</span></li>
+      <li>방법 7 — 카카오톡 · 슬랙 알림 자동화<span class="leader"></span><span class="n">09</span></li>
+      <li>방법 8 — 고객 문의 자동 응대 스크립트<span class="leader"></span><span class="n">10</span></li>
+      <li>방법 9 — 파일 · 폴더 정리 자동화<span class="leader"></span><span class="n">11</span></li>
+      <li>방법 10 — 정기 실행 자동화(스케줄링 · 크론)<span class="leader"></span><span class="n">12</span></li>
+      <li>방법 11 — SNS/콘텐츠 발행 자동화<span class="leader"></span><span class="n">13</span></li>
+      <li>방법 12 — 자동화를 부업으로 파는 법<span class="leader"></span><span class="n">14</span></li>
+      <li>바로 쓰는 프롬프트 18선<span class="leader"></span><span class="n">15</span></li>
+      <li>실전 체크리스트<span class="leader"></span><span class="n">16</span></li>
+    </ol>
+  </div>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>자동화를 코딩 없이 만든다는 것</h2>
+    <p>"자동화"라고 하면 파이썬, API, 서버 같은 단어부터 떠오릅니다. 하지만 클로드와 함께라면 순서가 바뀝니다.</p>
+    <ol class="steps">
+      <li><strong>당신이 할 일</strong> — 반복되는 업무를 말로 설명하기</li>
+      <li><strong>클로드가 할 일</strong> — 그 설명을 실제로 동작하는 스크립트로 바꾸기</li>
+      <li><strong>당신이 다시 할 일</strong> — 실행해보고, 안 되는 부분을 다시 설명해서 고치기</li>
+    </ol>
+    <p>2026년 기준 Zapier·Make·n8n 같은 노코드 자동화 플랫폼은 모두 AI 에이전트가 워크플로우를 직접 설계하거나 실행하는 기능을 갖췄습니다. n8n은 LangChain 기반 AI 노드를 70개 이상 내장해 시각적 편집기 안에서 바로 AI 자동화를 구성할 수 있습니다. 지금은 "자동화 툴을 배우는 시간"보다 <strong>"무엇을 자동화할지 정확히 설명하는 능력"</strong>이 훨씬 중요해진 시점입니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>시작 전에 준비할 것</h2>
+    <div class="method-meta">준비물은 딱 4가지 — 다 무료로 시작 가능합니다</div>
+    <ol class="steps">
+      <li><strong>클로드 계정</strong> — 스크립트를 길게 짜고 여러 번 수정할 일이 많으니, 무료 플랜이 부담되면 Pro 플랜 권장</li>
+      <li><strong>자동화할 업무 하나</strong> — "매주 반복되고, 규칙이 명확한" 가장 단순한 업무 하나</li>
+      <li><strong>실행 환경 하나</strong> — 구글 스프레드시트(Apps Script) 또는 노코드 툴(Zapier/Make/n8n) 중 익숙한 것</li>
+      <li><strong>테스트용 샘플 데이터</strong> — 민감한 정보를 지운 샘플로 먼저 검증</li>
+    </ol>
+    <p>방법 1(진단)은 반드시 먼저 읽고, 그다음은 순서와 상관없이 지금 필요한 방법으로 건너뛰어도 됩니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>방법 1 — 반복 업무 진단표 만들기</h2>
+    <p>자동화에서 가장 많이 실패하는 지점은 "너무 큰 업무"부터 시작하는 것입니다. 처음엔 반드시 작게 시작하세요.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>최근 2주간 반복 업무를 떠오르는 대로 10개 적는다</li>
+      <li>"빈도 × 소요시간 × 규칙성" 3가지 기준으로 클로드에게 점수를 매겨달라고 요청</li>
+      <li>점수가 가장 높은 업무 1개를 첫 자동화 대상으로 확정</li>
+      <li>그 업무의 "입력 → 처리 → 출력"을 한 문장씩 적는다</li>
+    </ol>
+    <div class="worksheet-note">예시 — "매주 월요일 매출 엑셀 합계를 내서 팀 채팅방에 공유" → 빈도 높음, 규칙 명확 → 자동화 1순위</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>방법 2 — 구글 시트 + Apps Script</h2>
+    <p>구글 스프레드시트를 이미 쓰고 있다면 가장 진입장벽이 낮은 방법입니다. Apps Script는 별도 설치 없이 시트 안에서 바로 실행되는 스크립트 환경입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>자동화할 시트의 구조를 클로드에게 설명</li>
+      <li>"이 데이터를 요약해서 매주 월요일 오전 9시에 이메일로 보내는 Apps Script를 짜줘"라고 요청</li>
+      <li>시트 상단 메뉴 <strong>확장 프로그램 → Apps Script</strong>에 코드를 붙여넣기</li>
+      <li><strong>트리거</strong> 메뉴에서 "매주 월요일 실행"으로 예약 설정</li>
+      <li>에러가 나면 에러 메시지를 그대로 클로드에게 붙여넣어 수정 요청</li>
+    </ol>
+    <div class="worksheet-note">주의 — 개인 계정 이메일 발송은 하루 약 100통 제한이 있습니다. 대량 발송은 방법 4를 참고하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">05</span>방법 3 — 이메일 자동 분류 · 요약</h2>
+    <p>문의·주문·스팸이 뒤섞여 들어올 때 매번 열어보는 시간을 줄이는 방법입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>최근 메일 20통의 제목/발신자 패턴을 클로드와 함께 분류 기준으로 정리</li>
+      <li>Gmail이라면 "필터 + 라벨" 규칙을 클로드에게 요청해서 1차 자동 분류</li>
+      <li>규칙만으로 안 걸러지는 메일은 Apps Script로 "본문을 읽고 판단해 라벨을 붙이는" 스크립트 요청</li>
+      <li>매일 아침 "어제 온 문의 메일 요약"을 만들어주는 스크립트 추가</li>
+    </ol>
+    <p>완벽한 분류를 처음부터 노리지 마세요. "확실한 것만 자동 분류하고, 애매한 건 사람이 보는 폴더로 모으기" 방식이 실패율이 훨씬 낮습니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">06</span>방법 4 — 노코드 툴에 클로드 연결하기</h2>
+    <p>Zapier, Make, n8n은 "이 앱에서 이런 일이 생기면 저 앱에서 이런 일을 해라"는 흐름을 코딩 없이 연결해주는 도구입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>도구</th><th>강점</th><th>이런 사람에게</th></tr>
+        <tr><td>Zapier</td><td>7,000개 이상 앱 연동, 가장 쉬운 온보딩</td><td>처음 자동화를 시작하는 사람</td></tr>
+        <tr><td>Make</td><td>시각적 분기/필터가 강력함</td><td>조건이 여러 갈래인 복잡한 흐름</td></tr>
+        <tr><td>n8n</td><td>오픈소스, AI 에이전트 노드 내장, 직접 호스팅 가능</td><td>비용을 아끼고 데이터를 직접 관리하고 싶은 사람</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>흐름을 "A 앱에서 B 이벤트가 생기면 → C 앱에서 D를 한다" 한 문장으로 정리</li>
+      <li>클로드에게 이 문장을 보여주고 Trigger·Action 단계로 설계 요청</li>
+      <li>설계안대로 툴 화면에서 단계를 하나씩 만든다</li>
+      <li>테스트 실행 → 실패하면 에러 로그를 클로드에게 전달해 원인 파악</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">07</span>방법 5 — 데이터 정리 스크립트</h2>
+    <p>"파일을 열어서 형식을 맞추고, 중복을 지우고, 표를 다시 만드는" 작업은 반복성이 가장 높은 업무 중 하나입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>정리 전/후 데이터 예시(가짜 데이터로)를 클로드에게 보여준다</li>
+      <li>"이 형태를 저 형태로 바꾸는 스크립트를 짜줘"라고 요청(Python+pandas 또는 Apps Script)</li>
+      <li>샘플 파일로 먼저 실행해서 결과 확인</li>
+      <li>문제없으면 실제 파일에 적용, 원본은 항상 백업</li>
+    </ol>
+    <p>데이터 정리 자동화는 "겉보기엔 맞는데 특정 케이스에서만 틀리는" 실수가 잘 드러나지 않습니다. 처음 몇 번은 결과를 손으로 대조해서 확인하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">08</span>방법 6 — 견적서 · 인보이스 자동 생성</h2>
+    <p>프리랜서, 소상공인에게 매달 반복되는 대표적인 업무입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>기존에 쓰던 양식을 클로드에게 보여준다</li>
+      <li>"고객명·품목·수량·단가만 입력하면 문서가 자동 생성되는 스크립트"를 요청</li>
+      <li>시트에 정보를 입력하면 자동으로 PDF가 생성되는 방식(Apps Script) 선택</li>
+      <li>완성본 1개를 실제 발송해보고 형식 확인</li>
+    </ol>
+    <p>인보이스 생성과 동시에 "발송 완료" 상태를 시트에 기록하고, 결제 기한이 지나면 자동 리마인드 메일을 보내는 흐름까지 방법 4와 연결하면 완전한 자동 청구 시스템이 됩니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">09</span>방법 7 — 카카오톡 · 슬랙 알림 자동화</h2>
+    <p>중요한 일이 생겼을 때 사람이 직접 확인하지 않아도 알림이 오게 만드는 방법입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>"언제 알림을 받고 싶은지" 조건을 명확히 한다</li>
+      <li>슬랙은 Incoming Webhook, 카카오톡은 채널 알림톡/친구톡 API 연동을 클로드와 함께 설계</li>
+      <li>조건이 맞을 때 메시지를 보내는 스크립트 구현</li>
+      <li>본인에게 먼저 테스트 메시지를 보내 문구/타이밍 확인</li>
+    </ol>
+    <p>알림이 너무 잦으면 오히려 무시당합니다. 정말 사람이 봐야 하는 순간만 골라 알림을 설계하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">10</span>방법 8 — 고객 문의 자동 응대</h2>
+    <p>자주 묻는 질문에 매번 같은 답을 직접 타이핑하고 있다면 자동화 대상 1순위입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>최근 문의 중 반복되는 질문 유형 10개 정리</li>
+      <li>클로드에게 유형별 답변 스크립트 요청 (친절하되 로봇 같지 않은 톤으로)</li>
+      <li>카카오톡 채널 관리자센터 자동응답, 혹은 SNS DM 자동 응답 기능에 등록</li>
+      <li>패턴에 안 걸리는 질문은 사람에게 넘어가도록 예외 처리 문구 필수</li>
+    </ol>
+    <p>자동 응답이라는 걸 숨기지 않는 편이 신뢰를 더 얻습니다. "빠른 안내를 위해 자동 답변이 먼저 나가고, 추가 문의는 담당자가 확인합니다" 같은 문구 하나면 충분합니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">11</span>방법 9 — 파일 · 폴더 정리 자동화</h2>
+    <p>다운로드 폴더, 공유 드라이브가 뒤죽박죽인 경우 의외로 수요가 큰 자동화입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>정리 규칙을 말로 정의 (예: 파일명에 날짜가 있으면 연도별 폴더로)</li>
+      <li>클로드에게 이 규칙을 그대로 스크립트로 요청</li>
+      <li>테스트 폴더에서 먼저 실행해보고 결과 확인</li>
+      <li>삭제가 아니라 "이동"으로 설계해서 되돌릴 수 있게 한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 자동 삭제 기능은 처음부터 넣지 마세요. 몇 주간 "이동/분류"만 시켜보고 신뢰가 쌓인 다음 고려해도 늦지 않습니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">12</span>방법 10 — 정기 실행 자동화</h2>
+    <p>만든 스크립트를 사람이 매번 눌러서 실행하지 않고, 정해진 시간에 저절로 돌게 만드는 마지막 단계입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>Apps Script는 <strong>트리거</strong> 메뉴에서 시간 기반 트리거 등록</li>
+      <li>GitHub 저장소로 관리하면 GitHub Actions의 <strong>schedule</strong>(cron) 설정을 클로드에게 요청</li>
+      <li>노코드 툴은 Trigger를 "스케줄"로 설정</li>
+      <li>처음 1~2주는 실행 로그(성공/실패)를 꼭 직접 확인</li>
+    </ol>
+    <p>스케줄링은 "이미 손으로 여러 번 실행해서 검증이 끝난 스크립트"에만 적용해야 합니다. 검증 안 된 스크립트를 자동 반복시키면 실수도 그만큼 반복됩니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">13</span>방법 11 — SNS/콘텐츠 발행 자동화</h2>
+    <p>블로그, SNS에 꾸준히 올려야 하는데 매번 잊어버린다면 이 방법이 유용합니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>발행 주기와 콘텐츠 유형을 정한다</li>
+      <li>클로드에게 "이번 주 발행할 콘텐츠 초안 2개"를 미리 요청</li>
+      <li>초안 검수 후, 예약 발행 기능이 있는 채널은 그 기능 활용</li>
+      <li>없는 채널은 방법 4의 스케줄 기능과 연결</li>
+    </ol>
+    <p>전량 자동 발행(사람 검수 없이 바로 게시)은 추천하지 않습니다. 초안까지는 자동화하되, 최종 게시 버튼은 사람이 누르는 구조를 권장합니다 — 실계정 신뢰도와 직결되기 때문입니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">14</span>방법 12 — 자동화를 부업으로 파는 법</h2>
+    <p>지금까지의 11가지를 직접 한 번씩 해봤다면, 이 경험 자체가 상품이 됩니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>가장 자신 있게 만든 자동화 1개를 "사례"로 정리 (전/후 비교, 걸린 시간)</li>
+      <li>비슷한 반복 업무를 가진 사람에게 무료로 1건 시범 적용</li>
+      <li>후기와 사례를 근거로 크몽/숨고에 "업무 자동화 대행" 서비스 등록</li>
+      <li>처음엔 건당 요금, 신뢰가 쌓이면 월 유지보수 구독 요금으로 확장</li>
+    </ol>
+    <div class="worksheet-note">가격 감각 — "자동화로 절약되는 시간 × 그 사람의 시급"을 기준으로 설명하면 가격 저항이 훨씬 줄어듭니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">15</span>바로 쓰는 프롬프트 18선</h2>
+    <p class="lede">대괄호 부분만 바꿔서 그대로 붙여넣으세요. 카테고리별로 정리했습니다.</p>
+
+    <div class="cat cat-a">
+    <div class="cat-label">A. 진단 · 시트 자동화</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">A1 업무 진단</div><div class="prompt">최근 2주간 내가 반복했던 업무 10개를 적었어: [목록]. 각각 빈도·소요시간·규칙성 기준으로 점수를 매기고 자동화 우선순위를 정해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">A2 시트 요약 자동화</div><div class="prompt">이 구글 시트 구조를 설명할게: [컬럼 설명]. 이 데이터를 요약해서 매주 월요일 오전 9시에 이메일로 보내는 Apps Script를 짜줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">A3 에러 디버깅</div><div class="prompt">다음 에러 메시지가 떴어: [에러 내용]. 위에서 짠 스크립트의 어느 부분이 문제인지 원인과 수정 코드를 알려줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">A4 메일 분류 규칙</div><div class="prompt">최근 받은 메일 제목/발신자 패턴이야: [목록]. 문의/주문/스팸으로 분류하는 Gmail 필터 규칙을 만들어줘.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-b">
+    <div class="cat-label">B. 노코드 툴 · 데이터 정리</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">B1 라벨링 스크립트</div><div class="prompt">본문 내용을 읽고 카테고리를 판단해서 라벨을 붙이는 Apps Script를 짜줘. 카테고리 기준은: [기준 설명]</div></div>
+    <div class="prompt-block"><div class="prompt-id">B2 노코드 흐름 설계</div><div class="prompt">"[A 앱]에서 [이벤트]가 생기면 [B 앱]에서 [행동]을 한다"는 흐름을 [Zapier/Make/n8n]으로 만들려고 해. Trigger와 Action 단계로 쪼개서 설계해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">B3 데이터 정리</div><div class="prompt">이 데이터를 이 형태로 바꾸고 싶어. 정리 전: [예시] / 정리 후: [예시]. Python(pandas)으로 스크립트를 짜줘.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-c">
+    <div class="cat-label">C. 문서 · 알림 자동화</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">C1 견적서 자동화</div><div class="prompt">이 견적서 양식이야: [양식 설명]. 고객명·품목·수량·단가만 입력하면 같은 양식의 PDF가 자동 생성되는 Apps Script를 짜줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">C2 리마인드 메일</div><div class="prompt">결제 기한이 지난 인보이스에 자동으로 리마인드 메일을 보내는 흐름을 설계해줘. 며칠 지나면 몇 번 보낼지도 제안해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">C3 슬랙 알림</div><div class="prompt">시트에 새 행이 추가되면 슬랙(또는 카카오톡)으로 알림을 보내는 스크립트를 짜줘. 알림 문구는 이런 정보를 포함해줘: [항목]</div></div>
+    <div class="prompt-block"><div class="prompt-id">C4 문의 응답 스크립트</div><div class="prompt">최근 문의 중 반복되는 질문 유형이야: [목록]. 각각 친절하면서 로봇 같지 않은 자동 응답 스크립트를 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">C5 예외 처리 추가</div><div class="prompt">"패턴에 안 걸리는 질문은 담당자에게 안내"라는 예외 처리를 위 응답 스크립트에 추가해줘.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-d">
+    <div class="cat-label">D. 파일 정리 · 스케줄링</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">D1 파일 정리 규칙</div><div class="prompt">파일 정리 규칙이야: [규칙 설명]. 삭제가 아니라 이동만 하는 방식으로 정리 스크립트를 짜줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">D2 트리거 설정</div><div class="prompt">이 Apps Script를 매주 월요일 오전 9시에 자동 실행되도록 트리거 설정하는 방법을 순서대로 알려줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">D3 GitHub Actions 스케줄</div><div class="prompt">GitHub Actions로 이 스크립트를 매일 자정에 자동 실행하고 싶어. schedule 설정과 필요한 파일 구조를 알려줘.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-e">
+    <div class="cat-label">E. 발행 · 사업화</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">E1 콘텐츠 초안</div><div class="prompt">이번 주에 [채널]에 올릴 콘텐츠 초안 2개를 만들어줘. 주제는 [주제], 톤은 [톤]으로.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E2 사례 정리</div><div class="prompt">이 자동화 사례를 대행 서비스 소개 문구로 정리해줘. 전/후 비교와 절약된 시간이 드러나게: [사례 내용]</div></div>
+    <div class="prompt-block"><div class="prompt-id">E3 가격 설득 문구</div><div class="prompt">매주 [시간]이 절약되는 자동화야. 이걸 가격 저항 없이 설명하는 문구를 만들어줘: [자동화 내용]</div></div>
+    </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">16</span>실전 체크리스트</h2>
+
+    <div class="checklist-group">
+      <h4><span class="wk">오늘</span>30분</h4>
+      <ul>
+        <li><input type="checkbox" disabled>클로드 계정 준비 (긴 작업 많으면 Pro 권장)</li>
+        <li><input type="checkbox" disabled>반복 업무 10개 적고 프롬프트 A1로 우선순위 매기기</li>
+        <li><input type="checkbox" disabled>1순위 업무의 "입력 → 처리 → 출력"을 한 문장씩 정리</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">이번 주</span>1차 완성</h4>
+      <ul>
+        <li><input type="checkbox" disabled>1순위 업무 자동화 스크립트 1차 완성(샘플 데이터로 테스트)</li>
+        <li><input type="checkbox" disabled>실제 데이터로 전환 전, 결과를 손으로 대조 확인</li>
+        <li><input type="checkbox" disabled>정기 실행이 필요하면 스케줄링(트리거/크론) 설정</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">이번 달</span>확장</h4>
+      <ul>
+        <li><input type="checkbox" disabled>2~3개 업무로 자동화 확장</li>
+        <li><input type="checkbox" disabled>가장 자신 있는 사례 1개를 대행 서비스 소개 문구로 정리</li>
+        <li><input type="checkbox" disabled>주변 1명에게 무료 시범 적용해서 후기 확보</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>자동화는 거창한 시스템을 짓는 일이 아닙니다. "어제도 했고, 오늘도 할, 내일도 할 일"을 딱 하나 골라서 없애는 일입니다.</p>
+    <p>지금 가장 지겨운 반복 업무 하나를 떠올리고, 방법 1의 진단표부터 채워보세요.</p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
