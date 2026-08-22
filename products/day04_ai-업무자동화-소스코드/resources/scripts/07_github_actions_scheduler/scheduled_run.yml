@@ -1,0 +1,45 @@
+# 파이썬 스크립트를 GitHub Actions로 매일 정해진 시간에 자동 실행하는 예시
+# 전자책 『야근 없는 사무실』 방법 10 — 정기 실행 자동화(스케줄링·크론)에 대응하는 실제 동작 코드입니다.
+#
+# 설치 방법
+# 1) 스크립트를 관리하는 GitHub 저장소에 이 파일을 .github/workflows/scheduled_run.yml 경로로 저장한다.
+# 2) 아래 cron 시간과 실행할 스크립트 경로를 내 상황에 맞게 수정한다.
+# 3) main 브랜치에 푸시하면 자동으로 등록되고, 그때부터 지정한 시간마다 실행된다.
+# 4) 저장소 Actions 탭에서 실행 로그(성공/실패)를 확인할 수 있다.
+#
+# cron 시간은 UTC 기준이다. 한국시간(KST, UTC+9) 오전 9시에 실행하려면 UTC 0시로 설정한다.
+
+name: 매일 아침 자동 실행
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # 매일 UTC 00:00 = 한국시간(KST) 오전 09:00
+  workflow_dispatch: {}    # Actions 탭에서 "Run workflow" 버튼으로 수동 실행도 가능
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: 파이썬 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 의존성 설치
+        run: pip install -r resources/scripts/03_excel_data_cleaner/requirements.txt
+
+      - name: 스크립트 실행
+        run: |
+          python resources/scripts/03_excel_data_cleaner/clean_data.py \
+            data/latest.csv --group 지점 --sum 매출
+
+      - name: 결과 파일 커밋 (선택)
+        run: |
+          git config user.name "auto-bot"
+          git config user.email "auto-bot@users.noreply.github.com"
+          git add data/*_cleaned.csv data/*_summary.csv || true
+          git diff --cached --quiet || git commit -m "자동 정리 결과 업데이트"
+          git push
