@@ -1,0 +1,497 @@
+<title>사장님, 그 카피로는 안 팔립니다</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F; --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38; --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74; --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A; --cat-d-tint: #E3E6CE;
+    --cat-e: #7A4B6E; --cat-e-tint: #E7DAE3;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C293B7; --cat-e-tint: #322030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C293B7; --cat-e-tint: #322030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:780px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.2rem, 6.5vw, 3.4rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.1rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.7rem; font-weight:700; margin:0 0 20px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:18px; width:max-content; max-width:100%; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.1rem; margin:24px 0 10px; color:var(--ink); }
+  section.chapter{ padding:30px 0 34px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 14px; max-width:66ch; orphans:1; widows:1; }
+  .lede{ font-size:1.02rem; color:var(--ink-soft); max-width:62ch; margin-bottom:18px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  /* ---------- TOC ---------- */
+  .toc{ border-top:3px solid var(--gold); padding:20px 0 8px; margin-bottom:44px; }
+  .toc h2{ font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 16px; break-after:avoid; }
+  .toc ol{ list-style:none; margin:0; padding:0; }
+  .toc li{ display:flex; align-items:baseline; gap:6px; padding:6px 0; font-size:0.94rem; break-inside:avoid; }
+  .toc .n{ font-family:var(--font-mono); font-weight:700; color:var(--gold-strong); flex-shrink:0; }
+  .toc .leader{ flex:1; border-bottom:1px dotted var(--line); margin:0 2px 5px; min-width:16px; }
+  .toc .pg{ font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); flex-shrink:0; }
+
+  /* ---------- Method steps ---------- */
+  .method-meta{ display:inline-block; font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-bottom:16px; }
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; }
+  ol.steps li{ margin-bottom:9px; padding-left:4px; break-inside:avoid; }
+
+  /* ---------- Note callouts ---------- */
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:6px 0 4px; }
+
+  /* ---------- Headline formula list ---------- */
+  .formula-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:0 0 16px; }
+  .formula{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:8px; padding:9px 12px; font-size:0.9rem; }
+  .formula .f-name{ font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.04em; color:var(--gold-strong); display:block; margin-bottom:3px; }
+  @media print{ .formula-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Table ---------- */
+  .table-wrap{ overflow-x:auto; margin-bottom:14px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.88rem; background:var(--paper); }
+  th,td{ text-align:left; padding:8px 13px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.72rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+
+  /* ---------- Prompt cards (categorized grid) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:8px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:5px 12px; margin:0 0 12px; break-after:avoid; }
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:20px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:10px 12px 11px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.76rem; color:var(--accent); font-weight:700; margin-bottom:5px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:9px 11px; font-family:var(--font-mono); font-size:0.78rem; line-height:1.5; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:15px 18px; margin-bottom:10px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.88rem; letter-spacing:0.05em; margin:0 0 12px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.78rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:4px 0; font-size:0.92rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:10px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{
+    .cover{ page-break-after:always; margin-left:0; margin-right:0; }
+  }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 05</span>
+    <span class="badge">CLAUDE가 기획 · 집필</span>
+    <h1>사장님, 그 카피로는<br>안 팔립니다</h1>
+    <p class="subtitle">AI로 쓰는 상세페이지 — 후킹 헤드라인부터 CTA까지, 그대로 쓰는 <span class="nowrap">프롬프트 18개</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>12</strong>가지 방법</div>
+      <div class="nowrap"><strong>18</strong>개 프롬프트</div>
+      <div class="nowrap"><strong>3</strong>단계 체크리스트</div>
+    </div>
+    <div class="byline">이 책의 목차·본문·프롬프트까지, 전부 <strong>클로드가 기획하고 작성</strong>했습니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">똑같은 상품, 똑같은 사진인데 어떤 상세페이지는 팔리고 어떤 건 안 팔립니다.</em> 차이는 대부분 카피에서 갈립니다.</p>
+    <p>사진은 찍으면 눈에 보이지만, 카피는 화면을 한참 노려봐도 첫 문장이 안 나옵니다. 결국 "이 상품은 ○○입니다"로 시작해 스펙만 나열하다 끝나는 상세페이지가 만들어집니다.</p>
+    <p>AI 콘텐츠가 넘쳐날수록 <strong>"설득의 구조를 아는 사람"</strong>의 카피만 유독 눈에 띕니다. AI는 문장을 만들어 주지만, 무엇을 먼저 말하고 무엇을 나중에 말할지는 여전히 사람이 설계해야 합니다. 이 책이 그 설계도입니다.</p>
+  </section>
+
+  <div class="toc">
+    <h2>목차</h2>
+    <ol>
+      <li>왜 지금 AI로 카피를 써야 하는가<span class="leader"></span><span class="n">01</span></li>
+      <li>시작 전에 딱 3가지만 준비하세요<span class="leader"></span><span class="n">02</span></li>
+      <li>방법 1 — 기능을 결과로 바꾸는 법<span class="leader"></span><span class="n">03</span></li>
+      <li>방법 2 — 스크롤을 멈추게 하는 헤드라인 공식 10가지<span class="leader"></span><span class="n">04</span></li>
+      <li>방법 3 — 문제-공감-해결(PAS) 구조 설계<span class="leader"></span><span class="n">05</span></li>
+      <li>방법 4 — 타겟 페르소나 3명, 톤을 다르게<span class="leader"></span><span class="n">06</span></li>
+      <li>방법 5 — 후기 · 사회적 증거 녹이기<span class="leader"></span><span class="n">07</span></li>
+      <li>방법 6 — 의심 · 반박 포인트 FAQ 설계<span class="leader"></span><span class="n">08</span></li>
+      <li>방법 7 — 결제 버튼을 누르게 만드는 CTA<span class="leader"></span><span class="n">09</span></li>
+      <li>방법 8 — 업종별 상세페이지 템플릿 5종<span class="leader"></span><span class="n">10</span></li>
+      <li>방법 9 — 가격 문구에 숨은 심리학<span class="leader"></span><span class="n">11</span></li>
+      <li>방법 10 — 3버전 A/B 테스트<span class="leader"></span><span class="n">12</span></li>
+      <li>방법 11 — SEO 키워드 자연스럽게 넣기<span class="leader"></span><span class="n">13</span></li>
+      <li>방법 12 — 판매 데이터로 카피 고쳐나가기<span class="leader"></span><span class="n">14</span></li>
+      <li>바로 쓰는 프롬프트 18선<span class="leader"></span><span class="n">15</span></li>
+      <li>실전 체크리스트<span class="leader"></span><span class="n">16</span></li>
+    </ol>
+  </div>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>왜 지금 AI로 카피를 써야 하는가</h2>
+    <p>카피라이팅은 원래 전문 카피라이터의 영역이었습니다. 그런데 실제로 구매를 결정하는 건 사진이 아니라 <strong>사진 옆에 붙은 한 문장</strong>입니다. AI가 이 구도를 바꾼 이유는 세 가지입니다.</p>
+    <ol class="steps">
+      <li><strong>초안 속도가 다릅니다.</strong> 상품 정보만 정리해서 넣으면 몇 분 안에 초안이 나옵니다.</li>
+      <li><strong>여러 버전을 동시에 뽑을 수 있습니다.</strong> 감성형/정보형/후기형처럼 톤이 다른 버전을 비교해서 고를 수 있습니다.</li>
+      <li><strong>역설적으로 "구조를 아는 사람"이 더 유리해졌습니다.</strong> AI 콘텐츠가 흔해질수록 뻔한 카피는 눈에 안 띕니다.</li>
+    </ol>
+    <p>2026년 기준 마케터의 90% 이상이 콘텐츠 제작에 AI를 쓰고 있지만, 정작 직접 구매 전환율은 하락하는 추세입니다. AI 확산 속에서 오히려 <strong>카피라이팅의 전략적 가치가 다시 주목받는</strong> 이유입니다. AI에게 "카피 써줘"라고 막연히 시키는 대신, 무엇을 어떤 순서로 시켜야 팔리는 카피가 나오는지가 이 책의 전부입니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>시작 전에 딱 3가지만</h2>
+    <div class="method-meta">준비물은 딱 3가지 — 다 무료로 정리 가능합니다</div>
+    <ol class="steps">
+      <li><strong>상품 정보 한 장</strong> — 상품명, 핵심 기능 3~5개, 가격, 배송/환불 조건</li>
+      <li><strong>타겟 고객 한 문장</strong> — "누가, 어떤 고민 때문에, 이 상품을 찾는가"</li>
+      <li><strong>참고할 경쟁 상세페이지 2~3개</strong> — 베끼기 위해서가 아니라 이 시장이 보통 뭘 강조하는지 파악하기 위해</li>
+    </ol>
+    <p>이 3가지만 있으면 이 책의 모든 프롬프트를 바로 쓸 수 있습니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>기능을 결과로 바꾸는 법</h2>
+    <div class="method-meta">핵심 — 고객은 "무엇으로 만들어졌는지"가 아니라 "그래서 삶이 어떻게 달라지는지"를 삽니다</div>
+    <p>가장 흔한 실수는 스펙을 그대로 나열하는 것입니다. "고밀도 메모리폼"은 기능(Feature)입니다. "아침에 목이 안 아픕니다"는 결과(Benefit)입니다. 사람은 후자에 지갑을 엽니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>상품의 기능/스펙을 전부 나열한다</li>
+      <li>각 기능 옆에 "그래서 고객이 얻는 결과"를 하나씩 적는다</li>
+      <li>AI에게 이 기능-결과 쌍을 "결과" 중심 문장으로 재작성 요청</li>
+      <li>가장 와닿는 결과 문장 1~2개를 상세페이지 상단에 배치</li>
+    </ol>
+    <div class="worksheet-note">예시 — "18개월 유산균 생존 캡슐 코팅"(기능) → "장까지 살아서 도착합니다"(결과)</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>스크롤을 멈추게 하는 헤드라인 공식 10가지</h2>
+    <p>상세페이지의 첫 3초에서 승부가 납니다. 아래 공식에 상품 정보만 넣으면 바로 헤드라인이 나옵니다.</p>
+    <div class="formula-grid">
+      <div class="formula"><span class="f-name">01 숫자형</span>하루 15분, 4주 만에 [결과]</div>
+      <div class="formula"><span class="f-name">02 질문형</span>아직도 [불편한 상황]을 참고 계신가요?</div>
+      <div class="formula"><span class="f-name">03 반박형</span>[흔한 오해]는 틀렸습니다</div>
+      <div class="formula"><span class="f-name">04 비교형</span>[비교 대상]보다 [핵심 차별점]</div>
+      <div class="formula"><span class="f-name">05 결과 선언형</span>이제 [불편한 일]은 안 하셔도 됩니다</div>
+      <div class="formula"><span class="f-name">06 비밀 공개형</span>[전문가/업계]만 알던 [방법]</div>
+      <div class="formula"><span class="f-name">07 경고형</span>[상품군] 사기 전에 이것부터 확인</div>
+      <div class="formula"><span class="f-name">08 스토리형</span>[상황]이었던 제가 [결과]를 만든 방법</div>
+      <div class="formula"><span class="f-name">09 한정형</span>[기간/수량] 한정, [혜택]</div>
+      <div class="formula"><span class="f-name">10 직진형</span>그냥 [핵심 결과]만 됩니다</div>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>상품의 핵심 결과 한 문장을 정한다 (방법 1의 결과 문장 활용)</li>
+      <li>AI에게 위 10가지 공식으로 헤드라인 후보를 각 1개씩, 총 10개 요청</li>
+      <li>3개를 골라 타겟 고객에게 물어보거나 감으로 1개 확정</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">05</span>문제-공감-해결(PAS) 구조</h2>
+    <p>상세페이지 본문은 순서가 전부입니다. PAS(Problem-Agitate-Solve)가 가장 검증된 뼈대입니다.</p>
+    <ol class="steps">
+      <li><strong>Problem</strong> — 고객이 겪는 불편을 구체적으로 짚는다</li>
+      <li><strong>Agitate</strong> — 그 불편을 방치하면 어떻게 되는지, 얼마나 많은 사람이 같은 고민을 하는지 짚어 공감을 키운다</li>
+      <li><strong>Solve</strong> — 이 상품이 그 문제를 어떻게 해결하는지 결과 중심으로 보여준다</li>
+    </ol>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>방법 1~2의 결과 문장·헤드라인을 준비한다</li>
+      <li>AI에게 "PAS 구조로 본문 초안"을 요청</li>
+      <li>Solve 파트에 "기능→결과" 문장 3~5개를 순서대로 배치</li>
+      <li>본문 끝을 방법 7(CTA)로 이어지도록 마무리</li>
+    </ol>
+    <div class="worksheet-note">주의 — Agitate에서 없는 위험을 과장하거나 공포를 조장하지 마세요. 거짓 긴급성은 신뢰를 깎고 플랫폼 정책 위반 소지도 있습니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">06</span>타겟 페르소나 3명, 톤을 다르게</h2>
+    <p>같은 상품도 사는 이유가 사람마다 다릅니다. 페르소나별로 강조점을 다르게 쓰면 전환율이 올라갑니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "이 상품을 살 것 같은 사람 3명"을 페르소나로 요청 (고민, 검색 키워드, 망설이는 이유 포함)</li>
+      <li>페르소나마다 가장 끌릴 결과 문장을 하나씩 고른다</li>
+      <li>1명을 메인 타겟으로 정해 전체 톤을 맞춘다</li>
+      <li>나머지 고민은 FAQ(방법 6)나 홍보 글에서 별도로 다룬다</li>
+    </ol>
+    <p>한 페이지에서 모든 사람을 만족시키려 하면 톤이 흐려집니다. 메인 타겟 1명에게 집중하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">07</span>후기 · 사회적 증거 녹이기</h2>
+    <p>"제가 좋다고 말하는 것"보다 "다른 사람이 좋다고 말한 것"이 훨씬 잘 팔립니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>있는 후기(지인 체험단, 초기 구매자 등)를 최대한 모은다</li>
+      <li>후기가 없다면 무료/할인 체험 3~5건이라도 진행해 실제 후기를 확보한다</li>
+      <li>AI에게 후기 원문을 "과장 없이, 표현은 살려서" 카피에 녹이도록 요청</li>
+      <li>후기가 정말 없는 초기엔 "제작 과정 공개형" 카피로 신뢰를 대신 쌓는다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 후기를 지어내거나 구매자 수를 부풀리지 마세요. 대부분의 플랫폼이 허위 후기를 금지하며, 발각 시 계정 정지 등 더 큰 손해로 돌아옵니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">08</span>의심 · 반박 포인트 FAQ 설계</h2>
+    <p>고객이 결제 직전에 갖는 의심을 먼저 짚어주면, 이탈 대신 결제로 이어집니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "이 상품을 안 사는 이유 5가지"를 요청</li>
+      <li>각 반박 포인트에 짧고 담백한 대응 문구를 함께 요청 (과장된 반박은 역효과)</li>
+      <li>자주 나올 질문 5~8개를 FAQ 섹션으로 정리해 하단에 배치</li>
+      <li>실제 문의가 쌓이면 그 내용으로 주기적으로 업데이트</li>
+    </ol>
+    <p>흔한 반박 포인트 — 가격이 비싸 보임 / 효과가 의심스러움 / 배송·환불 걱정 / 비슷한 상품과 차이를 모르겠음 / 지금 안 사도 될 것 같음.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">09</span>결제 버튼을 누르게 만드는 CTA</h2>
+    <p>"구매하기" 버튼 문구 하나로도 전환율이 갈립니다. 단, CTA는 본문이 설득을 끝낸 다음에 오는 마침표일 뿐입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>유형</th><th>예시</th></tr>
+        <tr><td>결과 직접 언급형</td><td>지금 시작하고 4주 후 달라진 나 만나기</td></tr>
+        <tr><td>손실 회피형</td><td>이 가격, 오늘까지만</td></tr>
+        <tr><td>행동 최소화형</td><td>1분 만에 신청 완료</td></tr>
+        <tr><td>안전장치 강조형</td><td>부담 없이 체험해보기 (7일 환불 보장)</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>상품의 구매 장벽(가격, 결정 부담 등)을 파악한다</li>
+      <li>그 장벽을 낮추는 CTA 문구를 AI에게 3~5개 요청</li>
+      <li>버튼 문구뿐 아니라 버튼 위 한 줄(마이크로카피)도 함께 다듬는다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">10</span>업종별 상세페이지 템플릿 5종</h2>
+    <p>업종마다 강조점이 다릅니다. 아래 템플릿을 기본 뼈대로 쓰고 방법 1~9를 채워 넣으세요.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>업종</th><th>강조 순서</th><th>핵심 포인트</th></tr>
+        <tr><td>뷰티/화장품</td><td>성분→효과→후기→비교</td><td>성분 안전성, 사용 전후 변화</td></tr>
+        <tr><td>식품</td><td>맛/신선도→원산지→후기→보관법</td><td>먹는 상상이 가능한 묘사</td></tr>
+        <tr><td>전자기기/가전</td><td>문제→스펙 비교→사용 장면→A/S</td><td>경쟁 제품과의 명확한 비교표</td></tr>
+        <tr><td>서비스(컨설팅·대행)</td><td>문제→과정→결과 사례→가격</td><td>프로세스를 투명하게 공개</td></tr>
+        <tr><td>디지털 콘텐츠</td><td>결과→목차 미리보기→후기→FAQ</td><td>무엇을 얻는지 구체적으로 미리 보여주기</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>내 상품이 위 5개 업종 중 어디에 가장 가까운지 정한다</li>
+      <li>AI에게 해당 강조 순서에 맞춰 전체 구조를 짜 달라고 요청</li>
+      <li>다른 업종 요소도 내 상품에 맞으면 섞어도 무방</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">11</span>가격 문구에 숨은 심리학</h2>
+    <p>같은 가격도 어떻게 보여주느냐에 따라 다르게 느껴집니다.</p>
+    <ol class="steps">
+      <li><strong>앵커링</strong> — 정가를 먼저 보여주고 할인가를 이어서 제시</li>
+      <li><strong>단위 쪼개기</strong> — "월 9,900원"보다 "하루 330원"이 부담이 적게 느껴짐</li>
+      <li><strong>손실 프레이밍</strong> — 담백하게, 과도한 압박은 역효과</li>
+      <li><strong>구성 비교</strong> — "따로 사면 3만원, 지금 패키지는 9,900원"처럼 체감 가치를 높이기</li>
+    </ol>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>비슷한 상품의 최저가·최고가를 조사한다</li>
+      <li>내 상품이 더 나은 점을 정리한다</li>
+      <li>AI에게 저가/중가/고가 3가지 가격 시나리오와 근거를 요청</li>
+      <li>초기엔 낮은 가격으로 후기를 쌓고, 후기 10개 이상부터 단계적으로 인상</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">12</span>감성형 · 정보형 · 후기형, 3버전 테스트</h2>
+    <p>어떤 톤이 통할지는 미리 알 수 없습니다. AI로 여러 버전을 빠르게 뽑아서 실제로 비교하세요.</p>
+    <ol class="steps">
+      <li><strong>감성형</strong> — 스토리와 감정선 중심, 은유·비유 활용</li>
+      <li><strong>정보형</strong> — 스펙·수치·비교표 중심, 신뢰감 있는 톤</li>
+      <li><strong>후기형</strong> — 실제/가상 구매 후기 형태를 빌려 서술, 친근한 구어체</li>
+    </ol>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 같은 상품 정보로 3가지 버전을 한 번에 요청</li>
+      <li>채널별로 다르게 시험한다 (홍보 글엔 감성형, 상세페이지 상단엔 정보형 등)</li>
+      <li>반응을 기록해두고, 반응 좋은 톤을 다음 상품에도 우선 시도</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">13</span>SEO 키워드 자연스럽게 넣기</h2>
+    <p>아무리 좋은 카피도 검색에 안 걸리면 아무도 못 봅니다. 키워드를 억지로 우겨넣지 않는 게 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>스마트스토어·쿠팡·네이버 검색창 자동완성으로 뜨는 연관 검색어를 수집</li>
+      <li>AI에게 이 키워드를 상품명·헤드라인·본문 초반 200자 안에 자연스럽게 녹인 버전을 요청</li>
+      <li>같은 단어 반복보다 유사어를 섞어 자연스러운 문장을 유지</li>
+      <li>상품 제목과 이미지 alt 텍스트(지원 시)에도 핵심 키워드 반영</li>
+    </ol>
+    <div class="worksheet-note">주의 — 키워드 스터핑(억지 반복)은 오히려 노출에 불리합니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">14</span>판매 데이터로 카피 고쳐나가기</h2>
+    <p>첫 상세페이지가 완벽할 필요는 없습니다. 팔리기 시작하면 데이터가 다음 카피를 알려줍니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>조회수 대비 구매 전환율, 자주 들어오는 문의/반박 내용을 기록한다</li>
+      <li>AI에게 이 데이터를 주고 "어느 부분이 약한지, 어떻게 고치면 좋을지" 분석 요청</li>
+      <li>전환율이 낮으면 헤드라인·상단부부터, 문의가 많으면 FAQ부터 우선 수정</li>
+      <li>2주~1개월 주기로 반복하며 계속 다듬는다</li>
+    </ol>
+    <p>카피는 한 번 쓰고 끝나는 게 아니라, 판매 데이터를 먹고 계속 좋아지는 살아있는 문서라고 생각하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">15</span>바로 쓰는 프롬프트 18선</h2>
+    <p class="lede">대괄호 부분만 바꿔서 그대로 붙여넣으세요. 카테고리별로 정리했습니다.</p>
+
+    <div class="cat cat-a">
+    <div class="cat-label">A. 헤드라인 · 구조 설계</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">A1 기능→결과 전환</div><div class="prompt">다음은 내 상품의 기능/스펙 목록이야: [목록]. 각 기능을 '고객이 얻는 결과' 중심 문장으로 바꿔줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">A2 헤드라인 10종</div><div class="prompt">[상품/결과 문장]을 가지고 10가지 헤드라인 공식(숫자형, 질문형, 반박형, 비교형, 결과선언형, 비밀공개형, 경고형, 스토리형, 한정형, 직진형)으로 각 1개씩 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">A3 PAS 본문</div><div class="prompt">[상품 정보 + 타겟 고객 한 문장]으로 Problem-Agitate-Solve 구조의 상세페이지 본문 초안을 써줘. 거짓 긴급성이나 과장된 위험은 넣지 말고.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-b">
+    <div class="cat-label">B. 타겟 · 신뢰 확보</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">B1 페르소나 3명</div><div class="prompt">[상품명]을 살 것 같은 사람 페르소나 3명을 만들어줘. 고민, 검색 키워드, 망설이는 이유를 포함해서.</div></div>
+    <div class="prompt-block"><div class="prompt-id">B2 후기 다듬기</div><div class="prompt">다음 후기 원문을 과장 없이, 원문 표현은 살려서 상세페이지에 쓸 문장으로 다듬어줘: [후기 원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">B3 반박 대응</div><div class="prompt">[타겟 고객]이 [상품명]을 안 사는 이유(반박·의심 포인트) 5가지와, 짧고 담백한 대응 문구를 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">B4 FAQ 초안</div><div class="prompt">[상품명]을 살까 말까 고민하는 사람이 물어볼 질문 8개와 신뢰가 가는 FAQ 답변을 만들어줘.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-c">
+    <div class="cat-label">C. CTA · 업종 · 가격</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">C1 CTA 문구</div><div class="prompt">[상품의 구매 장벽]을 낮추는 CTA 버튼 문구 5개와, 버튼 위에 넣을 한 줄 마이크로카피를 함께 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">C2 업종별 구조</div><div class="prompt">[상품명]은 [업종]에 해당해. 이 업종에 맞는 상세페이지 구조(강조 순서)를 짜줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">C3 가격 시나리오</div><div class="prompt">비슷한 상품의 최저가는 [금액], 최고가는 [금액]이야. 내 상품의 차별점은 [차별점]이야. 저가/중가/고가 3가지 가격 시나리오를 근거와 함께 제안해줘.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-d">
+    <div class="cat-label">D. 버전 · SEO · 데이터</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">D1 3버전 카피</div><div class="prompt">[상품명]의 상세페이지 카피를 감성형/정보형/후기형 3버전으로 써줘. 각 버전은 제목-소개-혜택-CTA 구조로.</div></div>
+    <div class="prompt-block"><div class="prompt-id">D2 SEO 키워드 녹이기</div><div class="prompt">[상품 관련 키워드 목록]을 상품명, 헤드라인, 본문 초반 200자 안에 자연스럽게 녹인 버전을 만들어줘. 키워드 반복은 피하고 유사어를 섞어서.</div></div>
+    <div class="prompt-block"><div class="prompt-id">D3 데이터 기반 개선</div><div class="prompt">지금까지 판매 데이터를 정리했어: [조회수/구매전환율/자주 나온 문의]. 어느 부분이 약한지 짚고 개선 우선순위를 제안해줘.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-e">
+    <div class="cat-label">E. 다듬기 · 확장</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">E1 쉬운 문장으로</div><div class="prompt">이 카피를 초등학생도 이해할 수 있는 쉬운 문장으로, 전문용어는 짧은 설명을 붙여서 다듬어줘: [원고]</div></div>
+    <div class="prompt-block"><div class="prompt-id">E2 이탈 지점 검수</div><div class="prompt">이 상세페이지 카피를 처음 보는 고객 입장에서 검토해줘. 어디서 이탈할 것 같은지, 왜 그런지 짚어줘: [카피 전문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">E3 얼리버드 문구</div><div class="prompt">[상품명]의 런칭 얼리버드 이벤트 문구를 만들어줘. 압박감은 주되 거짓 긴급성은 쓰지 말고.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E4 경쟁 차별점</div><div class="prompt">다음은 경쟁 상품 상세페이지 3개의 요약이야: [요약]. 내 상품이 다르게 접근할 수 있는 차별점 3가지를 제안해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E5 SNS 재구성</div><div class="prompt">이 상세페이지 카피를 스레드(Threads) 홍보 글 7개(질문형, 스토리형, 리스트형, 반박형, 공감형, 증거형, 긴급성형)로 재구성해줘: [카피 전문]</div></div>
+    </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">16</span>실전 체크리스트</h2>
+
+    <div class="checklist-group">
+      <h4><span class="wk">오늘</span>30분</h4>
+      <ul>
+        <li><input type="checkbox" disabled>상품 정보 한 장 정리 (기능, 가격, 배송/환불 조건)</li>
+        <li><input type="checkbox" disabled>타겟 고객 한 문장 쓰기</li>
+        <li><input type="checkbox" disabled>프롬프트 A1~A2로 결과 문장 + 헤드라인 후보 10개 뽑기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">이번 주</span>1차 완성</h4>
+      <ul>
+        <li><input type="checkbox" disabled>PAS 구조로 본문 초안 완성 (프롬프트 A3)</li>
+        <li><input type="checkbox" disabled>FAQ 5~8개, CTA 문구 확정 (프롬프트 B4, C1)</li>
+        <li><input type="checkbox" disabled>감성형/정보형/후기형 3버전 뽑아서 비교 (프롬프트 D1)</li>
+        <li><input type="checkbox" disabled>판매 채널(래피드·스마트스토어 등)에 등록</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">이번 달</span>확장</h4>
+      <ul>
+        <li><input type="checkbox" disabled>판매 데이터(조회수, 전환율, 문의 내용) 기록 시작</li>
+        <li><input type="checkbox" disabled>프롬프트 D3로 데이터 기반 카피 개선 1회 진행</li>
+        <li><input type="checkbox" disabled>반응 좋았던 톤 · 구조를 다음 상품 카피에도 재사용</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>상세페이지는 상품과 고객 사이에 놓인 유일한 대화입니다. 사진이 눈길을 끌어도, 결제 버튼을 누르게 만드는 건 결국 문장입니다.</p>
+    <p>AI는 문장을 빠르게 만들어 줍니다. 하지만 무엇을 먼저 말할지는 이 책에서 다룬 구조가 대신해줍니다. 오늘, 방법 1부터 딱 하나만 적용해 보세요.</p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>

@@ -1,0 +1,472 @@
+<title>업종별 상세페이지 템플릿 + 프롬프트팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    /* category accents — muted, paper-compatible hues (not neon) */
+    --cat-a: #B87F1F;   /* gold — 뷰티/화장품 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 식품 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 전자기기/가전 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 서비스(컨설팅·대행) */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #7A4B6E;   /* plum — 디지털 콘텐츠 */
+    --cat-e-tint: #E7DAE3;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030;
+      --paper-raised: #232941;
+      --ink: #ECEAE0;
+      --ink-soft: #A8ACC0;
+      --line: #3A4160;
+      --gold: #E0AC4E;
+      --gold-strong: #F0C374;
+      --gold-tint: #3A3020;
+      --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C293B7; --cat-e-tint: #322030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030;
+    --paper-raised: #232941;
+    --ink: #ECEAE0;
+    --ink-soft: #A8ACC0;
+    --line: #3A4160;
+    --gold: #E0AC4E;
+    --gold-strong: #F0C374;
+    --gold-tint: #3A3020;
+    --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C293B7; --cat-e-tint: #322030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative;
+    padding:88px 40px 64px;
+    text-align:center;
+    margin:0 -28px 60px;
+    background:
+      radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%),
+      var(--paper);
+    border-bottom:3px double var(--line);
+    overflow:hidden;
+  }
+  .cover::before, .cover::after{
+    content:""; position:absolute; left:50%; width:120px; height:3px;
+    background:var(--gold); transform:translateX(-50%);
+  }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{
+    display:block; font-family:var(--font-mono); font-size:0.78rem;
+    letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1;
+  }
+  .badge{
+    display:inline-block; position:relative; z-index:1; font-family:var(--font-mono);
+    font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint);
+    border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px;
+  }
+  .cover h1{
+    position:relative; z-index:1; font-family:var(--font-display); font-weight:700;
+    font-size:clamp(2.2rem, 6.5vw, 3.4rem); line-height:1.26; margin:0 0 20px; text-wrap:balance;
+  }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.1rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{
+    position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap;
+    font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px;
+  }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{
+    font-family:var(--font-display); font-size:1.7rem; font-weight:700; margin:0 0 16px;
+    display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold);
+    padding-top:18px; width:max-content; max-width:100%; break-after:avoid-page;
+  }
+  h2.chapter .num{
+    font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised);
+    background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1;
+  }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.1rem; margin:4px 0 10px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:30px 0 34px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 12px; max-width:68ch; orphans:1; widows:1; }
+  .lede{ font-size:1.02rem; color:var(--ink-soft); max-width:62ch; margin-bottom:14px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  /* ---------- Method steps ---------- */
+  ol.steps{ margin:0 0 6px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:6px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards (industry templates) ---------- */
+  .worksheet{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px 14px; margin:0 0 14px; break-inside:avoid; position:relative; overflow:hidden;
+  }
+  .worksheet::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent, var(--gold));
+  }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{
+    font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised);
+    background:var(--accent, var(--gold-strong)); border-radius:7px; width:26px; height:26px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .worksheet h4{
+    font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--accent, var(--gold-strong)); margin:0;
+  }
+  .worksheet h3{ margin:4px 0 10px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:10px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.85rem; background:var(--paper); }
+  th,td{
+    text-align:left; padding:7px 11px; border-bottom:1px solid var(--line);
+    font-variant-numeric:tabular-nums; vertical-align:top;
+  }
+  th{
+    font-family:var(--font-mono); font-size:0.7rem; color:var(--paper-raised); letter-spacing:0.05em;
+    background:var(--accent, var(--gold-strong)); text-transform:uppercase;
+  }
+  tr:nth-child(even) td{ background:var(--accent-tint, var(--gold-tint)); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:70px; color:var(--ink-soft); }
+  .worksheet-note{
+    font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-top:4px;
+  }
+  .worksheet-note.meta{ background:var(--accent-tint, var(--gold-tint)); border-color:var(--accent, var(--gold)); margin:0 0 9px; padding:8px 12px; }
+
+  /* ---------- Prompt cards ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:4px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{
+    font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em; color:var(--accent);
+    background:var(--accent-tint); border:1px solid var(--accent); display:inline-block;
+    border-radius:6px; padding:5px 12px; margin:0 0 9px; break-after:avoid;
+  }
+  .prompt-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;
+  }
+  .prompt-block{
+    break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line);
+    border-top:3px solid var(--accent); border-radius:9px; padding:10px 12px 11px;
+  }
+  .prompt-id{
+    font-family:var(--font-mono); font-size:0.76rem; color:var(--accent); font-weight:700;
+    margin-bottom:5px; letter-spacing:0.02em;
+  }
+  .prompt{
+    background:var(--code-bg); border:1px solid var(--line);
+    border-radius:6px; padding:9px 11px; font-family:var(--font-mono); font-size:0.78rem; line-height:1.5;
+    margin:0; white-space:pre-wrap; overflow-x:auto;
+  }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:10px;
+    padding:13px 15px; margin-bottom:8px; break-inside:avoid; position:relative; overflow:hidden;
+  }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.88rem; letter-spacing:0.05em; margin:0 0 9px; color:var(--ink); }
+  .checklist-group h4 .wk{
+    font-family:var(--font-mono); font-weight:700; font-size:0.78rem; color:var(--paper-raised);
+    background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0;
+  }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:4px 0; font-size:0.92rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:44px 20px 30px; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:12px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 06 · 실전 템플릿</span>
+    <span class="badge">『사장님, 그 카피로는 안 팔립니다』 실전 부록</span>
+    <h1>업종별 상세페이지<br>템플릿 + 프롬프트팩</h1>
+    <p class="subtitle">복붙해서 바로 채우는 업종별 템플릿 <span class="nowrap">5종</span>, 그대로 쓰는 프롬프트 <span class="nowrap">25개</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>업종 템플릿</div>
+      <div class="nowrap"><strong>25</strong>개 프롬프트</div>
+      <div class="nowrap"><strong>3</strong>단계 체크리스트</div>
+    </div>
+    <div class="byline">『사장님, 그 카피로는 안 팔립니다』를 <strong>읽은 다음날 바로 채우는</strong> 실전 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">방법은 다 봤는데, 내 상품엔 어떻게 적용하지?</em> 이 키트는 그 다음 질문에 답합니다.</p>
+    <p>『사장님, 그 카피로는 안 팔립니다』의 방법 8(업종별 템플릿)을 실제로 <strong>표의 빈칸만 채우면 완성되는 형태</strong>로 구체화했습니다. 업종 5개, 각 업종마다 채워야 할 모듈과 그 모듈을 채우는 프롬프트까지 한 세트로 묶었습니다.</p>
+    <div class="worksheet-note meta">2026년 상세페이지는 예전보다 훨씬 짧고 모듈화된 구조가 표준입니다 — <strong class="nowrap">히어로 컷 → 핵심 혜택 3개 → 구성/옵션 → 사용 시나리오 → 리뷰 → FAQ → CTA</strong>. 아래 5개 템플릿은 모두 이 7모듈을 뼈대로, 업종별 강조점만 다르게 채웠습니다. (참고 — 이미지 규격은 스마트스토어 가로 860px, 쿠팡 가로 780px가 통용 기준입니다.)</div>
+    <p>이 키트는 세 부분으로 구성됩니다.</p>
+    <ol class="steps">
+      <li><strong>업종별 템플릿 5종</strong> — 뷰티, 식품, 전자기기, 서비스, 디지털 콘텐츠. 표를 채우면 상세페이지 초안이 됩니다.</li>
+      <li><strong>프롬프트 25개</strong> — 업종마다 5개씩, 표를 채울 때 그대로 클로드에 붙여넣습니다.</li>
+      <li><strong>실전 체크리스트</strong> — 오늘·이번 주·이번 달, 순서대로 완성까지 안내합니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 완전히 맞는 업종이 없어도 괜찮습니다. 가장 가까운 템플릿을 고르고, 필요한 모듈은 다른 업종에서 섞어 쓰세요.</p>
+    <p>『사장님, 그 카피로는 안 팔립니다』 없이도 바로 쓸 수 있지만, 함께 보면 왜 이 순서(성분→효과, 문제→과정 등)로 배치했는지 더 빠르게 이해됩니다. 지금부터 업종 5개를 순서대로 살펴보겠습니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>업종별 상세페이지 템플릿 5종</h2>
+    <p class="lede">표의 "채워보기" 칸에 내 상품 정보를 직접 채우거나, 표를 그대로 클로드에 붙여넣고 채워달라고 요청하세요.</p>
+
+    <div class="cat cat-a">
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">1</span><h4>템플릿 1 · 관련 프롬프트 BE1~BE5</h4></div>
+        <h3>뷰티/화장품</h3>
+        <div class="worksheet-note meta">강조 순서 — 성분 → 효과 → 후기 → 비교 &nbsp;|&nbsp; 핵심 포인트 — 성분 안전성, 사용 전후 변화</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>모듈</th><th>이 모듈에서 할 일</th><th>채워보기</th></tr>
+            <tr><td>히어로 컷</td><td>사용 전후 변화 이미지 + 결과 한 문장</td><td class="fill"></td></tr>
+            <tr><td>핵심 혜택 3개</td><td>대표 성분 3가지 + 그래서 얻는 결과</td><td class="fill"></td></tr>
+            <tr><td>구성/옵션</td><td>용량, 세트 구성, 피부타입별 옵션</td><td class="fill"></td></tr>
+            <tr><td>사용 시나리오</td><td>아침/저녁, 계절별, 조합 사용법</td><td class="fill"></td></tr>
+            <tr><td>리뷰</td><td>사용 전후 후기 2~3건</td><td class="fill"></td></tr>
+            <tr><td>FAQ</td><td>알레르기, 임산부 사용, 유통기한</td><td class="fill"></td></tr>
+            <tr><td>CTA</td><td>"4주 후 달라진 피부" 류</td><td class="fill"></td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">예시 — "히알루론산 2% 저분자 캡슐"(성분) → "발라도 안 끈적, 속은 촉촉"(결과)</div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">2</span><h4>템플릿 2 · 관련 프롬프트 FD1~FD5</h4></div>
+        <h3>식품</h3>
+        <div class="worksheet-note meta">강조 순서 — 맛/신선도 → 원산지 → 후기 → 보관법 &nbsp;|&nbsp; 핵심 포인트 — 먹는 상상이 가능한 묘사</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>모듈</th><th>이 모듈에서 할 일</th><th>채워보기</th></tr>
+            <tr><td>히어로 컷</td><td>완성 이미지 + 맛을 상상하게 하는 문장</td><td class="fill"></td></tr>
+            <tr><td>핵심 혜택 3개</td><td>신선도/원산지/조리법 중 가장 강한 것</td><td class="fill"></td></tr>
+            <tr><td>구성/옵션</td><td>중량, 세트 구성, 개별포장 여부</td><td class="fill"></td></tr>
+            <tr><td>사용 시나리오</td><td>데워먹기/그대로/응용 레시피</td><td class="fill"></td></tr>
+            <tr><td>리뷰</td><td>재구매 후기, 별점 분포</td><td class="fill"></td></tr>
+            <tr><td>FAQ</td><td>보관법, 유통기한, 알레르기 유발 성분</td><td class="fill"></td></tr>
+            <tr><td>CTA</td><td>"오늘 주문하면 [배송일] 도착" 류</td><td class="fill"></td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">예시 — "산지 직송 당일 수확"(원산지) → "밭에서 딴 그날 맛 그대로"(결과)</div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">3</span><h4>템플릿 3 · 관련 프롬프트 EL1~EL5</h4></div>
+        <h3>전자기기/가전</h3>
+        <div class="worksheet-note meta">강조 순서 — 문제 → 스펙 비교 → 사용 장면 → A/S &nbsp;|&nbsp; 핵심 포인트 — 경쟁 제품과의 명확한 비교</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>모듈</th><th>이 모듈에서 할 일</th><th>채워보기</th></tr>
+            <tr><td>히어로 컷</td><td>해결하는 불편 상황 + 핵심 결과</td><td class="fill"></td></tr>
+            <tr><td>핵심 혜택 3개</td><td>경쟁 제품 대비 우위 스펙 3가지(숫자)</td><td class="fill"></td></tr>
+            <tr><td>구성/옵션</td><td>색상, 용량/사양, 구성품</td><td class="fill"></td></tr>
+            <tr><td>사용 시나리오</td><td>집/사무실/이동 중 실제 사용 장면</td><td class="fill"></td></tr>
+            <tr><td>리뷰</td><td>1주/1개월 사용기</td><td class="fill"></td></tr>
+            <tr><td>FAQ</td><td>A/S 기간, 고장 대응, 호환 기기</td><td class="fill"></td></tr>
+            <tr><td>CTA</td><td>"이 가격, 지금 조건에서만" 류</td><td class="fill"></td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">예시 — "노이즈 캔슬링 -32dB"(스펙) → "지하철에서도 조용한 사무실처럼"(결과)</div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">4</span><h4>템플릿 4 · 관련 프롬프트 SV1~SV5</h4></div>
+        <h3>서비스(컨설팅·대행)</h3>
+        <div class="worksheet-note meta">강조 순서 — 문제 → 과정 → 결과 사례 → 가격 &nbsp;|&nbsp; 핵심 포인트 — 프로세스를 투명하게 공개</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>모듈</th><th>이 모듈에서 할 일</th><th>채워보기</th></tr>
+            <tr><td>히어로 컷</td><td>고객 문제 상황 + 서비스 후 결과</td><td class="fill"></td></tr>
+            <tr><td>핵심 혜택 3개</td><td>진행 과정 3단계 요약</td><td class="fill"></td></tr>
+            <tr><td>구성/옵션</td><td>패키지별 차이(기본/스탠다드/프리미엄)</td><td class="fill"></td></tr>
+            <tr><td>사용 시나리오</td><td>실제 진행 사례 Before/After</td><td class="fill"></td></tr>
+            <tr><td>리뷰</td><td>고객 후기, 재의뢰율</td><td class="fill"></td></tr>
+            <tr><td>FAQ</td><td>소요 기간, 환불/취소, 담당자 자격</td><td class="fill"></td></tr>
+            <tr><td>CTA</td><td>"지금 상담 신청하고 [혜택]" 류</td><td class="fill"></td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">예시 — "3단계 진단→설계→실행"(과정) → "뭘 하는지 모르고 맡기지 않아도 됩니다"(결과)</div>
+      </div>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">5</span><h4>템플릿 5 · 관련 프롬프트 DC1~DC5</h4></div>
+        <h3>디지털 콘텐츠(전자책·강의·템플릿)</h3>
+        <div class="worksheet-note meta">강조 순서 — 결과 → 목차 미리보기 → 후기 → FAQ &nbsp;|&nbsp; 핵심 포인트 — 무엇을 얻는지 구체적으로 미리 보여주기</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>모듈</th><th>이 모듈에서 할 일</th><th>채워보기</th></tr>
+            <tr><td>히어로 컷</td><td>다 보면 얻는 결과 한 문장</td><td class="fill"></td></tr>
+            <tr><td>핵심 혜택 3개</td><td>분량/구성 수치(챕터, 프롬프트 개수)</td><td class="fill"></td></tr>
+            <tr><td>구성/옵션</td><td>파일 형식, 페이지 수, 부록 유무</td><td class="fill"></td></tr>
+            <tr><td>사용 시나리오</td><td>목차 미리보기(5~8개 항목)</td><td class="fill"></td></tr>
+            <tr><td>리뷰</td><td>구매자 후기 또는 제작 과정 공개</td><td class="fill"></td></tr>
+            <tr><td>FAQ</td><td>환불 정책, 업데이트, 관련 상품 차이</td><td class="fill"></td></tr>
+            <tr><td>CTA</td><td>"방법 1부터 바로 적용해보세요" 류</td><td class="fill"></td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">예시 — "12가지 방법 + 프롬프트 18개"(구성) → "오늘 읽고 오늘 바로 써먹는 실전서"(결과)</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>프롬프트 25선</h2>
+    <p class="lede">업종마다 5개씩입니다. 대괄호 부분만 바꿔서 표의 해당 모듈 칸에 그대로 붙여넣으세요.</p>
+
+    <div class="cat cat-a">
+    <div class="cat-label">뷰티/화장품</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">BE1 성분→효과 전환</div><div class="prompt">다음은 내 화장품의 성분 목록이야: [성분 목록]. 각 성분을 "그래서 피부가 어떻게 되는지" 결과 중심 문장으로 바꿔줘. 과장된 의학적 효능 표현은 피해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">BE2 사용 전후 후기 다듬기</div><div class="prompt">다음은 체험단이 남긴 사용 전후 후기 원문이야: [후기 원문]. 과장 없이, 원문 표현은 살려서 상세페이지에 쓸 문장으로 다듬어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">BE3 피부타입별 페르소나</div><div class="prompt">[제품명]을 살 것 같은 피부타입별(건성/지성/민감성) 페르소나 3명을 만들어줘. 각각 어떤 고민 때문에 이 제품을 찾는지 포함해서.</div></div>
+    <div class="prompt-block"><div class="prompt-id">BE4 성분 신뢰 문구</div><div class="prompt">[제품명]의 핵심 성분 [성분명]에 대해, 소비자가 안심할 수 있는 신뢰 문구를 2~3개 만들어줘. 근거 없는 과장(부작용 없음 단정 등)은 넣지 말고.</div></div>
+    <div class="prompt-block"><div class="prompt-id">BE5 숏폼 요약 카피</div><div class="prompt">[제품 상세페이지 전체 카피]를 인스타그램/숏폼 영상 자막용으로 한 화면에 한 메시지만 담기는 짧고 강렬한 문장 5개로 압축해줘.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-b">
+    <div class="cat-label">식품</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">FD1 맛/신선도 묘사</div><div class="prompt">[식품명]의 맛과 신선도를 먹는 상상이 되도록 감각적으로 묘사해줘. 너무 화려한 수식어 대신 구체적인 감각 표현(식감, 온도, 향)으로.</div></div>
+    <div class="prompt-block"><div class="prompt-id">FD2 원산지·제조과정 신뢰</div><div class="prompt">[식품명]의 원산지/제조과정 정보를 소비자가 신뢰할 수 있는 문장으로 정리해줘: [원산지/제조 정보]</div></div>
+    <div class="prompt-block"><div class="prompt-id">FD3 보관법 안내문</div><div class="prompt">[식품명]의 보관법(냉장/냉동/실온)과 유통기한을 고객이 헷갈리지 않게 간결한 안내문으로 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">FD4 활용 레시피 제안</div><div class="prompt">[식품명]을 활용할 수 있는 간단한 레시피 2~3개를 재료·조리시간과 함께 제안해줘. 상세페이지에 넣을 짧은 버전으로.</div></div>
+    <div class="prompt-block"><div class="prompt-id">FD5 계절/시즌 CTA</div><div class="prompt">[식품명]을 [계절/시즌]에 맞춰 구매를 유도하는 CTA 문구 3개를 만들어줘. 거짓 긴급성(허위 품절 임박 등)은 쓰지 말고.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-c">
+    <div class="cat-label">전자기기/가전</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">EL1 스펙 비교표</div><div class="prompt">내 제품 [제품명]의 스펙은 [스펙 목록]이야. 경쟁 제품(또는 일반적인 동급 제품) 대비 비교표를 만들어줘. 상대를 비방하지 않는 톤으로.</div></div>
+    <div class="prompt-block"><div class="prompt-id">EL2 문제-해결 스토리</div><div class="prompt">[제품명]이 해결하는 불편한 상황을 먼저 구체적으로 묘사하고, 이 제품이 어떻게 해결하는지 이어지는 짧은 스토리형 카피를 써줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">EL3 A/S·보증 안내</div><div class="prompt">[제품명]의 A/S 기간과 고장 시 대응 절차를 고객이 안심할 수 있게 간결하게 정리해줘: [A/S 정책 정보]</div></div>
+    <div class="prompt-block"><div class="prompt-id">EL4 사용 시나리오</div><div class="prompt">[제품명]을 [집/사무실/이동 중] 등 실제 생활 장면에서 쓰는 모습을 구체적으로 그려주는 문장 2~3개를 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">EL5 경쟁 제품 비교 문구</div><div class="prompt">[제품명]과 비슷한 가격대 경쟁 제품들의 공통적인 약점을 추정하고, 내 제품이 다르게 접근한 차별점 3가지를 담백한 톤으로 만들어줘.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-d">
+    <div class="cat-label">서비스(컨설팅·대행)</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">SV1 프로세스 투명 공개</div><div class="prompt">[서비스명]의 진행 과정을 신청→진행→결과 3단계로, 고객이 "뭘 하는지 모르고 맡기는" 불안이 없도록 구체적으로 설명해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">SV2 Before/After 사례</div><div class="prompt">다음은 실제 진행 사례 정보야: [사례 정보]. 이걸 Before(문제 상황)와 After(결과) 구조로 상세페이지에 쓸 문장으로 정리해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">SV3 신뢰 프로필</div><div class="prompt">[담당자 경력/자격/실적]을 나열이 아니라 "왜 이 사람에게 맡겨도 되는지"가 느껴지는 신뢰 문구로 재구성해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">SV4 상담 신청 CTA</div><div class="prompt">[서비스명]의 상담 신청 문턱을 낮추는 CTA 문구 3~5개와, 신청 버튼 위에 넣을 안심 문구(예: 무료 상담, 부담 없이)를 함께 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">SV5 패키지별 설명</div><div class="prompt">[서비스명]의 패키지 구성(기본/스탠다드/프리미엄 등)을 각각 누구에게 맞는지와 함께 비교표로 정리해줘: [패키지 정보]</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-e">
+    <div class="cat-label">디지털 콘텐츠</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">DC1 목차 미리보기 카피</div><div class="prompt">다음은 내 [전자책/강의]의 목차야: [목차 목록]. 상세페이지에 넣을 "목차 미리보기" 섹션으로, 각 항목이 궁금해지도록 한 줄씩 다듬어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">DC2 결과 중심 헤드라인</div><div class="prompt">[콘텐츠명]을 다 보면 얻는 결과를 한 문장으로 정리하고, 이를 바탕으로 헤드라인 후보 5개를 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">DC3 구매자 후기 재구성</div><div class="prompt">다음 구매 후기 원문을 상세페이지에 쓸 문장으로 재구성해줘. 과장 없이, 원문 표현은 살려서: [후기 원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">DC4 제작 과정 공개형</div><div class="prompt">후기가 아직 없어. [콘텐츠명]을 어떻게 만들었는지 제작 과정을 신뢰가 가도록 담백하게 정리해줘: [제작 과정 정보]</div></div>
+    <div class="prompt-block"><div class="prompt-id">DC5 업셀 유도 문구</div><div class="prompt">[콘텐츠명]을 구매한 사람에게 자연스럽게 다음 상품([업셀 상품명])을 제안하는 짧은 문구를 만들어줘. 강매 느낌 없이.</div></div>
+    </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>실전 체크리스트</h2>
+
+    <div class="checklist-group">
+      <h4><span class="wk">오늘</span>30분</h4>
+      <ul>
+        <li><input type="checkbox" disabled>내 상품과 가장 가까운 업종 템플릿 1개 고르기</li>
+        <li><input type="checkbox" disabled>해당 업종 프롬프트 1번으로 핵심 소재 뽑아보기</li>
+        <li><input type="checkbox" disabled>히어로 컷에 쓸 결과 한 문장 확정하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">이번 주</span>1차 완성</h4>
+      <ul>
+        <li><input type="checkbox" disabled>7모듈(히어로 컷~CTA) 표를 전부 채우기</li>
+        <li><input type="checkbox" disabled>해당 업종 프롬프트 5개를 모두 한 번씩 사용해보기</li>
+        <li><input type="checkbox" disabled>리뷰/후기 3~5건 확보 (없으면 제작 과정 공개형으로 대체)</li>
+        <li><input type="checkbox" disabled>이미지 규격 확인 — 스마트스토어 860px / 쿠팡 780px</li>
+        <li><input type="checkbox" disabled>완성된 카피를 판매 채널에 등록하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">이번 달</span>확장</h4>
+      <ul>
+        <li><input type="checkbox" disabled>다른 업종 템플릿의 모듈도 훑어보고 맞는 요소 섞어 반영</li>
+        <li><input type="checkbox" disabled>판매/문의 데이터를 보고 약한 모듈부터 프롬프트로 재작성</li>
+        <li><input type="checkbox" disabled>반응 좋았던 모듈 구성을 다음 상품에도 재사용</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>표를 채우고, 프롬프트를 붙여넣고, 체크리스트를 하나씩 지우세요.</p>
+    <p><strong>완벽한 문장보다, 채워진 표가 먼저입니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
