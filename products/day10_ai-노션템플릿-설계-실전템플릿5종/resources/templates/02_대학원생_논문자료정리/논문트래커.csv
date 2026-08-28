@@ -1,0 +1,6 @@
+제목,저자,발행연도,키워드,읽음상태,중요도,인용여부,요약,링크
+Attention Is All You Need,Vaswani et al.,2017,트랜스포머;NLP,완료,5,예,셀프 어텐션만으로 구성된 인코더-디코더 구조 제안. 후속 연구 대부분의 기반.,https://arxiv.org/abs/1706.03762
+Deep Residual Learning for Image Recognition,He et al.,2016,컴퓨터비전;잔차학습,완료,5,예,스킵 커넥션으로 깊은 네트워크의 기울기 소실 문제 완화.,https://arxiv.org/abs/1512.03385
+A Survey on Contrastive Self-Supervised Learning,Jaiswal et al.,2020,자기지도학습,읽는중,3,아니오,대조학습 기반 자기지도학습 방법론 전반을 정리한 서베이.,
+Notion as a Second Brain for Graduate Students,Kim,2023,생산성;연구방법론,읽을예정,2,아니오,,
+BERT: Pre-training of Deep Bidirectional Transformers,Devlin et al.,2018,NLP;사전학습,완료,4,예,양방향 마스킹 언어모델 사전학습으로 다운스트림 태스크 성능 향상.,https://arxiv.org/abs/1810.04805

@@ -1,0 +1,501 @@
+<title>노션 템플릿 5종 실전 키트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 템플릿1 교대근무 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 템플릿2 대학원생 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 템플릿3 ADHD */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 템플릿4 상품파이프라인 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #7A4B6E;   /* plum — 템플릿5 소상공인 */
+    --cat-e-tint: #E7DAE3;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030;
+      --paper-raised: #232941;
+      --ink: #ECEAE0;
+      --ink-soft: #A8ACC0;
+      --line: #3A4160;
+      --gold: #E0AC4E;
+      --gold-strong: #F0C374;
+      --gold-tint: #3A3020;
+      --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C293B7; --cat-e-tint: #322030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030;
+    --paper-raised: #232941;
+    --ink: #ECEAE0;
+    --ink-soft: #A8ACC0;
+    --line: #3A4160;
+    --gold: #E0AC4E;
+    --gold-strong: #F0C374;
+    --gold-tint: #3A3020;
+    --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C293B7; --cat-e-tint: #322030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative;
+    padding:80px 40px 56px;
+    text-align:center;
+    margin:0 -28px 60px;
+    background:
+      radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%),
+      var(--paper);
+    border-bottom:3px double var(--line);
+    overflow:hidden;
+  }
+  .cover::before, .cover::after{
+    content:""; position:absolute; left:50%; width:120px; height:3px;
+    background:var(--gold); transform:translateX(-50%);
+  }
+  .cover::before{ top:36px; }
+  .cover::after{ bottom:26px; }
+  .kicker{
+    display:block; font-family:var(--font-mono); font-size:0.78rem;
+    letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1;
+  }
+  .badge{
+    display:inline-block; position:relative; z-index:1; font-family:var(--font-mono);
+    font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint);
+    border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:28px;
+  }
+  .cover h1{
+    position:relative; z-index:1; font-family:var(--font-display); font-weight:700;
+    font-size:clamp(2.1rem, 6.2vw, 3.2rem); line-height:1.26; margin:0 0 18px; text-wrap:balance;
+  }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.06rem; color:var(--ink-soft); margin:0 0 30px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{
+    position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap;
+    font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:32px;
+  }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{
+    font-family:var(--font-display); font-size:1.62rem; font-weight:700; margin:0 0 20px;
+    display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold);
+    padding-top:16px; width:max-content; max-width:100%; break-after:avoid-page;
+  }
+  h2.chapter .num{
+    font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised);
+    background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1;
+  }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.06rem; margin:22px 0 10px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:26px 0 30px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 13px; max-width:68ch; }
+  .lede{ font-size:1rem; color:var(--ink-soft); max-width:62ch; margin-bottom:16px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:8px; padding-left:4px; }
+
+  /* ---------- Worksheet-style overview cards ---------- */
+  .worksheet{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px 13px; margin:0 0 12px; break-inside:avoid; position:relative; overflow:hidden;
+  }
+  .worksheet::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent, var(--gold));
+  }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{
+    font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised);
+    background:var(--accent-strong, var(--gold-strong)); border-radius:7px; width:26px; height:26px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .worksheet h4{
+    font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--accent-strong, var(--gold-strong)); margin:0;
+  }
+  .worksheet h3{ margin:4px 0 8px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.85rem; background:var(--paper); }
+  th,td{
+    text-align:left; padding:6px 11px; border-bottom:1px solid var(--line);
+    font-variant-numeric:tabular-nums; vertical-align:top;
+  }
+  th{
+    font-family:var(--font-mono); font-size:0.7rem; color:var(--paper-raised); letter-spacing:0.05em;
+    background:var(--accent-strong, var(--gold-strong)); text-transform:uppercase;
+  }
+  tr:nth-child(even) td{ background:var(--accent-tint, var(--gold-tint)); }
+  tr:last-child td{ border-bottom:none; }
+  .worksheet-note{
+    font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-top:2px;
+  }
+
+  /* ---------- Prompt / formula cards ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); --accent-strong:var(--cat-a); margin-bottom:6px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); --accent-strong:var(--cat-b); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); --accent-strong:var(--cat-c); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); --accent-strong:var(--cat-d); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); --accent-strong:var(--cat-e); }
+  .cat-label{
+    font-family:var(--font-mono); font-size:0.83rem; letter-spacing:0.05em; color:var(--accent);
+    background:var(--accent-tint); border:1px solid var(--accent); display:inline-block;
+    border-radius:6px; padding:5px 12px; margin:0 0 12px; break-after:avoid;
+  }
+  .prompt-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:20px;
+  }
+  .prompt-block{
+    break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line);
+    border-top:3px solid var(--accent); border-radius:9px; padding:10px 12px 11px;
+  }
+  .prompt-id{
+    font-family:var(--font-mono); font-size:0.75rem; color:var(--accent); font-weight:700;
+    margin-bottom:5px; letter-spacing:0.02em;
+  }
+  .prompt{
+    background:var(--code-bg); border:1px solid var(--line);
+    border-radius:6px; padding:9px 11px; font-family:var(--font-mono); font-size:0.76rem; line-height:1.5;
+    margin:0; white-space:pre-wrap; overflow-x:auto;
+  }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:10px;
+    padding:13px 16px; margin-bottom:9px; break-inside:avoid; position:relative; overflow:hidden;
+  }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent, var(--gold)); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.86rem; letter-spacing:0.05em; margin:0 0 10px; color:var(--ink); }
+  .checklist-group h4 .wk{
+    font-family:var(--font-mono); font-weight:700; font-size:0.76rem; color:var(--paper-raised);
+    background:var(--accent-strong, var(--gold-strong)); border-radius:999px; padding:4px 11px; flex-shrink:0;
+  }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:9px; align-items:flex-start; padding:3px 0; font-size:0.9rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:56px 20px 36px; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.15rem; color:var(--gold-strong); margin-top:16px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 10 · 실전 템플릿</span>
+    <span class="badge">『그 노션, 저장만 하고 안 씁니다』 실전 부록</span>
+    <h1>노션 템플릿 <span class="nowrap">5종</span> 실전 키트</h1>
+    <p class="subtitle">복제해서 바로 쓰는 CSV 임포트 파일 <span class="nowrap">5세트</span>, 수식 레시피, 뷰 설계까지 — 오늘 안에 내 상품으로 만드는 실행판</p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>템플릿</div>
+      <div class="nowrap"><strong>12</strong>개 수식</div>
+      <div class="nowrap"><strong>19</strong>개 프롬프트</div>
+    </div>
+    <div class="byline">『그 노션, 저장만 하고 안 씁니다』를 <strong>읽은 다음날 바로 복제하는</strong> 실행용 자료입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">전자책에서 "니치를 좁혀라"고 했다면, 이 키트는 좁힌 니치 5개를 실제로 완성해서 드립니다.</em></p>
+    <p>각 템플릿 폴더에는 노션에 바로 가져올 수 있는 <strong>CSV 파일</strong>과, 속성 타입 재설정·수식·뷰·페이지 구조까지 담은 <strong>README</strong>가 들어있습니다. CSV를 가져온 뒤 이 문서의 수식을 그대로 붙여넣으면 30분 안에 판매 가능한 수준의 템플릿이 완성됩니다.</p>
+    <ol class="steps">
+      <li><strong>템플릿 5종</strong> — 교대근무자·대학원생·ADHD 습관관리·1인 상품 파이프라인·소상공인 예약재고, 서로 다른 니치를 그대로 재현 가능한 구조로 제공합니다.</li>
+      <li><strong>수식 12개</strong> — 노션 수식 문법 그대로, 복사해서 붙여넣으면 바로 작동합니다.</li>
+      <li><strong>커스터마이징 프롬프트 19개</strong> — 내 상황에 맞게 구조를 바꿀 때 그대로 쓰는 질문입니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 5개를 다 쓸 필요는 없습니다. 내가 가장 잘 아는 니치 하나를 골라 CSV를 가져오고, 나머지는 "이런 구조도 가능하구나"를 배우는 참고 자료로 훑어보세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>템플릿 5종 한눈에</h2>
+    <p class="lede">각 템플릿의 대상, 핵심 속성, 파일 위치를 정리했습니다. 상세 설정은 각 폴더의 README를 참고하세요.</p>
+
+    <div class="worksheet" style="--accent:var(--cat-a); --accent-strong:var(--cat-a);">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>templates/01_교대근무_스케줄관리</h4></div>
+      <h3>교대근무자 불규칙 스케줄 관리</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>항목</th><th>내용</th></tr>
+          <tr><td>대상</td><td>3교대·2교대 등 매주 근무시간이 바뀌는 직장인</td></tr>
+          <tr><td>핵심 속성</td><td>근무유형(주간/야간/오프/휴가), 컨디션(1~5), 수면계획</td></tr>
+          <tr><td>수식</td><td>야간경고 뱃지, 컨디션 상태 이모지</td></tr>
+          <tr><td>뷰</td><td>캘린더 / 근무유형별 보드 / 컨디션 낮은 순 표</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="worksheet" style="--accent:var(--cat-b); --accent-strong:var(--cat-b);">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>templates/02_대학원생_논문자료정리</h4></div>
+      <h3>논문·자료 정리 (대학원생용)</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>항목</th><th>내용</th></tr>
+          <tr><td>대상</td><td>논문·자료를 계속 찾아 헤매는 대학원생·연구자</td></tr>
+          <tr><td>핵심 속성</td><td>읽음상태, 중요도, 인용여부, 키워드(다중선택)</td></tr>
+          <tr><td>수식</td><td>우선순위 점수, 서지 인용 텍스트 자동 생성</td></tr>
+          <tr><td>뷰</td><td>읽을 목록 / 주제별 보드 / 인용 목록</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="worksheet" style="--accent:var(--cat-c); --accent-strong:var(--cat-c);">
+      <div class="worksheet-head"><span class="worksheet-num">3</span><h4>templates/03_ADHD_저마찰_습관관리</h4></div>
+      <h3>ADHD 성향 초저마찰 습관판</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>항목</th><th>내용</th></tr>
+          <tr><td>대상</td><td>큰 목표형 습관 트래커에서 매번 실패하는 사람</td></tr>
+          <tr><td>핵심 속성</td><td>최소단위(의도적으로 작게 쪼갠 목표), 연속일수, 보상</td></tr>
+          <tr><td>수식</td><td>연속 기록 상태 뱃지(🔥/✨/🌱)</td></tr>
+          <tr><td>뷰</td><td>오늘의 습관 보드(완료/미완료 2칸) / 연속기록 표</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="worksheet" style="--accent:var(--cat-d); --accent-strong:var(--cat-d);">
+      <div class="worksheet-head"><span class="worksheet-num">4</span><h4>templates/04_1인_디지털상품_판매파이프라인</h4></div>
+      <h3>1인 디지털 상품 판매 파이프라인</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>항목</th><th>내용</th></tr>
+          <tr><td>대상</td><td>전자책·템플릿 등 여러 상품을 동시에 굴리는 1인 판매자</td></tr>
+          <tr><td>핵심 속성</td><td>단계(기획~판매중), 가격, 판매수, 매출, 다음액션</td></tr>
+          <tr><td>수식</td><td>평균단가 검증, 등록 후 경과일, 조치 필요 뱃지</td></tr>
+          <tr><td>뷰</td><td>칸반 보드(단계별) / 매출 랭킹 / 조치 필요 목록</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="worksheet" style="--accent:var(--cat-e); --accent-strong:var(--cat-e);">
+      <div class="worksheet-head"><span class="worksheet-num">5</span><h4>templates/05_소상공인_예약재고_통합관리</h4></div>
+      <h3>1인 카페·스튜디오 예약 + 재고 통합관리</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>항목</th><th>내용</th></tr>
+          <tr><td>대상</td><td>예약·재고를 따로 손으로 관리하는 미용실·네일샵·스튜디오</td></tr>
+          <tr><td>핵심 속성</td><td>예약(고객·일시·상태) + 재고(수량·최소수량·단가), 관계형 연결</td></tr>
+          <tr><td>수식</td><td>재고 부족 자동 경고, 재고가치 계산</td></tr>
+          <tr><td>뷰</td><td>오늘의 예약 / 노쇼 이력 / 재주문 필요 목록</td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">유일하게 데이터베이스 2개(예약목록+재고목록)로 구성 — 관계형(Relation)을 처음 써보는 연습용으로도 좋습니다.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>공통 설치 3단계</h2>
+    <p class="lede">5개 템플릿 모두 같은 순서로 설치합니다. 한 번 익히면 다음 니치도 5분 안에 복제할 수 있습니다.</p>
+    <ol class="steps">
+      <li><strong>CSV 가져오기</strong> — 노션에서 새 페이지 → <code>/csv</code> 입력 → CSV 가져오기 → 해당 폴더의 CSV 선택. 자동으로 데이터베이스가 생성됩니다.</li>
+      <li><strong>속성 타입 재설정</strong> — CSV 가져오기는 모든 열을 텍스트로 만듭니다. 각 템플릿 README의 표대로 선택/숫자/날짜/체크박스로 바꿔줍니다.</li>
+      <li><strong>수식·뷰 추가</strong> — 아래 03장의 수식을 그대로 복사해서 새 속성(타입: 수식)에 붙여넣고, 04장 대신 각 템플릿 README의 뷰 구성을 따라 뷰를 만듭니다.</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>수식 레시피 12선</h2>
+    <p class="lede">노션 수식 문법 그대로입니다. 새 속성을 만들고 타입을 "수식"으로 지정한 뒤 그대로 붙여넣으세요.</p>
+
+    <div class="cat cat-a">
+    <div class="cat-label">템플릿 1 · 교대근무 스케줄</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">야간경고 뱃지</div><div class="prompt">if(prop("근무유형") == "야간", "🌙 야간 — 카페인 주의", "")</div></div>
+    <div class="prompt-block"><div class="prompt-id">컨디션 상태 이모지</div><div class="prompt">if(prop("컨디션") >= 4, "🟢 좋음", if(prop("컨디션") == 3, "🟡 보통", "🔴 낮음"))</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-b">
+    <div class="cat-label">템플릿 2 · 논문·자료 정리</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">우선순위 점수</div><div class="prompt">prop("중요도") * (if(prop("읽음상태") == "완료", 0, 1))</div></div>
+    <div class="prompt-block"><div class="prompt-id">서지 인용 텍스트</div><div class="prompt">prop("저자") + " (" + format(prop("발행연도")) + "). " + prop("제목") + "."</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-c">
+    <div class="cat-label">템플릿 3 · ADHD 습관관리</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">연속 기록 상태 뱃지</div><div class="prompt">if(prop("연속일수") >= 21, "🔥 습관화 완료", if(prop("연속일수") >= 7, "✨ 1주 돌파", if(prop("연속일수") >= 1, "🌱 시작함", "⬜ 아직")))</div></div>
+    <div class="prompt-block"><div class="prompt-id">오늘 대상 필터용</div><div class="prompt">prop("요일") == "매일"</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-d">
+    <div class="cat-label">템플릿 4 · 상품 판매 파이프라인</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">평균단가 검증</div><div class="prompt">if(prop("매출") == prop("가격") * prop("판매수"), "✅ 일치", "⚠️ 확인 필요")</div></div>
+    <div class="prompt-block"><div class="prompt-id">등록 후 경과일</div><div class="prompt">if(prop("등록일") != empty(), dateBetween(now(), prop("등록일"), "days"), 0)</div></div>
+    <div class="prompt-block"><div class="prompt-id">조치 필요 뱃지</div><div class="prompt">if(and(prop("경과일") > 7, prop("판매수") == 0), "🚨 홍보 재점검", "")</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-e">
+    <div class="cat-label">템플릿 5 · 예약+재고 통합관리</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">재고 부족 경고</div><div class="prompt">if(prop("현재수량") <= prop("최소수량"), "🔴 재주문 필요", "🟢 충분")</div></div>
+    <div class="prompt-block"><div class="prompt-id">재고가치 계산</div><div class="prompt">prop("현재수량") * prop("단가")</div></div>
+    </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>커스터마이징 프롬프트 19선</h2>
+    <p class="lede">내 상황에 맞게 구조를 바꿀 때 그대로 붙여넣는 질문입니다. 대괄호만 채우세요.</p>
+
+    <div class="cat cat-a">
+    <div class="cat-label">템플릿 1 · 교대근무 스케줄</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">패턴 변경</div><div class="prompt">3교대(주간/오후/야간) 패턴으로 바꾸고 싶어. 근무유형 선택 옵션과 색상 배정을 다시 제안해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">연속근무 경고</div><div class="prompt">야간 근무가 3일 이상 연속될 때 자동으로 경고 문구가 뜨는 수식을 만들어줘. 노션 수식 문법으로.</div></div>
+    <div class="prompt-block"><div class="prompt-id">회복 패턴 분석</div><div class="prompt">이 컨디션 데이터를 보고 내 회복 패턴을 분석하는 질문 리스트를 만들어줘: [최근 2주 컨디션 데이터]</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-b">
+    <div class="cat-label">템플릿 2 · 논문·자료 정리</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">초록 3줄 요약</div><div class="prompt">이 논문 초록을 읽고 3줄 요약과 핵심 키워드 5개를 뽑아줘: [초록 붙여넣기]</div></div>
+    <div class="prompt-block"><div class="prompt-id">연구 연결점</div><div class="prompt">내 연구 주제는 [주제]야. 이 논문이 내 연구와 어떻게 연결되는지 한 문단으로 정리해줘: [논문 요약]</div></div>
+    <div class="prompt-block"><div class="prompt-id">참고문헌 정리</div><div class="prompt">다음 논문 목록을 참고문헌 형식(APA)으로 정리해줘: [저자, 연도, 제목 목록]</div></div>
+    <div class="prompt-block"><div class="prompt-id">속성 확장</div><div class="prompt">이 데이터베이스에 '재현 가능 여부(코드 공개 여부)' 속성을 추가하고 싶어. 어떤 타입이 적절한지, 관련 수식도 함께 제안해줘.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-c">
+    <div class="cat-label">템플릿 3 · ADHD 습관관리</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">최소단위 쪼개기</div><div class="prompt">[하고 싶은 습관, 예: 책 읽기]을 ADHD 성향인 사람도 부담 없이 시작할 수 있는 최소단위로 쪼개줘. 예시 3단계로.</div></div>
+    <div class="prompt-block"><div class="prompt-id">재시작 응원 문구</div><div class="prompt">연속일수가 끊겼을 때 자책하지 않고 다시 시작하게 도와주는 짧은 응원 문구 10개를 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">즉각 보상 설계</div><div class="prompt">이 습관 목록에 맞는 보상(작고 즉각적인 것)을 5개 제안해줘: [습관 목록]</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-d">
+    <div class="cat-label">템플릿 4 · 상품 판매 파이프라인</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">주간 우선순위</div><div class="prompt">이번 주 상품 파이프라인 데이터를 정리했어: [단계별 개수, 매출]. 다음 주 우선순위 3가지를 제안해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">부진 원인 분석</div><div class="prompt">판매수가 0인 상품들의 공통점을 찾아줘. 가격, 등록일, 유형 데이터를 기준으로: [해당 상품 목록]</div></div>
+    <div class="prompt-block"><div class="prompt-id">다음 상품 발굴</div><div class="prompt">가장 잘 팔린 상품과 비슷한 다음 상품 아이디어 5개를 제안해줘: [매출 상위 상품 설명]</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-e">
+    <div class="cat-label">템플릿 5 · 예약+재고 통합관리</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">업종별 속성 확장</div><div class="prompt">우리 가게는 [업종]이야. 예약목록에 필요한 속성을 추가로 제안해줘. 지금은 고객명/연락처/일시/서비스/상태만 있어.</div></div>
+    <div class="prompt-block"><div class="prompt-id">최소수량 기준</div><div class="prompt">재고 최소수량을 정하는 기준을 어떻게 잡으면 좋을지, 우리 가게 상황([공급 주기, 사용량])을 참고해서 제안해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">노쇼 대응 문자</div><div class="prompt">노쇼가 반복되는 고객에게 보낼 정중한 예약 확인 문자 템플릿을 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">월간 발주 계획</div><div class="prompt">이번 달 예약/재고 데이터를 정리했어: [데이터]. 다음 달 발주량과 예약 정책 개선점을 제안해줘.</div></div>
+    </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">05</span>설치 체크리스트</h2>
+    <p class="lede">템플릿마다 딱 4단계입니다. 하나 끝내고 다음으로 넘어가세요.</p>
+
+    <div class="checklist-group" style="--accent:var(--cat-a); --accent-strong:var(--cat-a);">
+      <h4><span class="wk">템플릿 1</span>교대근무 스케줄 관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>근무스케줄.csv 가져오기</li>
+        <li><input type="checkbox" disabled>근무유형·요일 선택 옵션 색상 지정</li>
+        <li><input type="checkbox" disabled>야간경고·컨디션표시 수식 추가</li>
+        <li><input type="checkbox" disabled>캘린더/보드/표 뷰 3종 구성</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group" style="--accent:var(--cat-b); --accent-strong:var(--cat-b);">
+      <h4><span class="wk">템플릿 2</span>논문·자료 정리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>논문트래커.csv 가져오기</li>
+        <li><input type="checkbox" disabled>키워드 다중선택으로 재분류</li>
+        <li><input type="checkbox" disabled>우선순위·인용텍스트 수식 추가</li>
+        <li><input type="checkbox" disabled>읽을 목록 뷰 정렬 확인(우선순위 내림차순)</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group" style="--accent:var(--cat-c); --accent-strong:var(--cat-c);">
+      <h4><span class="wk">템플릿 3</span>ADHD 습관관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>습관트래커.csv 가져오기</li>
+        <li><input type="checkbox" disabled>매일 자정 완료 체크박스 초기화 자동화 설정</li>
+        <li><input type="checkbox" disabled>상태뱃지 수식 추가</li>
+        <li><input type="checkbox" disabled>홈 화면에 오늘의 습관 보드만 배치(정보량 최소화)</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group" style="--accent:var(--cat-d); --accent-strong:var(--cat-d);">
+      <h4><span class="wk">템플릿 4</span>상품 판매 파이프라인</h4>
+      <ul>
+        <li><input type="checkbox" disabled>상품파이프라인.csv 가져오기</li>
+        <li><input type="checkbox" disabled>단계별 칸반 보드 구성</li>
+        <li><input type="checkbox" disabled>조치필요 수식 추가 후 필터 뷰 생성</li>
+        <li><input type="checkbox" disabled>내 실제 상품 데이터로 교체</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group" style="--accent:var(--cat-e); --accent-strong:var(--cat-e);">
+      <h4><span class="wk">템플릿 5</span>예약+재고 통합관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>예약목록.csv, 재고목록.csv 각각 가져오기</li>
+        <li><input type="checkbox" disabled>예약목록 → 재고목록 관계형 속성 연결</li>
+        <li><input type="checkbox" disabled>재주문필요·재고가치 수식 추가</li>
+        <li><input type="checkbox" disabled>오늘의 예약 / 재주문 필요 뷰 홈에 임베드</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>CSV를 가져오고, 수식을 붙여넣고, 뷰 3개만 만들면 끝입니다.</p>
+    <p><strong>완벽한 템플릿보다, 오늘 복제해서 파는 템플릿이 더 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
