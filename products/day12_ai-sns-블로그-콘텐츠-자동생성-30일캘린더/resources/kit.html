@@ -1,0 +1,467 @@
+<title>AI 콘텐츠 30일 캘린더 키트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 원소스·SEO */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — SNS 톤·후킹 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 브랜드보이스·필터 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 캘린더·운영 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #7A4B6E;   /* plum — 분석·회고·확장 */
+    --cat-e-tint: #E7DAE3;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030;
+      --paper-raised: #232941;
+      --ink: #ECEAE0;
+      --ink-soft: #A8ACC0;
+      --line: #3A4160;
+      --gold: #E0AC4E;
+      --gold-strong: #F0C374;
+      --gold-tint: #3A3020;
+      --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C293B7; --cat-e-tint: #322030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030;
+    --paper-raised: #232941;
+    --ink: #ECEAE0;
+    --ink-soft: #A8ACC0;
+    --line: #3A4160;
+    --gold: #E0AC4E;
+    --gold-strong: #F0C374;
+    --gold-tint: #3A3020;
+    --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C293B7; --cat-e-tint: #322030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 120px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative;
+    padding:88px 40px 64px;
+    text-align:center;
+    margin:0 -28px 72px;
+    background:
+      radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%),
+      var(--paper);
+    border-bottom:3px double var(--line);
+    overflow:hidden;
+  }
+  .cover::before, .cover::after{
+    content:""; position:absolute; left:50%; width:120px; height:3px;
+    background:var(--gold); transform:translateX(-50%);
+  }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{
+    display:block; font-family:var(--font-mono); font-size:0.78rem;
+    letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1;
+  }
+  .badge{
+    display:inline-block; position:relative; z-index:1; font-family:var(--font-mono);
+    font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint);
+    border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px;
+  }
+  .cover h1{
+    position:relative; z-index:1; font-family:var(--font-display); font-weight:700;
+    font-size:clamp(2.2rem, 6.5vw, 3.4rem); line-height:1.24; margin:0 0 20px; text-wrap:balance;
+  }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.1rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{
+    position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap;
+    font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px;
+  }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{
+    font-family:var(--font-display); font-size:1.7rem; font-weight:700; margin:0 0 22px;
+    display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold);
+    padding-top:18px; width:max-content; max-width:100%; break-after:avoid-page;
+  }
+  h2.chapter .num{
+    font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised);
+    background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1;
+  }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.1rem; margin:26px 0 10px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:30px 0 34px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 14px; max-width:68ch; }
+  .lede{ font-size:1.02rem; color:var(--ink-soft); max-width:62ch; margin-bottom:18px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  /* ---------- Method steps ---------- */
+  .method-meta{
+    display:inline-block; font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-soft);
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-bottom:18px;
+  }
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:9px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet tables ---------- */
+  .worksheet{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px 14px; margin:0 0 14px; break-inside:avoid; position:relative; overflow:hidden;
+  }
+  .worksheet::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold);
+  }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{
+    font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised);
+    background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .worksheet h4{
+    font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--gold-strong); margin:0;
+  }
+  .worksheet h3{ margin:4px 0 10px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:10px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.87rem; background:var(--paper); }
+  th,td{
+    text-align:left; padding:7px 12px; border-bottom:1px solid var(--line);
+    font-variant-numeric:tabular-nums; vertical-align:top;
+  }
+  th{
+    font-family:var(--font-mono); font-size:0.72rem; color:var(--paper-raised); letter-spacing:0.05em;
+    background:var(--gold-strong); text-transform:uppercase;
+  }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .blank-line{ display:inline-block; border-bottom:1px dotted var(--gold); min-width:220px; margin-left:6px; }
+  .worksheet-note{
+    font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin-top:4px;
+  }
+
+  /* ---------- Prompt cards ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:8px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{
+    font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em; color:var(--accent);
+    background:var(--accent-tint); border:1px solid var(--accent); display:inline-block;
+    border-radius:6px; padding:5px 12px; margin:0 0 14px; break-after:avoid;
+  }
+  .prompt-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:22px;
+  }
+  .prompt-block{
+    break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line);
+    border-top:3px solid var(--accent); border-radius:9px; padding:10px 12px 11px;
+  }
+  .prompt-id{
+    font-family:var(--font-mono); font-size:0.76rem; color:var(--accent); font-weight:700;
+    margin-bottom:5px; letter-spacing:0.02em;
+  }
+  .prompt{
+    background:var(--code-bg); border:1px solid var(--line);
+    border-radius:6px; padding:9px 11px; font-family:var(--font-mono); font-size:0.78rem; line-height:1.5;
+    margin:0; white-space:pre-wrap; overflow-x:auto;
+  }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:10px;
+    padding:15px 18px; margin-bottom:10px; break-inside:avoid; position:relative; overflow:hidden;
+  }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.88rem; letter-spacing:0.05em; margin:0 0 12px; color:var(--ink); }
+  .checklist-group h4 .wk{
+    font-family:var(--font-mono); font-weight:700; font-size:0.78rem; color:var(--paper-raised);
+    background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0;
+  }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:4px 0; font-size:0.92rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+  .checklist-group li .meta{ font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-soft); }
+
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:64px 20px 40px; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:18px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 12 · 실행 키트</span>
+    <span class="badge">『그 글, AI가 대신 씁니다』 실전 부록</span>
+    <h1>AI 콘텐츠 <span class="nowrap">30일</span> 캘린더 키트</h1>
+    <p class="subtitle">읽고 끝내지 않도록 — 워크시트 <span class="nowrap">5개</span>, <span class="nowrap">30일</span> 콘텐츠 캘린더, 그대로 쓰는 프롬프트 <span class="nowrap">30개</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>워크시트</div>
+      <div class="nowrap"><strong>30</strong>일 캘린더</div>
+      <div class="nowrap"><strong>30</strong>개 프롬프트</div>
+    </div>
+    <div class="byline">『그 글, AI가 대신 씁니다』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">전자책에서 "무엇을 할지"는 배웠어도, "오늘 뭘 올릴지"는 여전히 매일 새로 고민하게 됩니다.</em> 이 키트는 그 고민을 없애기 위해 만들었습니다.</p>
+    <p>이 키트는 세 부분으로 구성됩니다.</p>
+    <ol class="steps">
+      <li><strong>워크시트 5개</strong> — 원소스 분해부터 월간 회고까지, 빈칸을 채우며 생각을 정리합니다.</li>
+      <li><strong>30일 콘텐츠 캘린더</strong> — 채널·포맷·톤·목적이 미리 채워진 일정표에 주제만 채워 넣습니다 (별첨 CSV로도 제공).</li>
+      <li><strong>프롬프트 30개</strong> — 막힐 때마다 그대로 복사해서 클로드에 붙여넣습니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 완벽하게 채우려 하지 마세요. 빈칸이 남아도 다음 날로 넘어가고, 막히면 해당 카테고리의 프롬프트를 그대로 입력하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1 · 관련 프롬프트 A1</h4></div>
+      <h3>원소스 분해표</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>포맷</th><th>길이/형식</th><th>핵심 메시지 재구성</th></tr>
+          <tr><td>블로그 원문</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>스레드 요약</td><td>300자 내외</td><td class="fill"></td></tr>
+          <tr><td>카드뉴스 대본</td><td>5장</td><td class="fill"></td></tr>
+          <tr><td>숏폼 스크립트</td><td>훅-본문-CTA</td><td class="fill"></td></tr>
+          <tr><td>뉴스레터 문단</td><td>300자 내외</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <p>이번 주 원소스 <span class="blank-line"></span></p>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 관련 프롬프트 C1</h4></div>
+      <h3>브랜드 보이스 톤 프로필</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>항목</th><th>분석 결과</th></tr>
+          <tr><td>평균 문장 길이</td><td class="fill"></td></tr>
+          <tr><td>자주 쓰는 표현·어미</td><td class="fill"></td></tr>
+          <tr><td>즐겨 쓰는 문장부호 습관</td><td class="fill"></td></tr>
+          <tr><td>절대 안 쓰는 표현</td><td class="fill"></td></tr>
+          <tr><td>내가 넣는 개인적 디테일 유형</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">이후 모든 초안 요청에 이 표 내용을 "이 톤으로 써줘"와 함께 붙여넣으세요</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">3</span><h4>Worksheet 3 · 관련 프롬프트 D1</h4></div>
+      <h3>이번 달 대주제 설계</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>대주제</th><th>어느 주에 배치</th><th>목적</th></tr>
+          <tr><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">4</span><h4>Worksheet 4 · 관련 프롬프트 D2</h4></div>
+      <h3>댓글 응대 스크립트</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>유형</th><th>대응 방향</th><th>내 스크립트</th></tr>
+          <tr><td>의심형</td><td>구체적 근거 제시</td><td class="fill"></td></tr>
+          <tr><td>관심형</td><td>다음 콘텐츠로 연결</td><td class="fill"></td></tr>
+          <tr><td>가격/가치 저항형</td><td>담백하게 가치 재확인</td><td class="fill"></td></tr>
+          <tr><td>칭찬형</td><td>감사 + 다음 액션 유도</td><td class="fill"></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">5</span><h4>Worksheet 5 · 관련 프롬프트 E1, E4</h4></div>
+      <h3>월간 회고 &amp; 다음 달 주제</h3>
+      <p>이번 달 발행 개수 <span class="blank-line" style="min-width:80px"></span> &nbsp; 가장 반응 좋았던 형식 <span class="blank-line"></span></p>
+      <p>계속할 것 <span class="blank-line"></span></p>
+      <p>그만둘 것 <span class="blank-line"></span></p>
+      <p>다음 달 새 주제 3개 <span class="blank-line"></span></p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>30일 콘텐츠 캘린더</h2>
+    <p class="lede">채널·포맷·톤·목적은 미리 채워뒀습니다. 매일 "주제/후킹 문장" 칸만 채우면 됩니다. 같은 내용을 <span class="blank-line" style="min-width:1px;border:none;">&nbsp;</span><code>calendar/30일_콘텐츠_캘린더.csv</code>로도 제공합니다 — 스프레드시트로 관리하려면 그 파일을 가져오세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1주차</span>세팅 — 원소스 하나로 시작</h4>
+      <ul>
+        <li><input type="checkbox" disabled><span>Day 1 (월)</span> <span class="meta">블로그 · SEO 원문 · 정보형 · 인지</span></li>
+        <li><input type="checkbox" disabled><span>Day 2 (화)</span> <span class="meta">스레드 · 요약 글 · 스토리형 · 인지</span></li>
+        <li><input type="checkbox" disabled><span>Day 3 (수)</span> <span class="meta">인스타그램 · 카드뉴스 대본 · 리스트형 · 관심</span></li>
+        <li><input type="checkbox" disabled><span>Day 4 (목)</span> <span class="meta">스레드 · 질문형 글 · 질문형 · 관심</span></li>
+        <li><input type="checkbox" disabled><span>Day 5 (금)</span> <span class="meta">블로그 · SEO 원문 · 정보형 · 인지</span></li>
+        <li><input type="checkbox" disabled><span>Day 6 (토)</span> <span class="meta">스레드 · 후기/증거형 글 · 증거형 · 관심</span></li>
+        <li><input type="checkbox" disabled><span>Day 7 (일)</span> <span class="meta">전체 · 주간 회고 메모</span></li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2주차</span>SNS 톤 7종 순환</h4>
+      <ul>
+        <li><input type="checkbox" disabled><span>Day 8 (월)</span> <span class="meta">스레드 · 홍보 글 · 스토리형 · 전환</span></li>
+        <li><input type="checkbox" disabled><span>Day 9 (화)</span> <span class="meta">스레드 · 홍보 글 · 질문형 · 관심</span></li>
+        <li><input type="checkbox" disabled><span>Day 10 (수)</span> <span class="meta">스레드 · 홍보 글 · 리스트형 · 관심</span></li>
+        <li><input type="checkbox" disabled><span>Day 11 (목)</span> <span class="meta">스레드 · 홍보 글 · 반박형 · 관심</span></li>
+        <li><input type="checkbox" disabled><span>Day 12 (금)</span> <span class="meta">스레드 · 홍보 글 · 공감형 · 인지</span></li>
+        <li><input type="checkbox" disabled><span>Day 13 (토)</span> <span class="meta">스레드 · 홍보 글 · 증거형 · 전환</span></li>
+        <li><input type="checkbox" disabled><span>Day 14 (일)</span> <span class="meta">스레드 · 홍보 글 · 긴급성형 · 전환</span></li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3주차</span>블로그·SEO 집중</h4>
+      <ul>
+        <li><input type="checkbox" disabled><span>Day 15 (월)</span> <span class="meta">블로그 · SEO 원문 · 정보형 · 인지</span></li>
+        <li><input type="checkbox" disabled><span>Day 16 (화)</span> <span class="meta">스레드 · 블로그 요약 공유 · 리스트형 · 인지</span></li>
+        <li><input type="checkbox" disabled><span>Day 17 (수)</span> <span class="meta">인스타그램 · 카드뉴스 대본 · 정보형 · 관심</span></li>
+        <li><input type="checkbox" disabled><span>Day 18 (목)</span> <span class="meta">숏폼 · 훅-본문-CTA 스크립트 · 후킹형 · 관심</span></li>
+        <li><input type="checkbox" disabled><span>Day 19 (금)</span> <span class="meta">블로그 · SEO 원문 · 정보형 · 인지</span></li>
+        <li><input type="checkbox" disabled><span>Day 20 (토)</span> <span class="meta">스레드 · 댓글 응대 정리 글 · 공감형 · 인지</span></li>
+        <li><input type="checkbox" disabled><span>Day 21 (일)</span> <span class="meta">전체 · 주간 회고 메모</span></li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4주차</span>분석 &amp; 확장</h4>
+      <ul>
+        <li><input type="checkbox" disabled><span>Day 22 (월)</span> <span class="meta">스레드 · 반응 좋은 글 재발행(변형) · 전환</span></li>
+        <li><input type="checkbox" disabled><span>Day 23 (화)</span> <span class="meta">블로그 · SEO 원문 · 정보형 · 인지</span></li>
+        <li><input type="checkbox" disabled><span>Day 24 (수)</span> <span class="meta">스레드 · 홍보 글 · 스토리형 · 전환</span></li>
+        <li><input type="checkbox" disabled><span>Day 25 (목)</span> <span class="meta">인스타그램 · 카드뉴스 대본 · 리스트형 · 관심</span></li>
+        <li><input type="checkbox" disabled><span>Day 26 (금)</span> <span class="meta">스레드 · 홍보 글 · 증거형 · 전환</span></li>
+        <li><input type="checkbox" disabled><span>Day 27 (토)</span> <span class="meta">뉴스레터 · 이번 달 요약 문단 · 관심</span></li>
+        <li><input type="checkbox" disabled><span>Day 28 (일)</span> <span class="meta">전체 · 월간 회고 + 다음 달 주제 발굴</span></li>
+        <li><input type="checkbox" disabled><span>Day 29 (월)</span> <span class="meta">전체 · 다음 달 캘린더 초안 작성</span></li>
+        <li><input type="checkbox" disabled><span>Day 30 (화)</span> <span class="meta">전체 · 대행 서비스 포트폴리오 정리</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>프롬프트 30선</h2>
+    <p class="lede">대괄호 부분만 바꿔서 그대로 붙여넣으세요. 카테고리별로 정리했습니다.</p>
+
+    <div class="cat cat-a">
+    <div class="cat-label">A. 원소스 멀티유즈 · SEO</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">A1 원소스 분해</div><div class="prompt">다음 글의 핵심 메시지를 한 문장으로 뽑아줘: [원문]. 그 메시지를 축으로 스레드용 요약(300자), 카드뉴스 대본(5장), 숏폼 스크립트(훅-본문-CTA)로 각각 재구성해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">A2 SEO 목차</div><div class="prompt">[키워드]로 검색하는 사람이 진짜 궁금해할 질문 5개를 뽑고, 그 질문들을 소제목(H2)으로 삼은 블로그 목차를 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">A3 소제목 본문</div><div class="prompt">다음 소제목에 대한 본문을 800자 내외로 써줘. 일반론 대신 구체적인 방법과 예시를 포함해서: [소제목]</div></div>
+    <div class="prompt-block"><div class="prompt-id">A4 메타·제목</div><div class="prompt">이 블로그 글의 메타 설명(150자 내외)과 클릭을 유도하는 제목 후보 5개를 만들어줘: [글 요약]</div></div>
+    <div class="prompt-block"><div class="prompt-id">A5 뉴스레터 변환</div><div class="prompt">이 블로그 원문을 뉴스레터용 문단(300자 내외, 인사말 포함)으로 재구성해줘: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">A6 원문 없이 시작</div><div class="prompt">원문 없이 시작하고 싶어. [머릿속 아이디어 한 줄]을 블로그 글 초안(목차+도입부)으로 먼저 만들어줘.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-b">
+    <div class="cat-label">B. SNS 톤 7종 · 후킹</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">B1 톤별 홍보 글 7종</div><div class="prompt">[상품/메시지]를 홍보하는 SNS 글 7개를 서로 다른 톤(스토리형, 질문형, 리스트형, 반박형, 공감형, 증거형, 긴급성형)으로 각 300자 이내로 써줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">B2 후킹 문장 5패턴</div><div class="prompt">[전하고 싶은 결과/변화]를 후킹 문장으로 만들어줘. 숫자/결과형, 반전형, 질문형, 고백형, 대비형 5가지 패턴으로 각 2개씩.</div></div>
+    <div class="prompt-block"><div class="prompt-id">B3 광고 느낌 검토</div><div class="prompt">이 글이 광고처럼 느껴지지 않는지 검토해줘. 과장되거나 부자연스러운 부분을 짚어줘: [글 내용]</div></div>
+    <div class="prompt-block"><div class="prompt-id">B4 후기 재구성</div><div class="prompt">다음 후기를 SNS 홍보 글로 재구성해줘. 과장 없이 담백하게, 원문 표현은 살려서: [후기 원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">B5 요일별 톤 배치</div><div class="prompt">이번 주 홍보할 메시지 하나를 축으로, 요일별 톤 배치표(월~일)를 만들어줘. 어떤 톤을 어느 요일에 쓸지 이유도 함께.</div></div>
+    <div class="prompt-block"><div class="prompt-id">B6 재발행 변형</div><div class="prompt">2주 전 올렸던 이 글을 완전히 새 글처럼 느껴지게 다시 써줘. 같은 메시지, 다른 표현으로: [기존 글]</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-c">
+    <div class="cat-label">C. 브랜드 보이스 · 저품질 필터 대응</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">C1 문체 분석</div><div class="prompt">다음 글 3~5개의 문체 특징(문장 길이, 자주 쓰는 표현, 어미)을 분석해줘: [내가 쓴 글들]. 이후 이 톤을 기준으로 써줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">C2 AI 티 자가진단</div><div class="prompt">이 초안에서 AI가 쓴 티가 나는 부분을 스스로 짚어줘. 뻔한 도입부, 일반론, 균일한 문장 리듬 위주로: [초안]</div></div>
+    <div class="prompt-block"><div class="prompt-id">C3 도입부 재작성</div><div class="prompt">이 글의 도입부를 다시 써줘. 첫 두 문장 안에 '이걸 읽어야 하는 이유'가 드러나게, 뻔한 표현은 빼줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">C4 결론 재작성</div><div class="prompt">이 결론 문단을 요약이 아니라 '그래서 다음엔 무엇을 할 것인가'로 바꿔줘: [결론]</div></div>
+    <div class="prompt-block"><div class="prompt-id">C5 실경험 보강</div><div class="prompt">이 초안에 내 실제 경험이나 숫자를 넣고 싶은데 마땅한 사례가 없어. [주제]에 대해 오늘 당장 해볼 수 있는 짧은 테스트 1가지를 제안해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">C6 채널별 재구성</div><div class="prompt">같은 메시지를 블로그·스레드·인스타 3채널에 올리려고 해. 표현을 각각 최소 30% 다르게 재구성해줘: [원문]</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-d">
+    <div class="cat-label">D. 콘텐츠 캘린더 · 운영</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">D1 대주제·캘린더</div><div class="prompt">이번 달 다룰 대주제 3~4개를 제안해줘. 각각을 요일별로 배치한 4주 콘텐츠 캘린더도 표로 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">D2 댓글 응대</div><div class="prompt">다음 댓글에 [의심형/관심형/가격저항형/칭찬형] 톤으로 자연스럽게 답글을 써줘: [댓글 내용]</div></div>
+    <div class="prompt-block"><div class="prompt-id">D3 캘린더 주제 채우기</div><div class="prompt">이 30일 캘린더의 '주제/후킹 문장' 칸 30개를 [내 업종/주제]에 맞게 채워줘. 채널·목적은 그대로 유지해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">D4 이미지 필요 항목 표시</div><div class="prompt">이번 주에 올릴 콘텐츠 중 이미지가 필요한 항목을 표시하고, 각각 어떤 이미지(스크린샷/도표/사진)가 어울릴지 제안해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">D5 전환·인지 비율 점검</div><div class="prompt">전환이 목적인 글과 인지가 목적인 글의 비율이 이번 주 몇 대 몇인지 계산해줘: [이번 주 캘린더]. 적정 비율(대략 전환 2~3 : 인지 4~5)과 비교해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">D6 다음 달 채널 조정</div><div class="prompt">다음 달 캘린더를 짜기 전에, 이번 달에서 뺄 채널·포맷과 새로 추가할 채널·포맷을 각각 이유와 함께 제안해줘.</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-e">
+    <div class="cat-label">E. 반응 분석 · 회고 · 확장</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">E1 월간 반응 분석</div><div class="prompt">이번 달 콘텐츠 반응 데이터를 정리했어: [데이터]. 잘된 것과 안 된 것의 공통점을 분석하고, 다음 달 계속할 것/그만둘 것/새로 시도할 것을 각각 제안해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E2 주간 반응 분석</div><div class="prompt">이번 주 반응 데이터를 정리했어: [데이터]. 다음 주에 비중을 늘릴 톤/채널 1가지와 그 이유를 알려줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E3 대행 서비스 소개</div><div class="prompt">이 콘텐츠 운영 노하우를 정리해서, 다른 사람에게 대행 서비스로 제안할 수 있는 소개 문구를 만들어줘. 전/후 사례 포함해서.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E4 새 주제 발굴</div><div class="prompt">지금까지 반응 좋았던 콘텐츠는 [내용/데이터]야. 비슷한 새 주제 5개와 그 이유를 제안해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E5 월간 요약표</div><div class="prompt">이번 달 발행한 콘텐츠 수, 채널별 비중, 반응을 표로 요약해줘: [데이터]. 한눈에 보이게 정리해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E6 다음 캘린더 재설계</div><div class="prompt">다음 30일 캘린더를 새로 설계하려고 해. 이번 달 회고 내용을 반영해서 채널·톤 비중을 조정한 캘린더를 표로 만들어줘: [회고 요약]</div></div>
+    </div>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>매일 새 주제를 고민하지 마세요. 캘린더의 빈칸을 채우고, 막히면 프롬프트를 그대로 붙여넣으세요.</p>
+    <p><strong>완벽한 30일보다, 채워지는 30일이 더 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
