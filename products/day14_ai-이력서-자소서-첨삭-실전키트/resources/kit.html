@@ -1,0 +1,384 @@
+<title>이력서·자소서 첨삭 실전 키트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 진단·스크리닝 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 직무별 맞춤 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — ATS·키워드 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 면접·부가서비스 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #7A4B6E;   /* plum — 운영·확장 */
+    --cat-e-tint: #E7DAE3;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C293B7; --cat-e-tint: #322030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C293B7; --cat-e-tint: #322030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 110px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 64px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.2rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.06rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.65rem; font-weight:700; margin:0 0 20px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:16px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.08rem; margin:22px 0 10px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:26px 0 30px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 12px; max-width:68ch; }
+  .lede{ font-size:1rem; color:var(--ink-soft); max-width:62ch; margin-bottom:16px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  /* ---------- Method steps ---------- */
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:8px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet tables ---------- */
+  .worksheet{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px 12px; margin:0 0 12px; break-inside:avoid; position:relative; overflow:hidden;
+  }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:4px 0 9px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:9px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.86rem; background:var(--paper); }
+  th,td{ text-align:left; padding:6px 11px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:88px; color:var(--ink-soft); }
+  .blank-line{ display:inline-block; border-bottom:1px dotted var(--gold); min-width:200px; margin-left:6px; }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.77rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-top:3px; }
+
+  /* ---------- Prompt cards ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:6px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:5px 12px; margin:0 0 13px; break-after:avoid; }
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:20px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:10px 12px 11px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.75rem; color:var(--accent); font-weight:700; margin-bottom:5px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:9px 11px; font-family:var(--font-mono); font-size:0.77rem; line-height:1.5; margin:0; white-space:pre-wrap; overflow-x:auto; }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:14px 17px; margin-bottom:9px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group.b::before{ background:var(--cat-b); }
+  .checklist-group.c::before{ background:var(--cat-c); }
+  .checklist-group.d::before{ background:var(--cat-d); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 11px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.76rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group.b h4 .wk{ background:var(--cat-b); }
+  .checklist-group.c h4 .wk{ background:var(--cat-c); }
+  .checklist-group.d h4 .wk{ background:var(--cat-d); }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:4px 0; font-size:0.91rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+  .job-grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:12px; }
+
+  @media print{ .prompt-grid, .job-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:56px 20px 36px; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:16px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 14 · 실전 키트</span>
+    <span class="badge">『그 자소서, 티가 납니다』 실전 부록</span>
+    <h1>이력서·자소서 첨삭<br>실전 키트</h1>
+    <p class="subtitle">직무별 워크시트 <span class="nowrap">5개</span>, 첨삭 프로세스 <span class="nowrap">체크리스트</span>, 그대로 쓰는 <span class="nowrap">프롬프트 40개</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>워크시트</div>
+      <div class="nowrap"><strong>4</strong>단계 체크리스트</div>
+      <div class="nowrap"><strong>40</strong>개 프롬프트</div>
+    </div>
+    <div class="byline">『그 자소서, 티가 납니다』를 <strong>읽은 다음날 바로 펼치는</strong> 첨삭 실무용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">전자책에서 "왜"와 "어떻게"를 읽었다면, 이 키트는 "지금 바로 무엇을"입니다.</em></p>
+    <p>첫 고객을 받았을 때 가장 막막한 건 방법을 몰라서가 아니라, <strong>매번 새로 판단해야 하는 것들이 너무 많아서</strong>입니다. 이 키트는 그 판단을 미리 표준화해둔 실무 도구 모음입니다.</p>
+    <p>세 부분으로 구성됩니다.</p>
+    <ol class="steps">
+      <li><strong>워크시트 5개</strong> — 접수 양식부터 직무별 기준표까지, 첨삭 전에 채워두면 속도가 붙습니다.</li>
+      <li><strong>첨삭 프로세스 체크리스트</strong> — 접수부터 후속관리까지 4단계, 빠뜨리기 쉬운 항목을 순서대로 짚어줍니다.</li>
+      <li><strong>프롬프트 40개</strong> — 진단·직무별 맞춤·ATS·면접·운영까지, 막힐 때마다 그대로 복사해서 씁니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 첫 고객부터 전부 완벽하게 쓰려 하지 마세요. 워크시트 1(접수 양식)과 체크리스트 1단계만 먼저 적용해도 충분합니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1 · 관련 프롬프트 A1</h4></div>
+      <h3>고객 접수 양식</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>항목</th><th>내용</th></tr>
+          <tr><td>지원 직무 / 회사</td><td class="fill"></td></tr>
+          <tr><td>연차 (신입 / N년차)</td><td class="fill"></td></tr>
+          <tr><td>제출 문항 수 / 글자 수 제한</td><td class="fill"></td></tr>
+          <tr><td>마감 기한</td><td class="fill"></td></tr>
+          <tr><td>희망 패키지 (스피드/정식/프리미엄)</td><td class="fill"></td></tr>
+          <tr><td>강조하고 싶은 경험 (고객 본인 언급)</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">체크 — 이력서 원본과 자소서 원문을 별도 파일로 받았는가 / 채용 공고 링크(또는 캡처)를 받았는가</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 관련 프롬프트 A1, A3</h4></div>
+      <h3>첨삭 기준표</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>항목</th><th>점수(1~5)</th><th>메모</th></tr>
+          <tr><td>구조 (두괄식·분량 배분)</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>직무 키워드 일치도</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>구체성 (숫자·기간·역할)</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>문체 균일성 (AI 티)</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>이력서·자소서 일관성</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <p>종합 판단 <span class="blank-line"></span></p>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">3</span><h4>Worksheet 3 · 관련 프롬프트 B1~B4</h4></div>
+      <h3>직무별 강조 포인트</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>직무군</th><th>강조 포인트</th><th>피해야 할 표현</th></tr>
+          <tr><td>개발자</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>마케터/기획</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>디자이너</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>영업/CS</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>이번 고객 직무</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">기본값은 전자책 방법 5의 표를 그대로 옮겨뒀습니다. 첨삭 건수가 쌓일수록 이번 고객 직무 행을 계속 추가하세요.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">4</span><h4>Worksheet 4 · 관련 프롬프트 D1</h4></div>
+      <h3>패키지·가격 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지</th><th>내 가격</th><th>포함 구성</th></tr>
+          <tr><td>스피드 첨삭</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>정식 첨삭</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>프리미엄 패키지</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">추천 공식 — 첫 5건은 스피드 첨삭을 낮은 가격으로 → 후기 10건+ 정식 첨삭을 정가로 → 프리미엄은 통합체크+면접질문 묶어서</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">5</span><h4>Worksheet 5 · 관련 프롬프트 E2</h4></div>
+      <h3>고객 기록 &amp; 후기 트래커</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>날짜</th><th>직무</th><th>패키지</th><th>결과(통과여부)</th><th>후기 요청</th></tr>
+          <tr><td class="fill"></td><td class="fill"></td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td class="fill"></td><td class="fill"></td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td class="fill"></td><td class="fill"></td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>첨삭 프로세스 체크리스트</h2>
+    <p class="lede">접수부터 후속관리까지 4단계입니다. 순서를 지키면 첨삭 한 건에 드는 시간이 눈에 띄게 줄어듭니다.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>접수 &amp; 진단</h4>
+      <ul>
+        <li><input type="checkbox" disabled>워크시트 1(접수 양식)로 직무·문항·마감 확인</li>
+        <li><input type="checkbox" disabled>프롬프트 A1로 1차 스크리닝(구조/키워드/구체성/문체/일관성 점수화)</li>
+        <li><input type="checkbox" disabled>프롬프트 A2로 오탈자·문장 호응 오류 목록화</li>
+        <li><input type="checkbox" disabled>워크시트 2 기준표에 점수·메모 기록</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group b">
+      <h4><span class="wk">2단계</span>본 첨삭</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 A4로 "AI 티" 나는 부분 짚고 고객에게 구체화 질문 던지기</li>
+        <li><input type="checkbox" disabled>워크시트 3으로 직무별 강조 포인트 확인 후 재배치</li>
+        <li><input type="checkbox" disabled>프롬프트 C1~C3으로 ATS 키워드 자연스럽게 반영</li>
+        <li><input type="checkbox" disabled>프롬프트 A5(겹침 진단)로 문항 간 에피소드 중복 제거</li>
+        <li><input type="checkbox" disabled>이력서·자소서 대조 (프롬프트 B5)로 경력·기간 불일치 확인</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group c">
+      <h4><span class="wk">3단계</span>납품 &amp; 부가서비스</h4>
+      <ul>
+        <li><input type="checkbox" disabled>기준표 근거로 "어디를 왜 고쳤는지" 짧은 설명 함께 전달</li>
+        <li><input type="checkbox" disabled>프리미엄 고객이면 프롬프트 D1~D4로 면접 예상질문 세트 준비</li>
+        <li><input type="checkbox" disabled>재수정 정책(1회 무료, 이후 추가 요금) 안내 문구 재확인</li>
+        <li><input type="checkbox" disabled>워크시트 5에 이번 건 기록</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group d">
+      <h4><span class="wk">4단계</span>후속관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>납품 2~3주 뒤 결과(서류 통과 여부) 정중히 문의</li>
+        <li><input type="checkbox" disabled>통과 소식 있으면 프롬프트 E4로 후기 요청 메시지 발송</li>
+        <li><input type="checkbox" disabled>같은 직무 재지원 시 프롬프트 E3으로 재구매 유도 안내</li>
+        <li><input type="checkbox" disabled>반응 좋은 직무·연차대 있으면 워크시트 3에 특화 행 추가</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>프롬프트 40선</h2>
+    <p class="lede">대괄호 부분만 바꿔서 그대로 붙여넣으세요. 전자책의 16개를 포함해 실무에서 바로 쓰는 프롬프트로 확장했습니다.</p>
+
+    <div class="cat cat-a">
+    <div class="cat-label">A. 진단·스크리닝</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">A1 1차 스크리닝</div><div class="prompt">다음 자소서를 구조/키워드/구체성/문체 균일성/이력서 일관성 5개 기준으로 각각 점수(1~5)와 문제점을 정리해줘: [자소서 원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">A2 오탈자·호응 검토</div><div class="prompt">이 글의 오탈자, 맞춤법, 주어-서술어 호응 오류를 위치와 함께 목록으로 뽑아줘: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">A3 분량 조정</div><div class="prompt">이 문항은 글자 수 제한이 [N자]야. 핵심을 살리면서 분량에 맞게 줄이거나 늘려줘: [문항 원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">A4 AI 티 진단</div><div class="prompt">이 글에서 문장 길이가 지나치게 균일하거나 추상적인 표현으로 채워진 부분을 짚어주고, 구체적 경험을 물어볼 질문을 만들어줘: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">A5 겹침 진단</div><div class="prompt">다음 자소서 문항 4개에서 내용이 겹치는 에피소드가 있는지 짚어줘: [문항1] [문항2] [문항3] [문항4]</div></div>
+    <div class="prompt-block"><div class="prompt-id">A6 첫인상 진단</div><div class="prompt">채용 담당자가 이 자소서를 30초만 본다면 어떤 인상을 받을지, 통과/보류/탈락 중 어디에 가까운지 이유와 함께 알려줘: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">A7 표절·상투구 검사</div><div class="prompt">이 자소서에서 흔한 합격 자소서 표현을 그대로 베낀 것처럼 보이는 문장이 있는지 짚어줘: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">A8 강점 추출</div><div class="prompt">이 지원자의 경력 사항에서 [지원 직무]와 가장 관련 있는 강점 3가지를 근거와 함께 뽑아줘: [경력 사항 원문]</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-b">
+    <div class="cat-label">B. 직무별 맞춤 첨삭</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">B1 지원동기 강화</div><div class="prompt">이 지원동기를 "왜 이 회사인지"가 첫 두 문장 안에 드러나게 다시 써줘: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">B2 STAR 구조화</div><div class="prompt">이 직무역량 경험을 상황-과제-행동-결과(STAR) 구조로 재배열해줘: [경험 서술]</div></div>
+    <div class="prompt-block"><div class="prompt-id">B3 입사 후 포부 구체화</div><div class="prompt">[회사명/사업 방향]을 참고해서 이 입사 후 포부를 구체적인 목표로 다듬어줘: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">B4 압박 질문 답변</div><div class="prompt">[약점/실패 경험]에 대해 솔직하면서도 성장 서사로 이어지는 답변 초안을 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">B5 이력서·자소서 대조</div><div class="prompt">다음 이력서와 자소서에서 서로 다르게 서술된 경력·기간·역할을 대조해줘: [이력서 원문] [자소서 원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">B6 개발자 직무 첨삭</div><div class="prompt">이 직무역량 서술을 "문제 정의 → 기술 선택 이유 → 결과 수치" 흐름으로 다시 써줘, 기술 나열은 최소화하고: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">B7 마케터/기획 직무 첨삭</div><div class="prompt">이 경험을 "가설 → 실행 → 데이터 기반 결과" 흐름으로 다시 써줘, 감상적인 표현은 줄이고: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">B8 디자이너 직무 첨삭</div><div class="prompt">이 경험을 "문제 인식 → 디자인 의사결정 근거 → 결과" 흐름으로 다시 써줘, 포트폴리오 링크로 대체하지 말고 서술로: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">B9 영업/CS 직무 첨삭</div><div class="prompt">이 경험을 "목표 대비 실적" 또는 "고객 문제 해결 사례" 중심으로 다시 써줘, 추상적인 "성실함" 표현은 빼고: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">B10 신입 경험 재구성</div><div class="prompt">직무 경력이 없는 신입 지원자야. 학교 프로젝트·동아리·인턴 경험을 [지원 직무] 역량으로 연결해서 다시 써줘: [경험 나열]</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-c">
+    <div class="cat-label">C. ATS·키워드 최적화</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">C1 키워드 추출</div><div class="prompt">이 채용 공고의 필수·우대 요건에서 자소서에 자연스럽게 녹일 핵심 키워드를 뽑아줘: [공고 원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">C2 자연스러움 검토</div><div class="prompt">이 자소서에 [직무] 키워드가 자연스럽게 들어가 있는지 확인하고, 부자연스럽게 나열된 부분을 짚어줘: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">C3 키워드 밀도 조정</div><div class="prompt">이 문단에서 키워드가 과하게 몰린 부분을 찾아서, 자연스럽게 분산시켜 다시 써줘: [문단]</div></div>
+    <div class="prompt-block"><div class="prompt-id">C4 공고 요약</div><div class="prompt">이 채용 공고를 한눈에 볼 수 있게 "필수 자격/우대 사항/주요 업무/조직 문화 키워드"로 요약해줘: [공고 원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">C5 이력서 직무 요약</div><div class="prompt">이 경력을 [지원 직무] 채용 공고에 맞춰 이력서 상단 직무 요약(3줄) 형태로 다시 써줘: [경력 사항]</div></div>
+    <div class="prompt-block"><div class="prompt-id">C6 회사별 톤 조정</div><div class="prompt">[회사명]의 최근 사업 방향과 조직 문화를 고려했을 때, 이 자소서 톤을 어떻게 조정하면 좋을지 제안해줘: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">C7 경력기술서 정리</div><div class="prompt">다음 업무 이력을 [지원 직무] 채용 담당자가 보기 좋은 경력기술서 형식(회사/기간/역할/성과)으로 정리해줘: [업무 이력 나열]</div></div>
+    <div class="prompt-block"><div class="prompt-id">C8 소리내어 읽기 검수</div><div class="prompt">이 문단을 소리 내어 읽었을 때 어색하거나 리듬이 부자연스러운 문장을 짚어줘: [문단]</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-d">
+    <div class="cat-label">D. 면접·부가서비스</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">D1 꼬리질문 생성</div><div class="prompt">이 자소서를 바탕으로 문항별 예상 면접 질문 3~5개씩과 답변 방향을 만들어줘: [최종 자소서]</div></div>
+    <div class="prompt-block"><div class="prompt-id">D2 검증성 질문 강화</div><div class="prompt">이 자소서에서 구체적 숫자·경험을 언급한 부분에 대해, 그 결과를 어떻게 측정했는지 검증하는 꼬리질문을 만들어줘: [원문]</div></div>
+    <div class="prompt-block"><div class="prompt-id">D3 압박 질문 세트</div><div class="prompt">[직무/경력]을 기준으로 면접에서 자주 나오는 압박 질문 5개와 답변 방향을 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">D4 모의면접 시나리오</div><div class="prompt">이 자소서 기반으로 실제 면접처럼 이어지는 질문-답변 모의면접 대본을 5턴으로 만들어줘: [최종 자소서]</div></div>
+    <div class="prompt-block"><div class="prompt-id">D5 자기소개 30초 스크립트</div><div class="prompt">이 자소서 내용을 바탕으로 면접 시작에 쓸 30초 자기소개 스크립트를 만들어줘: [최종 자소서]</div></div>
+    <div class="prompt-block"><div class="prompt-id">D6 포트폴리오 소개 문구</div><div class="prompt">[직무]용 포트폴리오 첫 장에 들어갈 소개 문구를 이 자소서 톤에 맞춰 3줄로 만들어줘: [자소서 요약]</div></div>
+    </div>
+    </div>
+
+    <div class="cat cat-e">
+    <div class="cat-label">E. 운영·확장</div>
+    <div class="prompt-grid">
+    <div class="prompt-block"><div class="prompt-id">E1 패키지 구성 제안</div><div class="prompt">내 서비스는 [보유 역량/시간]이야. 스피드/정식/프리미엄 3단계 첨삭 패키지를 구성 항목과 가격대 근거와 함께 제안해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E2 판매 페이지 카피</div><div class="prompt">[서비스명]의 상세페이지 카피를 문제 제기형/결과 중심형 2버전으로, 각 제목-소개-포함구성-FAQ 구조로 써줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E3 재구매 유도 문구</div><div class="prompt">첫 첨삭을 받은 고객에게 보낼 후속 안내 메시지(면접질문 패키지 등 업셀 포함)를 정중한 톤으로 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E4 후기 요청 메시지</div><div class="prompt">서류에 통과한 고객에게 부담스럽지 않게 후기를 요청하는 메시지를 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E5 시즌별 홍보 각도</div><div class="prompt">[채용 시즌/직무]에 맞춘 SNS 홍보 후킹 문장 5개를 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E6 고객 응대 스크립트</div><div class="prompt">첨삭 서비스에 대해 고객이 자주 묻는 질문(전문성/소요시간/재수정 가능 여부)과 친절하고 간결한 응대 스크립트를 만들어줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E7 신입 특화 상품 기획</div><div class="prompt">반응이 좋았던 직무·연차대가 [데이터]야. 이 타겟에 특화된 상품(예: "신입 개발자 자소서 전문")을 기획해줘.</div></div>
+    <div class="prompt-block"><div class="prompt-id">E8 인접 상품 확장</div><div class="prompt">이력서·자소서 첨삭에서 자연스럽게 이어지는 인접 상품(자기소개 영상 스크립트, 포트폴리오 소개 문구 등) 3개를 제안해줘.</div></div>
+    </div>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>워크시트를 채우고, 체크리스트를 하나씩 지우고, 막힐 때마다 프롬프트를 붙여넣으세요.</p>
+    <p><strong>화려한 문장보다, 그 사람만 쓸 수 있는 한 문장을 찾는 게 먼저입니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
