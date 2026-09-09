@@ -1,0 +1,453 @@
+<title>업종별 카피 템플릿팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 카페·베이커리 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 뷰티샵·헤어샵 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 온라인 패션 셀렉트샵 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 학원·자기계발 클래스 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #7A4B6E;   /* plum — 피트니스·PT샵 */
+    --cat-e-tint: #E7DAE3;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C293B7; --cat-e-tint: #322030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C293B7; --cat-e-tint: #322030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 110px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 64px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.06rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.65rem; font-weight:700; margin:0 0 15px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:14px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.08rem; margin:22px 0 10px; color:var(--ink); break-after:avoid; }
+  h4.sub-label{ font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.06em; color:var(--ink-soft); margin:9px 0 6px; text-transform:uppercase; break-after:avoid; }
+  section.chapter{ padding:20px 0 22px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 11px; max-width:68ch; }
+  .lede{ font-size:1rem; color:var(--ink-soft); max-width:62ch; margin-bottom:12px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:8px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:16px 18px 12px; margin:0 0 12px; break-inside:avoid; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:4px 0 9px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:9px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.86rem; background:var(--paper); }
+  th,td{ text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .blank-line{ display:inline-block; border-bottom:1px dotted var(--gold); min-width:200px; margin-left:6px; }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.77rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-top:4px; }
+
+  /* ---------- Domain blocks (category-colored) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:13px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:9px 12px 7px; margin:0 0 8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Copy cards (SNS / email, reuses prompt-grid pattern) ---------- */
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:9px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:8px 10px 9px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.74rem; color:var(--accent); font-weight:700; margin-bottom:4px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:8px 10px; font-family:var(--font-mono); font-size:0.77rem; line-height:1.5; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin-bottom:8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 11px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.91rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:16px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 22 · 실행 키트</span>
+    <span class="badge">『팔리는 문장, 재능이 아니라 공정입니다』 실전 부록</span>
+    <h1>카피, <span class="nowrap">업종만</span> 바꾸면 됩니다</h1>
+    <p class="subtitle">카페 · 헤어샵 · 패션샵 · 학원 · 피트니스 — 업종 <span class="nowrap">5개</span>, 채널 <span class="nowrap">3개</span>(상세페이지·SNS·이메일)로 바로 쓰는 카피 예시 <span class="nowrap">15세트</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>업종</div>
+      <div class="nowrap"><strong>15</strong>채널 템플릿</div>
+      <div class="nowrap"><strong>4</strong>단계 체크리스트</div>
+    </div>
+    <div class="byline">『팔리는 문장, 재능이 아니라 공정입니다』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">첫 클라이언트 앞에서 가장 막막한 순간은 "그래서 뭐부터 써야 하지?"입니다.</em> 이 키트는 그 순간을 없애기 위해 만들었습니다.</p>
+    <p>『팔리는 문장, 재능이 아니라 공정입니다』(Day21 전자책) 7장에서 소개한 채널별 구조 — 상세페이지는 <strong>문제 제기 → 해결 → 근거 → 행동 유도</strong>, SNS 광고는 <strong>2줄 이내 후킹</strong> — 를 실제 업종 5개에 채워 넣은 완성본입니다. 사용 순서는 다음과 같습니다.</p>
+    <ol class="steps">
+      <li><strong>가장 비슷한 업종 고르기</strong> — 내 클라이언트(또는 내가 운영하는 매장)와 가장 가까운 업종 하나를 고릅니다.</li>
+      <li><strong>구조는 그대로, 내용만 교체</strong> — 상세페이지 4단계 구조와 SNS·이메일의 후킹 방식은 그대로 두고, 숫자와 구체적 디테일만 클라이언트 정보로 바꿔치기합니다.</li>
+      <li><strong>브리프 인터뷰로 디테일 채우기</strong> — 워크시트로 클라이언트를 인터뷰한 내용을 채워 넣으면 예시 카피가 실제 납품용 카피로 바뀝니다.</li>
+    </ol>
+    <p><strong>참고</strong> — 업종 5개는 2026년 크몽이 우선 전문관으로 도입한 병원·뷰티·오픈마켓·자사몰 4개 분야와 향후 확대 예정인 F&amp;B 분야를 기준으로, 소상공인 카피 의뢰가 가장 많은 업종을 골랐습니다. 내 업종이 없다면 가장 성격이 비슷한 업종의 구조를 그대로 응용하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>업종별 카피 템플릿 5종</h2>
+    <p class="lede">업종마다 상세페이지 4단계 구조표, SNS 광고 카피 5개, 이메일 제목 5개로 구성됩니다. 대괄호 없이 바로 예시 문장으로 채워뒀으니, 숫자와 고유명사만 클라이언트 것으로 바꾸면 됩니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 카페·베이커리</div>
+      <div class="cat-flow">예시 브랜드 — 동네 빵집, 매일 새벽 굽는 크루아상 신메뉴 출시</div>
+
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>단계</th><th>카피 예시</th></tr>
+            <tr><td>문제 제기</td><td>"편의점 빵이랑 뭐가 다르냐고 물으신다면."</td></tr>
+            <tr><td>해결</td><td>새벽 5시, 그날 구운 크루아상만 팝니다. 냉동 반죽 없이 하루 40개 한정.</td></tr>
+            <tr><td>근거</td><td>재구매 주문이 전체의 68%, 가장 많이 달리는 후기는 "겉바속촉".</td></tr>
+            <tr><td>행동 유도</td><td>오늘 것은 오후 2시면 마감됩니다. 지금 예약하고 픽업 시간만 맞추세요.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <h4 class="sub-label">SNS 광고 카피 5개</h4>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">후킹형</div><div class="prompt">이 크루아상, 하루 딱 40개만 굽습니다.</div></div>
+        <div class="prompt-block"><div class="prompt-id">질문형</div><div class="prompt">편의점 빵이랑 동네 빵집, 진짜 차이가 뭘까요?</div></div>
+        <div class="prompt-block"><div class="prompt-id">리스트형</div><div class="prompt">냉동 반죽 안 쓰는 빵집의 특징 3가지.</div></div>
+        <div class="prompt-block"><div class="prompt-id">긴급성형</div><div class="prompt">오늘 것, 오후 2시면 없습니다.</div></div>
+        <div class="prompt-block"><div class="prompt-id">공감형</div><div class="prompt">아침에 빵 냄새 맡으며 눈뜨는 하루, 나쁘지 않습니다.</div></div>
+      </div>
+
+      <h4 class="sub-label">이메일 제목 5개</h4>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">신메뉴 예고</div><div class="prompt">이번 주 신메뉴, 단골님께 먼저 알려드려요</div></div>
+        <div class="prompt-block"><div class="prompt-id">마감 임박</div><div class="prompt">[마감임박] 오늘 크루아상 5개 남았습니다</div></div>
+        <div class="prompt-block"><div class="prompt-id">시즌 한정</div><div class="prompt">이 계절엔 이 빵 — 가을 한정 메뉴 출시</div></div>
+        <div class="prompt-block"><div class="prompt-id">예약 유도</div><div class="prompt">주말 브런치, 예약하고 오시면 기다림 없어요</div></div>
+        <div class="prompt-block"><div class="prompt-id">단골 전용</div><div class="prompt">단골 손님만 아는 오늘의 숨은 메뉴</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 뷰티샵·헤어샵</div>
+      <div class="cat-flow">예시 브랜드 — 손상모 집중 클리닉, 신규 시술 프로모션</div>
+
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>단계</th><th>카피 예시</th></tr>
+            <tr><td>문제 제기</td><td>매번 미용실 다녀와도 한 달이면 다시 푸석해지는 이유가 있습니다.</td></tr>
+            <tr><td>해결</td><td>모발 진단 후 맞춤 단백질 클리닉, 시술 한 번에 큐티클을 채웁니다.</td></tr>
+            <tr><td>근거</td><td>재방문 고객 후기 평점 4.9, 시술 전후 사진 300장 이상 보유.</td></tr>
+            <tr><td>행동 유도</td><td>이번 달 첫 방문 고객 모발 진단 무료. 지금 예약하기.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <h4 class="sub-label">SNS 광고 카피 5개</h4>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">후킹형</div><div class="prompt">손상모, 자르지 않고 되돌릴 수 있습니다.</div></div>
+        <div class="prompt-block"><div class="prompt-id">질문형</div><div class="prompt">트리트먼트 받은 지 한 달도 안 됐는데 또 푸석해지셨나요?</div></div>
+        <div class="prompt-block"><div class="prompt-id">리스트형</div><div class="prompt">손상모 집중 클리닉이 다른 3가지 이유.</div></div>
+        <div class="prompt-block"><div class="prompt-id">반박형</div><div class="prompt">비싼 샴푸보다 먼저 확인해야 할 것.</div></div>
+        <div class="prompt-block"><div class="prompt-id">증거형</div><div class="prompt">시술 전후 사진, 그대로 보여드립니다.</div></div>
+      </div>
+
+      <h4 class="sub-label">이메일 제목 5개</h4>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">무료 혜택</div><div class="prompt">모발 진단, 이번 달만 무료입니다</div></div>
+        <div class="prompt-block"><div class="prompt-id">재방문 유도</div><div class="prompt">[재방문 고객 전용] 이달의 케어 혜택</div></div>
+        <div class="prompt-block"><div class="prompt-id">시즌 안내</div><div class="prompt">환절기 모발 관리, 놓치면 후회합니다</div></div>
+        <div class="prompt-block"><div class="prompt-id">예약 마감</div><div class="prompt">예약 마감 임박 — 이번 주 남은 자리 3개</div></div>
+        <div class="prompt-block"><div class="prompt-id">후기 재활용</div><div class="prompt">지난번 시술 후기, 이렇게 달라졌어요</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 온라인 패션 셀렉트샵</div>
+      <div class="cat-flow">예시 브랜드 — 가을 신상 니트 단독 입고, 자사몰·오픈마켓</div>
+
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>단계</th><th>카피 예시</th></tr>
+            <tr><td>문제 제기</td><td>사진은 예쁜데 실제로 받으면 다른 옷, 다들 한 번쯤 겪어보셨죠.</td></tr>
+            <tr><td>해결</td><td>실제 착용 사진과 원단 클로즈업까지, 있는 그대로 보여드립니다.</td></tr>
+            <tr><td>근거</td><td>재구매율 42%, 사이즈 교환 요청률 3% 미만.</td></tr>
+            <tr><td>행동 유도</td><td>이 컬러, 재입고 안 됩니다. 지금 사이즈 확인하고 담아두세요.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <h4 class="sub-label">SNS 광고 카피 5개</h4>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">후킹형</div><div class="prompt">이 니트, 재입고 없습니다.</div></div>
+        <div class="prompt-block"><div class="prompt-id">질문형</div><div class="prompt">사진이랑 실물이 다른 옷, 또 사고 싶으세요?</div></div>
+        <div class="prompt-block"><div class="prompt-id">리스트형</div><div class="prompt">이 셀렉트샵을 믿고 사는 이유 3가지.</div></div>
+        <div class="prompt-block"><div class="prompt-id">공감형</div><div class="prompt">옷장에 예쁜데 안 입는 옷, 하나쯤 있으시죠.</div></div>
+        <div class="prompt-block"><div class="prompt-id">긴급성형</div><div class="prompt">이 사이즈, 오늘 밤 12시면 품절입니다.</div></div>
+      </div>
+
+      <h4 class="sub-label">이메일 제목 5개</h4>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">오픈 예고</div><div class="prompt">가을 신상, 오늘 오전 10시 오픈</div></div>
+        <div class="prompt-block"><div class="prompt-id">재입고 없음</div><div class="prompt">[재입고 없음] 완판 임박 컬러 안내</div></div>
+        <div class="prompt-block"><div class="prompt-id">완판 재고지</div><div class="prompt">지난주 완판된 그 옷, 이번엔 놓치지 마세요</div></div>
+        <div class="prompt-block"><div class="prompt-id">단골 우선</div><div class="prompt">단골 고객만 먼저 보는 신상 미리보기</div></div>
+        <div class="prompt-block"><div class="prompt-id">신뢰 강조</div><div class="prompt">사이즈 교환, 이렇게 쉬웠나 싶으실 거예요</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 학원·자기계발 클래스</div>
+      <div class="cat-flow">예시 브랜드 — 직장인 대상 온라인 스피치 클래스, 신규 기수 모집</div>
+
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>단계</th><th>카피 예시</th></tr>
+            <tr><td>문제 제기</td><td>발표만 하면 머릿속이 하얘지는 게 나만 그런 게 아닙니다.</td></tr>
+            <tr><td>해결</td><td>8주, 주 1회 소그룹 피드백으로 발표 불안을 구조적으로 줄여드립니다.</td></tr>
+            <tr><td>근거</td><td>수강생 87%가 "발표 전 떨림이 줄었다"고 응답, 수료 후 발표 영상 포트폴리오 제공.</td></tr>
+            <tr><td>행동 유도</td><td>이번 기수, 6자리 남았습니다. 지금 신청하고 자리부터 확보하세요.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <h4 class="sub-label">SNS 광고 카피 5개</h4>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">후킹형</div><div class="prompt">발표 전날 잠 못 자는 분, 이 클래스부터 보세요.</div></div>
+        <div class="prompt-block"><div class="prompt-id">질문형</div><div class="prompt">회의 때 손 드는 게 왜 이렇게 어려울까요?</div></div>
+        <div class="prompt-block"><div class="prompt-id">리스트형</div><div class="prompt">발표 불안, 이 3단계로 줄어듭니다.</div></div>
+        <div class="prompt-block"><div class="prompt-id">공감형</div><div class="prompt">저도 한때 발표만 하면 목소리가 떨렸습니다.</div></div>
+        <div class="prompt-block"><div class="prompt-id">증거형</div><div class="prompt">8주 전과 후, 수강생 발표 영상을 비교해봤습니다.</div></div>
+      </div>
+
+      <h4 class="sub-label">이메일 제목 5개</h4>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">모집 마감</div><div class="prompt">이번 기수, 마감까지 6자리 남았습니다</div></div>
+        <div class="prompt-block"><div class="prompt-id">무료 특강</div><div class="prompt">[무료 특강] 발표 불안 줄이는 3가지 방법</div></div>
+        <div class="prompt-block"><div class="prompt-id">후기 활용</div><div class="prompt">지난 기수 수강생들은 이렇게 달라졌습니다</div></div>
+        <div class="prompt-block"><div class="prompt-id">얼리버드</div><div class="prompt">얼리버드 마감 D-3</div></div>
+        <div class="prompt-block"><div class="prompt-id">대기 명단</div><div class="prompt">다음 기수 대기 명단, 지금 등록하세요</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 피트니스·PT샵</div>
+      <div class="cat-flow">예시 브랜드 — 여성 전용 소규모 PT 스튜디오, 신규 회원 모집</div>
+
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>단계</th><th>카피 예시</th></tr>
+            <tr><td>문제 제기</td><td>헬스장 등록만 하고 3개월 만에 발길 끊은 경험, 있으시죠.</td></tr>
+            <tr><td>해결</td><td>회원 6명 한정 소규모 PT, 담당 트레이너가 매주 자세와 식단을 체크합니다.</td></tr>
+            <tr><td>근거</td><td>평균 재등록률 78%, 3개월 차 체지방률 평균 4.2%p 감소.</td></tr>
+            <tr><td>행동 유도</td><td>이번 달 신규 회원, 3자리 남았습니다. 체험 세션 먼저 예약하세요.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <h4 class="sub-label">SNS 광고 카피 5개</h4>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">후킹형</div><div class="prompt">헬스장 3개월 만에 그만둔 분, 이유가 있습니다.</div></div>
+        <div class="prompt-block"><div class="prompt-id">질문형</div><div class="prompt">혼자 운동하면 왜 늘 흐지부지될까요?</div></div>
+        <div class="prompt-block"><div class="prompt-id">리스트형</div><div class="prompt">소규모 PT가 대형 헬스장보다 나은 3가지 이유.</div></div>
+        <div class="prompt-block"><div class="prompt-id">긴급성형</div><div class="prompt">이번 달 신규 회원, 3자리 남았습니다.</div></div>
+        <div class="prompt-block"><div class="prompt-id">공감형</div><div class="prompt">작심삼일, 의지 문제가 아니라 시스템 문제입니다.</div></div>
+      </div>
+
+      <h4 class="sub-label">이메일 제목 5개</h4>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">체험 예약</div><div class="prompt">체험 세션, 이번 주 3자리 남았습니다</div></div>
+        <div class="prompt-block"><div class="prompt-id">회원 전용</div><div class="prompt">[회원 전용] 이달의 식단 체크리스트</div></div>
+        <div class="prompt-block"><div class="prompt-id">변화 증거</div><div class="prompt">3개월 전과 지금, 회원님들의 변화</div></div>
+        <div class="prompt-block"><div class="prompt-id">정원 마감</div><div class="prompt">다음 달 정원 마감 임박</div></div>
+        <div class="prompt-block"><div class="prompt-id">재시작 유도</div><div class="prompt">운동 안 한 지 오래되셨다면, 여기서부터</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>브리프 인터뷰 &amp; 톤앤매너 워크시트</h2>
+    <p class="lede">예시 카피를 실제 납품용으로 바꾸기 전, 아래 워크시트부터 채우세요.</p>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>클라이언트 브리프 인터뷰 시트</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>질문</th><th>클라이언트 답변</th></tr>
+          <tr><td>제품/서비스의 핵심 특징은?</td><td class="fill"></td></tr>
+          <tr><td>가장 많이 받는 재구매·재방문 후기는?</td><td class="fill"></td></tr>
+          <tr><td>경쟁사와 다른 점은?</td><td class="fill"></td></tr>
+          <tr><td>지금 가장 팔고 싶은 상품/시즌 메뉴는?</td><td class="fill"></td></tr>
+          <tr><td>고객이 구매를 망설이는 이유는?</td><td class="fill"></td></tr>
+          <tr><td>내세울 수 있는 숫자(재구매율, 후기 수 등)는?</td><td class="fill"></td></tr>
+          <tr><td>절대 쓰면 안 되는 표현/톤은?</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">답변은 클라이언트의 표현을 그대로 적으세요 — 그 말투가 카피의 진짜 재료입니다.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2</h4></div>
+      <h3>톤앤매너 3줄 요약 &amp; 타깃 페르소나</h3>
+      <p>톤앤매너 3줄 요약 <span class="blank-line"></span></p>
+      <p>&nbsp; <span class="blank-line"></span></p>
+      <p>&nbsp; <span class="blank-line"></span></p>
+      <p>타깃 페르소나 (이름/상황/가장 큰 고민) <span class="blank-line"></span></p>
+      <p>이 제품이 해결해주는 가장 큰 불편 (한 문장) <span class="blank-line"></span></p>
+      <div class="worksheet-note">완성되면 이번 페이지를 클라이언트에게 보여주고 확인받으세요 — "이건 우리 톤이 아니에요"를 미리 방지합니다.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">3</span><h4>Worksheet 3</h4></div>
+      <h3>패키지·견적 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지 유형</th><th>가격대</th><th>내 견적</th></tr>
+          <tr><td>카피 1건 (SNS 캡션 또는 이메일 제목·본문)</td><td>15,000~30,000원</td><td class="fill"></td></tr>
+          <tr><td>채널 세트 (상세페이지+SNS+이메일)</td><td>50,000~90,000원</td><td class="fill"></td></tr>
+          <tr><td>브랜드 톤 진단 + 카피 세트</td><td>120,000~180,000원</td><td class="fill"></td></tr>
+          <tr><td>월 구독형 카피 관리</td><td>200,000원~/월</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">첫 5건은 후기 확보 목적으로 표시가 대비 낮게 잡는 것도 방법입니다.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>카피 검수·납품 체크리스트</h2>
+    <p class="lede">브리프부터 사후관리까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">브리프</span>원료 수집</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 1로 클라이언트 브리프 인터뷰 진행하기</li>
+        <li><input type="checkbox" disabled>답변 전체를 AI로 "제품 강점 / 타깃 고민 / 경쟁 우위" 3가지로 분류하기</li>
+        <li><input type="checkbox" disabled>기존 SNS·공식 문서로 톤앤매너 분석하고 Worksheet 2 채우기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">생성</span>채널별 초안</h4>
+      <ul>
+        <li><input type="checkbox" disabled>업종별 템플릿 5종에서 가장 가까운 업종 고르기</li>
+        <li><input type="checkbox" disabled>상세페이지 4단계 구조에 클라이언트 정보로 문장 교체하기</li>
+        <li><input type="checkbox" disabled>SNS 광고 5개 중 채널에 맞는 후킹 방식 2~3개 선정하기</li>
+        <li><input type="checkbox" disabled>이메일 제목 후보 중 톤에 맞는 것 골라 본문 작성하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">검수</span>톤·표현 점검</h4>
+      <ul>
+        <li><input type="checkbox" disabled>과장 광고 표현(효과 100% 보장 등)·근거 없는 수치 걸러내기</li>
+        <li><input type="checkbox" disabled>Worksheet 2의 톤앤매너 요약과 다시 대조하기</li>
+        <li><input type="checkbox" disabled>다른 브랜드 카피와 겹치는 상투적 표현 있는지 AI로 재점검하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">납품</span>&amp; 사후관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 3으로 견적 확정하고 납품 범위 안내하기</li>
+        <li><input type="checkbox" disabled>납품 2~4주 후 클릭률·전환율·문의량 요청하기</li>
+        <li><input type="checkbox" disabled>톤앤매너 요약은 고객별로 저장해 재주문 시 재사용하기</li>
+        <li><input type="checkbox" disabled>만족도 높은 고객에게 월 구독형 카피 관리 제안하기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>업종을 고르고, 숫자만 바꾸고, 워크시트로 디테일을 채우세요.</p>
+    <p><strong>완벽한 카피보다, 오늘 납품되는 카피가 더 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
