@@ -1,0 +1,488 @@
+<title>카테고리별 등록 템플릿팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 패션/의류잡화 · A.리서치 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 화장품/뷰티 · B.구조·카피 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 식품 · C.정책준수 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 생활용품/리빙 · D.영업·운영 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #7D4F73;   /* plum — 디지털/가전 · E.카테고리 특화 */
+    --cat-e-tint: #E6D9E3;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C990BE; --cat-e-tint: #332030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C990BE; --cat-e-tint: #332030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 110px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 64px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.06rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.65rem; font-weight:700; margin:0 0 15px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:14px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.08rem; margin:22px 0 10px; color:var(--ink); break-after:avoid; }
+  h4.sub-label{ font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.06em; color:var(--ink-soft); margin:9px 0 6px; text-transform:uppercase; break-after:avoid; }
+  section.chapter{ padding:20px 0 22px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 11px; max-width:68ch; }
+  .lede{ font-size:1rem; color:var(--ink-soft); max-width:62ch; margin-bottom:12px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:8px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:16px 18px 12px; margin:0 0 12px; break-inside:avoid; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:4px 0 9px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:9px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.86rem; background:var(--paper); }
+  th,td{ text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .blank-line{ display:inline-block; border-bottom:1px dotted var(--gold); min-width:200px; margin-left:6px; }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.77rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-top:4px; }
+
+  /* ---------- Domain blocks (category-colored) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:13px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:table; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid-page; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; break-after:avoid-page; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:9px 12px 7px; margin:0 0 8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Copy cards (prompt grid) ---------- */
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:9px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:8px 10px 9px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.74rem; color:var(--accent); font-weight:700; margin-bottom:4px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:8px 10px; font-family:var(--font-mono); font-size:0.77rem; line-height:1.5; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin-bottom:8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 11px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.91rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .close{ break-inside:avoid; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:16px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 26 · 실행 키트</span>
+    <span class="badge">『사진은 있는데, 상세페이지가 없습니다』 실전 부록</span>
+    <h1>등록만 <span class="nowrap">하면</span> 됩니다</h1>
+    <p class="subtitle">패션·화장품·식품·생활용품·디지털 <span class="nowrap">5개 카테고리</span>의 필수 고시정보 체크리스트와 표준 구조, 그대로 쓰는 프롬프트 <span class="nowrap">21개</span>까지 — 카테고리만 확인하면 등록 직전까지 끝납니다</p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>카테고리</div>
+      <div class="nowrap"><strong>21</strong>프롬프트</div>
+      <div class="nowrap"><strong>5</strong>단계 검수·납품 체크리스트</div>
+    </div>
+    <div class="byline">『사진은 있는데, 상세페이지가 없습니다』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">카테고리마다 법정 필수 고시정보가 다릅니다. 그걸 놓치면 카피가 아무리 좋아도 소용없습니다.</em> 이 키트는 전자책 방법 5~9(리서치·구조설계·카피초안·정책준수·등록최적화)를 카테고리별로 구체화한 완성본입니다.</p>
+    <p>세 가지로 구성했습니다.</p>
+    <ol class="steps">
+      <li><strong>카테고리 5종 빠른 참고표</strong> — 필수 고시정보 핵심, 표준 구조, 문구 예시, 키워드 유형을 한 장에 담았습니다.</li>
+      <li><strong>등록 프롬프트팩 21선</strong> — 리서치·구조/카피·정책준수·영업 4그룹 16개 + 카테고리별 고시정보 특화 검사 5개.</li>
+      <li><strong>워크시트 &amp; 검수·납품 체크리스트</strong> — 브리프 인터뷰부터 등록정보 최종확인, 납품까지 5단계.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 참고표에서 내 클라이언트 카테고리부터 확인하고, 프롬프트팩으로 리서치·카피·검수를 이어서 처리한 뒤 체크리스트로 마무리하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>카테고리 5종 빠른 참고표</h2>
+    <p class="lede">각 카테고리의 필수 고시정보 핵심, 상세페이지 표준 구조, 문구 예시, 검색 키워드 유형을 정리했습니다. 전체 체크박스는 `브리프인터뷰_등록정보_워크시트.md`에 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 패션/의류잡화</div>
+      <div class="cat-flow">문제제기(실물 불신) → 해결(실측·원단클로즈업) → 근거(혼용률·재구매율) → 행동유도(재입고 불가)</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>필수 고시정보 핵심</td><td>소재(혼용률)·색상·치수·세탁방법·제조자·제조국·A/S연락처·품질보증기준</td></tr>
+            <tr><td>문구 예시</td><td>"겉감 [소재명] [혼용률]%, 실측 사이즈 [사이즈 종류]개 구간 그대로 공개"</td></tr>
+            <tr><td>키워드 유형</td><td>속성형([소재]+[아이템]) · 상황형([계절]+[상황]) · 핏형([핏]+[아이템])</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 고객에게 — 위탁판매로 의류·잡화를 다량 등록하는 초보 셀러. 등록 건수가 많아 반복 의뢰가 나오기 쉽습니다.</p>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 화장품/뷰티</div>
+      <div class="cat-flow">문제제기(피부고민) → 해결(핵심성분·제형) → 근거(전성분·재구매율) → 행동유도(기획구성 한정)</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>필수 고시정보 핵심</td><td>명칭·책임판매업자·내용량·제조번호·사용기한·전성분·기능성 심사 효능·주의사항</td></tr>
+            <tr><td>문구 예시</td><td>"[핵심성분명] 함유, [제형] 타입으로 [효능] 목적에 맞춰 설계"</td></tr>
+            <tr><td>키워드 유형</td><td>고민형([피부고민]+[제품군]) · 성분형([성분]+[제형]) · 타깃형([연령/성별]+[제품군])</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 고객에게 — 자사몰·스마트스토어 동시 운영 중인 인디 뷰티 브랜드. 기능성 효능 표현 검수 수요가 특히 높습니다.</p>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 식품</div>
+      <div class="cat-flow">문제제기(먹거리 불안) → 해결(원재료·보관법 투명공개) → 근거(재구매율·인증) → 행동유도(신선도 한정수량)</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>필수 고시정보 핵심</td><td>식품유형·생산자·유통기한·원재료명·내용량·영양성분·알레르기 유발물질·보관방법·원산지</td></tr>
+            <tr><td>문구 예시</td><td>"원재료는 [주요 원재료] [비율]%, 유통기한 [기간], 냉장 보관 기준"</td></tr>
+            <tr><td>키워드 유형</td><td>상황형([상황]+[식품명]) · 재료형([원재료]+[식품명]) · 보관형([보관방식]+[식품명])</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 고객에게 — 반찬·간식류 소량 생산 셀러. 알레르기 유발물질 누락 위험이 커서 검수 가치가 가장 높습니다.</p>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 생활용품/리빙</div>
+      <div class="cat-flow">문제제기(공간·내구성 불편) → 해결(치수·구성품 공개) → 근거(KC인증·후기) → 행동유도(세트할인 한정재고)</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>필수 고시정보 핵심</td><td>품명·재질/구성품·크기/중량·KC인증여부·색상·제조자/제조국·취급주의사항·A/S연락처</td></tr>
+            <tr><td>문구 예시</td><td>"[재질명] 소재, [치수]cm, [구성품 개수]개 구성으로 [공간명]에 맞춤"</td></tr>
+            <tr><td>키워드 유형</td><td>공간형([공간]+[제품군]) · 기능형([기능]+[제품군]) · 세트형([구성수]+[제품군])</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 고객에게 — 인테리어 소품·수납용품 사입 셀러. KC 인증 대상 여부 판단부터 막막해하는 경우가 많습니다.</p>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 디지털/가전</div>
+      <div class="cat-flow">문제제기(스펙 불일치·A/S 걱정) → 해결(스펙표로 비교판단) → 근거(KC인증·A/S정책) → 행동유도(구성한정)</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>필수 고시정보 핵심</td><td>품명·KC인증번호·정격전압/전류(소비전력)·제조자/제조국·제조연월·A/S연락처·무상A/S기간</td></tr>
+            <tr><td>문구 예시</td><td>"정격전압 [값], 소비전력 [값], KC 인증번호 [번호]까지 그대로 공개"</td></tr>
+            <tr><td>키워드 유형</td><td>스펙형([사양]+[제품군]) · 상황형([사용상황]+[제품군]) · 인증형([인증]+[제품군])</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 고객에게 — 소형가전·모바일액세서리 셀러. 전기 안전 표시가 하나라도 빠지면 상품 조치로 이어지기 쉬워 검수가 필수입니다.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>등록 프롬프트팩 21선</h2>
+    <p class="lede">기능별 5그룹(리서치·구조/카피·정책준수·영업·카테고리특화)으로 나눴습니다. `[카테고리명]`, `[상품명]` 자리만 바꾸면 바로 씁니다. 전체 프롬프트 전문은 `등록_프롬프트팩.md`에 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 리서치·키워드</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">A1 · 연관 키워드 추출</div>
+          <p class="prompt">"[상품명], [카테고리명] 상품 검색 시 쓸 법한 연관 키워드 15개를 유형별로 분류해줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">A2 · 경쟁 상품 분석</div>
+          <p class="prompt">"[카테고리명] 경쟁 상품 상세페이지 3개의 공통 강조 요소를 표로 정리해줘: [텍스트]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">A3 · 타겟 셀러 니즈</div>
+          <p class="prompt">"[카테고리명]을 다루는 초보 셀러가 등록 시 겪는 어려움 10가지, 고시정보 관련 포함해서 정리해줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">A4 · 카테고리 후보 추천</div>
+          <p class="prompt">"[상품명] 스펙을 보고 카테고리 후보 3개와, 각각 필수 고시정보 항목을 알려줘: [스펙]"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 상세페이지 구조·카피</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">B1 · 표준 구조 설계</div>
+          <p class="prompt">"[카테고리명] 상세페이지 표준 구조를 신뢰요소~FAQ까지 섹션별로 설계해줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">B2 · 섹션별 카피 작성</div>
+          <p class="prompt">"[상품명]의 [섹션명] 카피 작성, [카테고리명] 기준, 스펙표에 없는 정보는 만들지 마: [스펙], [키워드]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">B3 · 사용 장면 묘사</div>
+          <p class="prompt">"[상품명]([카테고리명])의 사용 장면 3가지, 과장 없이 스펙 근거로 써줘: [스펙]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">B4 · FAQ 작성</div>
+          <p class="prompt">"[상품명]([카테고리명]) 구매 전 FAQ 6개, 카테고리 특화 질문 2개 이상 포함해줘."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 정책준수·등록 최적화</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">C1 · 정책 위반 소지 점검</div>
+          <p class="prompt">"[카테고리명] 카피의 네이버 AI 생성물 정책(2026.7.10) 위반 소지를 점검해줘: [카피]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">C2 · 옵션명 표기 통일</div>
+          <p class="prompt">"[카테고리명] 옵션명 목록의 표기를 일관 규칙으로 통일해줘: [옵션명 목록]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">C3 · 검색어 적합성 검토</div>
+          <p class="prompt">"[상품명]([카테고리명])의 검색어 후보 중 실제 속성과 무관한 게 있는지 점검해줘: [검색어], [스펙]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">C4 · 사실 대조 검수</div>
+          <p class="prompt">"[상품명] 카피·스펙표 대조, [카테고리명] 필수 고시항목 누락도 확인해줘: [카피], [스펙표]"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 영업·운영</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">D1 · 서비스 소개 카피</div>
+          <p class="prompt">"[카테고리명] 특화 등록 대행 서비스 소개 카피, 속도보다 정확성·정책준수 강조해줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">D2 · 전후 비교 문구</div>
+          <p class="prompt">"[상품명]의 기존/개선 상세페이지 차이를 3줄로 요약해줘: [기존특징], [개선특징]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">D3 · 재의뢰 안내</div>
+          <p class="prompt">"[카테고리명] 작업 완료한 [클라이언트명]에게 다음 신상품 재의뢰 안내 메시지 써줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">D4 · 패키지 구성 제안</div>
+          <p class="prompt">"[보유 서비스]로 [카테고리명] 위주 단품/다건/리뉴얼 3단계 패키지, 가격 근거와 제안해줘."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 카테고리별 고시정보 특화 (신규 카테고리 시작 시 최우선)</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">E1 · 의류 고시정보 완전성</div>
+          <p class="prompt">"[상품명](의류) 스펙에서 소재/치수/세탁법/A/S연락처 등 필수항목 누락 확인해줘: [스펙]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">E2 · 화장품 전성분·기능성</div>
+          <p class="prompt">"[상품명](화장품) 카피에 전성분 없는 효능·미승인 기능성 표현 있는지 점검해줘: [카피], [전성분표]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">E3 · 식품 알레르기·영양성분</div>
+          <p class="prompt">"[상품명](식품) 원재료에 알레르기 유발물질 있는데 카피에 표시 빠졌는지 확인해줘: [원재료], [카피]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">E4 · 생활용품 KC 인증 표기</div>
+          <p class="prompt">"[상품명](생활용품) KC 인증 대상 여부 판단하고 표기 적절성 확인해줘: [스펙], [카피]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">E5 · 가전 전기안전 표시</div>
+          <p class="prompt">"[상품명](디지털/가전) 정격전압·KC인증·A/S 등 필수항목 누락 확인해줘: [스펙]"</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>브리프 인터뷰 &amp; 등록정보 워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>클라이언트 브리프 인터뷰</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>질문</th><th>클라이언트 답변</th></tr>
+          <tr><td>상품명/카테고리는?</td><td class="fill"></td></tr>
+          <tr><td>위탁판매인가요, 사입인가요?</td><td class="fill"></td></tr>
+          <tr><td>경쟁 상품과 다른 점은?</td><td class="fill"></td></tr>
+          <tr><td>절대 쓰면 안 되는 표현·과장 효능은?</td><td class="fill"></td></tr>
+          <tr><td>스펙표·인증서·성분표 원본 받았나요?</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">전체 인터뷰 문항(8개)과 카테고리별 고시정보 체크박스(항목별)는 `브리프인터뷰_등록정보_워크시트.md`에 있습니다.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 등록 전 필수</h4></div>
+      <h3>카테고리별 필수 고시정보 — 항목 수 한눈에 보기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>카테고리</th><th>필수 항목 수</th><th>가장 놓치기 쉬운 항목</th></tr>
+          <tr><td>A. 패션/의류잡화</td><td>10개</td><td>치수(실측 병기), 세탁방법</td></tr>
+          <tr><td>B. 화장품/뷰티</td><td>9개</td><td>전성분 전체 표기, 기능성 심사 여부</td></tr>
+          <tr><td>C. 식품</td><td>10개</td><td>알레르기 유발물질, 영양성분</td></tr>
+          <tr><td>D. 생활용품/리빙</td><td>10개</td><td>KC 인증 대상 여부 판단</td></tr>
+          <tr><td>E. 디지털/가전</td><td>8개</td><td>정격전압·전류, 무상 A/S 기간</td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">체크박스로 하나씩 입력하는 전체 버전은 `브리프인터뷰_등록정보_워크시트.md`의 Worksheet 2를 사용하세요. 등록 직전엔 반드시 스마트스토어 판매자센터의 고시정보 자동입력 항목과 다시 대조합니다.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">3</span><h4>Worksheet 3</h4></div>
+      <h3>패키지·견적 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지 유형</th><th>가격대</th><th>내 견적</th></tr>
+          <tr><td>상세페이지 1건</td><td>15,000~30,000원</td><td class="fill"></td></tr>
+          <tr><td>상세페이지 + 등록 대행</td><td>30,000~50,000원</td><td class="fill"></td></tr>
+          <tr><td>다건 패키지(5건 이상)</td><td>건당 할인</td><td class="fill"></td></tr>
+          <tr><td>기존 페이지 리뉴얼</td><td>25,000~45,000원</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">추천 — 처음엔 등록 건수가 많은 위탁판매 카테고리(패션·생활용품)로 판매 기록부터 쌓고, 반응이 오면 화장품·식품처럼 검수 난이도가 높은 카테고리로 단가를 올리세요.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>등록 검수·납품 체크리스트</h2>
+    <p class="lede">브리프부터 사후관리까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>리서치</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 1로 클라이언트 브리프 인터뷰 진행하기</li>
+        <li><input type="checkbox" disabled>카테고리 확정하고 A1~A4로 키워드·경쟁사·카테고리 후보 조사하기</li>
+        <li><input type="checkbox" disabled>Worksheet 2로 필수 고시정보 빈칸 1차 확인 및 재요청하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>카피 초안</h4>
+      <ul>
+        <li><input type="checkbox" disabled>카테고리 표준 구조(문제제기→해결→근거→행동유도) 가져오기</li>
+        <li><input type="checkbox" disabled>B1~B4로 섹션별 카피·사용 장면·FAQ 초안 작성하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>정책준수 검수</h4>
+      <ul>
+        <li><input type="checkbox" disabled>C1로 2026년 7월 네이버 AI 생성물 정책 위반 소지 점검하기</li>
+        <li><input type="checkbox" disabled>C4로 카피·스펙표 사실 대조하기</li>
+        <li><input type="checkbox" disabled>E1~E5 중 해당 카테고리로 법정 고시정보 누락 재점검하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>등록정보 최종확인</h4>
+      <ul>
+        <li><input type="checkbox" disabled>카테고리 트리 최종 확정, 옵션명(C2) 표기 통일하기</li>
+        <li><input type="checkbox" disabled>검색어(C3) 상품 속성 일치 재확인하기</li>
+        <li><input type="checkbox" disabled>Worksheet 2 체크박스를 등록 화면 필드와 1:1 대조하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">5단계</span>납품 &amp; 사후관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 3으로 견적 확정, 납품 범위 안내하기</li>
+        <li><input type="checkbox" disabled>납품 2~4주 후 클릭률·전환율·문의량 요청하기</li>
+        <li><input type="checkbox" disabled>D3으로 재의뢰 안내, 다건 패키지 제안하기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>카테고리를 확인하고, 고시정보부터 채우고, 그대로 등록하세요.</p>
+    <div class="close">
+      <p><strong>화려한 카피보다, 빠짐없는 고시정보가 상품을 살립니다.</strong></p>
+      <div class="sign">— 끝 —</div>
+    </div>
+  </div>
+
+</div>
