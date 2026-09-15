@@ -1,0 +1,483 @@
+<title>키워드 리서치 + 30일 캘린더 키트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — A.니치 세분화·클러스터링 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — B.롱테일 키워드 발굴·확장 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — C.검색의도·콘텐츠 갭 분석 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — D.캘린더 설계·클러스터링 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #7D4F73;   /* plum — E.발행 후 리라이트·업데이트·확장 */
+    --cat-e-tint: #E6D9E3;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C990BE; --cat-e-tint: #332030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C990BE; --cat-e-tint: #332030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 110px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 64px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.06rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.65rem; font-weight:700; margin:0 0 15px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:14px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.08rem; margin:22px 0 10px; color:var(--ink); break-after:avoid; }
+  h4.sub-label{ font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.06em; color:var(--ink-soft); margin:9px 0 6px; text-transform:uppercase; break-after:avoid; }
+  section.chapter{ padding:20px 0 22px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 11px; max-width:68ch; }
+  .lede{ font-size:1rem; color:var(--ink-soft); max-width:62ch; margin-bottom:12px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:8px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:16px 18px 12px; margin:0 0 12px; break-inside:avoid; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:4px 0 9px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:9px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.86rem; background:var(--paper); }
+  th,td{ text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .blank-line{ display:inline-block; border-bottom:1px dotted var(--gold); min-width:200px; margin-left:6px; }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.77rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-top:4px; }
+
+  /* ---------- Domain blocks (category-colored) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:13px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:table; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid-page; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; break-after:avoid-page; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:9px 12px 7px; margin:0 0 8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Copy cards (prompt grid) ---------- */
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:9px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:8px 10px 9px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.74rem; color:var(--accent); font-weight:700; margin-bottom:4px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:8px 10px; font-family:var(--font-mono); font-size:0.77rem; line-height:1.5; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin-bottom:8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 11px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.91rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .close{ break-inside:avoid; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:16px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 28 · 실행 키트</span>
+    <span class="badge">『글은 쓰는데, 승인이 안 됩니다』 실전 부록</span>
+    <h1>내일 뭐 쓰지, <span class="nowrap">이제 없습니다</span></h1>
+    <p class="subtitle">니치 세분화부터 키워드 스코어링, <span class="nowrap">30일</span> 발행 캘린더까지 — 카테고리만 확인하면 <span class="nowrap">오늘 쓸 글</span>이 이미 정해져 있습니다</p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>단계 리서치</div>
+      <div class="nowrap"><strong>20</strong>프롬프트</div>
+      <div class="nowrap"><strong>30</strong>일 캘린더</div>
+    </div>
+    <div class="byline">『글은 쓰는데, 승인이 안 됩니다』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">좋은 글은 좋은 키워드에서 시작합니다. 그런데 "좋은 키워드"를 감으로 고르면 두 달 안에 쓸 소재가 바닥납니다.</em> 이 키트는 전자책 방법 2(니치 좁히기)·방법 4(키워드·검색의도 리서치)·방법 10(발행 루틴 표준화)을 실제로 손으로 채워 넣는 도구로 구체화한 완성본입니다.</p>
+    <p>세 가지로 구성했습니다.</p>
+    <ol class="steps">
+      <li><strong>리서치 5단계 빠른 참고표</strong> — 니치 세분화부터 발행 후 관리까지, 단계별 목적·산출물·프롬프트를 한 장에 담았습니다.</li>
+      <li><strong>키워드 리서치 프롬프트팩 20선</strong> — 니치 세분화·롱테일 발굴·검색의도 분석·캘린더 설계·발행 후 관리 5그룹, Day27 전자책 프롬프트와 겹치지 않는 신규 프롬프트.</li>
+      <li><strong>워크시트 &amp; 체크리스트</strong> — 니치 세분화 시트, 키워드 우선순위 점수표, 30일 캘린더 미리보기, 리서치→발행→월간리뷰 5단계 체크리스트.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 참고표에서 지금 내가 어느 단계인지 확인하고, 프롬프트팩으로 리서치를 진행한 뒤 워크시트에 옮겨 적고 체크리스트로 마무리하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>리서치 5단계 빠른 참고표</h2>
+    <p class="lede">니치를 정하고 30일 캘린더를 완성하기까지 다섯 단계로 나눴습니다. 각 단계의 목적, 핵심 산출물, 사용할 프롬프트 그룹을 정리했습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 니치 세분화·클러스터링</div>
+      <div class="cat-flow">시드 브레인스토밍 → 서브카테고리 6~8개 분류 → 서브별 시드 키워드 배정 → 경쟁 강도 1차 스크리닝</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>목적</td><td>니치를 검색의도가 겹치지 않는 서브카테고리로 쪼개기</td></tr>
+            <tr><td>핵심 산출물</td><td>서브카테고리 5~8개 + 대표 시드 키워드</td></tr>
+            <tr><td>사용 프롬프트</td><td>A1~A4</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이 단계를 건너뛰면 — 니치를 통째로 밀어붙이다 두 달 안에 쓸 소재가 바닥납니다.</p>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 롱테일 키워드 발굴·확장</div>
+      <div class="cat-flow">시드 키워드 확장 → 자동완성·연관검색어 정리 → 커뮤니티 질문형 추가 → 무관 키워드 제거</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>목적</td><td>시드 키워드를 실제 검색어 단위의 롱테일로 확장</td></tr>
+            <tr><td>핵심 산출물</td><td>롱테일 키워드 후보 30개 이상</td></tr>
+            <tr><td>사용 프롬프트</td><td>B1~B4</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이 단계를 건너뛰면 — 시드 키워드 하나로만 버티다 경쟁이 센 대표 키워드에서만 싸우게 됩니다.</p>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 검색의도·콘텐츠 갭 분석</div>
+      <div class="cat-flow">검색의도 4분류 → 상위노출 글 공통구조 분석 → 빈틈(차별화 포인트) 확인 → 정보성:상업성 비율 점검</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>목적</td><td>키워드별 검색의도를 분류하고 상위글의 빈틈을 찾기</td></tr>
+            <tr><td>핵심 산출물</td><td>검색의도 분류표 + 차별화 포인트</td></tr>
+            <tr><td>사용 프롬프트</td><td>C1~C4</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이 단계를 건너뛰면 — 상위글과 똑같은 내용을 써서 체류시간도 순위도 오르지 않습니다.</p>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 캘린더 설계·클러스터링</div>
+      <div class="cat-flow">우선순위 키워드 정렬 → 30일 배정 → 필라-서브 내부링크 설계 → 소요시간 추정</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>목적</td><td>우선순위 높은 키워드를 30일 캘린더로 배치</td></tr>
+            <tr><td>핵심 산출물</td><td>30일 발행 캘린더</td></tr>
+            <tr><td>사용 프롬프트</td><td>D1~D4</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이 단계를 건너뛰면 — 매일 아침 "오늘 뭐 쓰지"를 반복하다 발행 루틴이 무너집니다.</p>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 발행 후 리라이트·업데이트·확장</div>
+      <div class="cat-flow">발행 후 데이터 수집 → 업데이트 우선순위 → 카니발라이제이션 점검 → 인접 니치 확장 검토</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>목적</td><td>발행 데이터를 근거로 다음 사이클을 준비</td></tr>
+            <tr><td>핵심 산출물</td><td>업데이트 우선순위 + 다음 니치 후보</td></tr>
+            <tr><td>사용 프롬프트</td><td>E1~E4</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이 단계를 건너뛰면 — 오래된 글이 방치되고, 잘 되는 서브카테고리를 못 알아채고 지나칩니다.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>키워드 리서치 프롬프트 20선</h2>
+    <p class="lede">5단계와 같은 A~E 그룹입니다. `[니치명]`, `[키워드]` 자리만 바꾸면 바로 씁니다. 전체 프롬프트 전문은 `키워드_리서치_프롬프트팩.md`에 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 니치 세분화·클러스터링</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">A1 · 서브카테고리 클러스터 설계</div>
+          <p class="prompt">"니치는 [니치명]이야. 검색 의도가 안 겹치는 서브카테고리 6~8개로 나누고, 각각 시드 키워드 3개씩도 줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">A2 · 시즌성·트렌드 키워드</div>
+          <p class="prompt">"[니치명]에서 시기별로 검색량이 오르내릴 키워드를 월별로 정리해줘. 왜 그 시기인지도 알려줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">A3 · 오디언스 단계별 매핑</div>
+          <p class="prompt">"[니치명] 검색자를 입문/중급/숙련으로 나누고, 단계별 검색 키워드 표현 차이를 알려줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">A4 · 경쟁 강도 1차 스크리닝</div>
+          <p class="prompt">"다음 키워드 중 대형 사이트 상위 독점형과 개인 블로그 상위 가능형을 나눠줘: [키워드 목록]"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 롱테일 키워드 발굴·확장</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">B1 · 시드→롱테일 확장</div>
+          <p class="prompt">"시드 키워드 [키워드]를 자연어 질문형 롱테일 15개로 확장해줘, 수식어 유형별로 묶어서."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">B2 · 자동완성·연관검색어 재구성</div>
+          <p class="prompt">"다음 자동완성·연관검색어 중 [니치명]과 관련 있는 것만 골라 우선순위 매겨줘: [목록]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">B3 · 커뮤니티형 질문 키워드</div>
+          <p class="prompt">"[니치명] 관련 커뮤니티·카페에서 실제로 물을 법한 질문형 키워드 10개 추정해줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">B4 · 부정(무관) 키워드 필터링</div>
+          <p class="prompt">"다음 키워드 중 [니치명]과 무관하거나 의도가 다른 것을 걸러줘: [키워드 목록]"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 검색의도·콘텐츠 갭 분석</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">C1 · 4단계 검색의도 분류</div>
+          <p class="prompt">"다음 키워드를 정보형/상업조사형/거래형/탐색형으로 분류해줘, 기준도 설명해줘: [키워드 목록]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">C2 · 상위노출 글 공통구조 분석</div>
+          <p class="prompt">"[키워드] 상위 3개 글 목차의 공통 항목과, 내가 채울 수 있는 빈틈을 찾아줘: [목차 3개]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">C3 · 검색의도별 콘텐츠 포맷</div>
+          <p class="prompt">"[키워드]에 맞는 글 포맷(리스트/비교표/가이드/경험담)을 검색의도 기준으로 추천해줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">C4 · 정보성:상업성 비율 점검</div>
+          <p class="prompt">"다음 키워드 20개를 정보성·상업성으로 나누고 7:3 비율에 맞는지 점검해줘: [키워드 목록]"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 캘린더 설계·클러스터링</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">D1 · 30일 발행 캘린더 설계</div>
+          <p class="prompt">"[니치명]으로 30일 포스팅 주제를 정보성:상업성 7:3으로, 날짜별 표로 짜줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">D2 · 토픽 클러스터·내부링크</div>
+          <p class="prompt">"다음 30개 주제를 필라 글과 서브 글로 묶고 내부링크 구조를 설계해줘: [주제 목록]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">D3 · 난이도·소요시간 추정</div>
+          <p class="prompt">"다음 주제별 조사·경험 필요 정도(상/중/하)와 예상 집필 시간을 추정해줘: [주제 목록]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">D4 · 캘린더 재배치 제안</div>
+          <p class="prompt">"저조 주제 목록을 줄게. 다음 달엔 어떤 유형으로 대체하면 좋을지 제안해줘: [저조 주제]"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 발행 후 리라이트·업데이트·확장</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">E1 · 오래된 글 업데이트 우선순위</div>
+          <p class="prompt">"6개월 지난 글 목록·순위를 줄게. 업데이트 우선순위를 매겨줘: [글+순위 목록]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">E2 · 키워드 카니발라이제이션 점검</div>
+          <p class="prompt">"다음 발행 글 제목·키워드 목록에서 내 글끼리 경쟁하는 게 있는지 점검해줘: [목록]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">E3 · 인접 니치 확장 후보</div>
+          <p class="prompt">"반응 좋았던 서브카테고리를 줄게. 확장하기 좋은 인접 니치 5개를 추천해줘: [서브카테고리]"</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">E4 · 다음 달 시즌 키워드 재점검</div>
+          <p class="prompt">"다음 달 시즌·이벤트를 고려해 [니치명]에서 미리 준비할 키워드와 발행 시점을 알려줘."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>니치 세분화 &amp; 키워드 스코어링 워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>니치 세분화 시트</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>서브카테고리</th><th>대표 시드 키워드</th><th>내가 경험 있는가</th></tr>
+          <tr><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">전체 버전(시드 키워드 3개씩 입력 칸 포함)은 `니치_키워드_스코어링_워크시트.md`에 있습니다. "경험 있는가"에 X가 3개 넘으면 다른 니치를 고려하세요.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 채점 기준</h4></div>
+      <h3>키워드 우선순위 점수표 — 채점 기준</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>항목</th><th>점수 기준</th></tr>
+          <tr><td>체감 검색량</td><td>상(자동완성 노출)=3 · 중(연관검색어만)=2 · 하(직접 조합)=1</td></tr>
+          <tr><td>경쟁 강도</td><td>낮음(개인블로그 상위)=3 · 보통=2 · 높음(대형사이트 독점)=1</td></tr>
+          <tr><td>니치 적합도</td><td>내가 직접 검증 가능한 정도, 1~5점</td></tr>
+          <tr><td>상업성 보너스</td><td>거래형 +2 · 상업조사형 +1 · 정보형 +0</td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">우선순위 점수 = 검색량+경쟁강도+니치적합도+상업성보너스(최대 13점). <strong>9점 이상 우선 채택, 5점 이하 탈락</strong>을 기준선으로 삼으세요. 빈 점수표는 `니치_키워드_스코어링_워크시트.md`의 Worksheet 2에 있습니다.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">3</span><h4>Worksheet 3 · 미리보기</h4></div>
+      <h3>30일 캘린더 — 1주차 예시("자취 요리" 니치)</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>날짜</th><th>카테고리</th><th>타겟 키워드</th><th>글 유형</th></tr>
+          <tr><td>1일차</td><td>자취생 반찬</td><td>자취생 밑반찬 추천</td><td>필라</td></tr>
+          <tr><td>2일차</td><td>에어프라이어 레시피</td><td>에어프라이어 냉동만두 시간</td><td>정보</td></tr>
+          <tr><td>3일차</td><td>1인분 장보기</td><td>1인 가구 장보기 리스트</td><td>정보</td></tr>
+          <tr><td>4일차</td><td>자취생 반찬</td><td>자취생 밑반찬 2주 보관법</td><td>경험</td></tr>
+          <tr><td>5일차</td><td>자취 주방템</td><td>원룸 주방 필수템 추천</td><td>상업</td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">30일 전체(날짜·카테고리·타겟 키워드·글 유형·상태)와 바로 채워 쓰는 빈 템플릿은 `30일_포스팅_캘린더.md`에 있습니다. 정보:경험:상업:필라 비율이 대략 7:3(정보성:상업성)에 가깝도록 배분하세요.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>리서치→발행→월간리뷰 체크리스트</h2>
+    <p class="lede">니치를 정하는 순간부터 30일 캘린더 한 바퀴가 끝날 때까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>리서치</h4>
+      <ul>
+        <li><input type="checkbox" disabled>A1~A4로 니치를 서브카테고리 6~8개로 세분화하기</li>
+        <li><input type="checkbox" disabled>Worksheet 1로 서브카테고리별 시드 키워드·경험 여부 기입하기</li>
+        <li><input type="checkbox" disabled>경험 없는 서브카테고리가 절반 넘으면 니치 재검토하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>스코어링</h4>
+      <ul>
+        <li><input type="checkbox" disabled>B1~B4로 롱테일 키워드 30개 이상 확보하기</li>
+        <li><input type="checkbox" disabled>C1~C4로 검색의도 분류하고 상위글 빈틈 찾기</li>
+        <li><input type="checkbox" disabled>Worksheet 2로 채점하고 9점 이상만 채택하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>캘린더 확정</h4>
+      <ul>
+        <li><input type="checkbox" disabled>D1~D2로 30일 캘린더 초안과 내부링크 구조 설계하기</li>
+        <li><input type="checkbox" disabled>정보성:상업성 비율이 7:3에 가까운지 확인하기</li>
+        <li><input type="checkbox" disabled>같은 키워드가 중복 배정되지 않았는지(카니발라이제이션) 확인하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>집필 전 점검</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 3의 갭 분석 결과를 목차에 반영하기</li>
+        <li><input type="checkbox" disabled>Day27 전자책 방법 5~9(E-E-A-T 구조·초안·정책점검)로 이어서 집필하기</li>
+        <li><input type="checkbox" disabled>캘린더 "상태" 열을 예정→초안→검수완료→발행 순으로 갱신하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">5단계</span>월간 리뷰</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 4로 상위 유입·저조 글·업데이트 대상 정리하기</li>
+        <li><input type="checkbox" disabled>D4·E1로 다음 달 캘린더 재배치, 업데이트 우선순위 정하기</li>
+        <li><input type="checkbox" disabled>E3으로 인접 니치 확장 여부 검토하기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>니치를 세분화하고, 키워드를 점수로 줄 세우고, 캘린더에 옮겨 적으세요.</p>
+    <div class="close">
+      <p><strong>매일 아침 "뭐 쓰지"를 반복하지 않는 것, 그게 이 키트의 전부입니다.</strong></p>
+      <div class="sign">— 끝 —</div>
+    </div>
+  </div>
+
+</div>
