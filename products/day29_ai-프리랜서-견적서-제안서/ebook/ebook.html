@@ -1,0 +1,469 @@
+<title>일은 잘하는데, 견적은 못 냅니다</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F; --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38; --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74; --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A; --cat-d-tint: #E3E6CE;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:780px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.2rem, 6.5vw, 3.4rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.1rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.7rem; font-weight:700; margin:0 0 20px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:18px; width:max-content; max-width:100%; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.1rem; margin:24px 0 10px; color:var(--ink); }
+  section.chapter{ padding:30px 0 34px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 14px; max-width:66ch; orphans:1; widows:1; }
+  .lede{ font-size:1.02rem; color:var(--ink-soft); max-width:62ch; margin-bottom:18px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  /* ---------- TOC ---------- */
+  .toc{ border-top:3px solid var(--gold); padding:20px 0 8px; margin-bottom:44px; }
+  .toc h2{ font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 16px; break-after:avoid; }
+  .toc ol{ list-style:none; margin:0; padding:0; }
+  .toc li{ display:flex; align-items:baseline; gap:6px; padding:6px 0; font-size:0.94rem; break-inside:avoid; }
+  .toc .n{ font-family:var(--font-mono); font-weight:700; color:var(--gold-strong); flex-shrink:0; }
+  .toc .leader{ flex:1; border-bottom:1px dotted var(--line); margin:0 2px 5px; min-width:16px; }
+  .toc .pg{ font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); flex-shrink:0; }
+
+  /* ---------- Method steps ---------- */
+  .method-meta{ display:inline-block; font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-bottom:16px; }
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; }
+  ol.steps li{ margin-bottom:9px; padding-left:4px; break-inside:avoid; }
+
+  /* ---------- Note callouts ---------- */
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:6px 0 4px; }
+
+  /* ---------- Table ---------- */
+  .table-wrap{ overflow-x:auto; margin-bottom:14px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.88rem; background:var(--paper); }
+  th,td{ text-align:left; padding:8px 13px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.72rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+
+  /* ---------- Prompt cards (categorized grid) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:6px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-label{ display:table; font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); border-radius:6px; padding:4px 12px; margin:0 0 8px; break-after:avoid-page; }
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:13px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:8px 10px 8px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.76rem; color:var(--accent); font-weight:700; margin-bottom:4px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:7px 9px; font-family:var(--font-mono); font-size:0.76rem; line-height:1.45; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:15px 18px; margin-bottom:10px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.88rem; letter-spacing:0.05em; margin:0 0 12px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.78rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:4px 0; font-size:0.92rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; }
+  .epilogue .close{ break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:10px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{
+    .cover{ page-break-after:always; margin-left:0; margin-right:0; }
+  }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 29</span>
+    <span class="badge">CLAUDE가 기획 · 집필</span>
+    <h1>일은 잘하는데,<br>견적은 못 냅니다</h1>
+    <p class="subtitle">AI로 프리랜서 견적서·제안서 작성 대행하는 법 — <span class="nowrap">그대로 쓰는</span> <span class="nowrap">단가산정·제안서 프롬프트 16개</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>12</strong>가지 방법</div>
+      <div class="nowrap"><strong>16</strong>개 프롬프트</div>
+      <div class="nowrap"><strong>3</strong>단계 체크리스트</div>
+    </div>
+    <div class="byline">이 책의 목차·본문·프롬프트까지, 전부 <strong>클로드가 기획하고 작성</strong>했습니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">프리랜서 커뮤니티에 가장 자주 올라오는 질문은 "이 일 얼마 받아야 해요?"입니다.</em> 실력은 충분한데, 막상 클라이언트 앞에서 숫자를 말하려면 손이 떨립니다.</p>
+    <p>너무 높게 부르면 일이 끊길까 봐 무섭고, 너무 낮게 부르면 나중에 후회합니다. 결국 "일단 낮게 불러서라도 일을 따자"는 선택을 반복하다가, 시급으로 환산하면 최저임금보다 못한 프로젝트를 떠안는 경우가 허다합니다.</p>
+    <p>문제는 실력이 아니라 <strong>견적서와 제안서를 만드는 공정 자체가 없다는 것</strong>입니다. 이 책은 AI를 "가격을 대신 정해주는 도구"가 아니라 <strong>"근거 있는 숫자와 설득력 있는 문장을 빠르게 뽑아주는 도구"</strong>로 써서, 통과되는 견적서·제안서를 만드는 법을 다룹니다.</p>
+  </section>
+
+  <div class="toc">
+    <h2>목차</h2>
+    <ol>
+      <li>왜 지금 AI 견적서·제안서 대행인가<span class="leader"></span><span class="n">01</span></li>
+      <li>시작 전에 딱 3가지만 준비하세요<span class="leader"></span><span class="n">02</span></li>
+      <li>방법 1 — 프리랜서 단가의 기본 이해: M/M, M/D, M/H<span class="leader"></span><span class="n">03</span></li>
+      <li>방법 2 — AI로 내 몸값(단가) 산정하기<span class="leader"></span><span class="n">04</span></li>
+      <li>방법 3 — 견적서 필수 구성요소 마스터하기<span class="leader"></span><span class="n">05</span></li>
+      <li>방법 4 — AI로 견적서 초안 만들기<span class="leader"></span><span class="n">06</span></li>
+      <li>방법 5 — 제안서 vs 견적서: 언제 뭘 써야 하는가<span class="leader"></span><span class="n">07</span></li>
+      <li>방법 6 — AI로 설득력 있는 제안서 쓰기<span class="leader"></span><span class="n">08</span></li>
+      <li>방법 7 — 업종별 견적서·제안서 차별화하기<span class="leader"></span><span class="n">09</span></li>
+      <li>방법 8 — 세금(원천세) 처리와 계산서 발행<span class="leader"></span><span class="n">10</span></li>
+      <li>방법 9 — 가격 협상·후려치기 대응하기<span class="leader"></span><span class="n">11</span></li>
+      <li>방법 10 — 견적서·제안서 대행 서비스로 수익화하기<span class="leader"></span><span class="n">12</span></li>
+      <li>방법 11 — 반려/거절 이유 분석하고 개선하기<span class="leader"></span><span class="n">13</span></li>
+      <li>방법 12 — 나만의 견적서·제안서 템플릿 시스템 구축하기<span class="leader"></span><span class="n">14</span></li>
+      <li>바로 쓰는 프롬프트 16선<span class="leader"></span><span class="n">15</span></li>
+      <li>실전 체크리스트<span class="leader"></span><span class="n">16</span></li>
+    </ol>
+  </div>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>왜 지금 AI 견적서·제안서 대행인가</h2>
+    <p>프리랜서로 일하는 사람들이 가장 많이 겪는 문제는 실력 부족이 아니라, 자기 가치를 숫자로 말하지 못하는 것입니다. 매번 새 클라이언트를 만날 때마다 백지에서 견적서를 시작하니 시간도 오래 걸리고, 근거 없이 감으로 가격을 부르니 협상에서도 밀립니다.</p>
+    <ol class="steps">
+      <li><strong>AI는 "가격을 대신 정해주는 도구"가 아니라 "근거를 빠르게 만들어주는 도구"입니다.</strong> 시장 단가, 견적서 구성, 제안서 문장까지 순식간에 초안이 나오지만, 최종 숫자와 판단은 항상 나의 몫입니다.</li>
+      <li><strong>견적서·제안서는 한 번 시스템을 만들면 계속 재사용됩니다.</strong> 업종별 뼈대와 프롬프트만 준비되면, 다음 견적은 몇 분 안에 끝납니다.</li>
+      <li><strong>이 공정 자체가 다른 프리랜서에게 팔 수 있는 상품이 됩니다.</strong> 견적서를 못 써서 일을 놓치는 프리랜서는 생각보다 많습니다.</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>시작 전에 딱 3가지만</h2>
+    <div class="method-meta">준비물은 딱 3가지 — 특별한 도구나 자격증이 필요 없습니다</div>
+    <ol class="steps">
+      <li><strong>AI 챗봇 계정</strong> — 단가 계산, 견적서 초안, 제안서 문장 다듬기까지 순서대로 시켜볼 수 있는 도구가 유리합니다</li>
+      <li><strong>최근 작업 이력 1건</strong> — 완료했거나 진행 중인 프로젝트 하나(기간, 받은 금액, 업무 범위)면 충분합니다</li>
+      <li><strong>견적서·제안서를 받아본 경험 1건</strong> — 직접 받아봤던 문서 하나를 떠올려두면 방법 3을 훨씬 빠르게 이해할 수 있습니다</li>
+    </ol>
+    <p>이 3가지가 준비되면, 방법 1부터 순서대로 따라 하기만 하면 오늘 안에 내 견적서 템플릿 초안까지 완성할 수 있습니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>프리랜서 단가의 기본 이해</h2>
+    <p>견적서를 쓰기 전에 업계 용어부터 알아야 합니다. IT·디자인·마케팅 프리랜서 시장에서는 작업량을 맨먼스(M/M), 맨데이(M/D), 맨아워(M/H) 단위로 표현합니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>단위</th><th>의미</th><th>환산 기준</th></tr>
+        <tr><td>M/M (맨먼스)</td><td>한 사람이 한 달 동안 일하는 양</td><td>1MM ≈ 20~22MD</td></tr>
+        <tr><td>M/D (맨데이)</td><td>한 사람이 하루 일하는 양</td><td>1MD = 8MH</td></tr>
+        <tr><td>M/H (맨아워)</td><td>한 사람이 한 시간 일하는 양</td><td>1MM ≈ 160~176MH</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>내가 받은 프로젝트 의뢰가 "총 얼마"인지, "월 단가"인지, "건당"인지부터 구분한다 — 단위가 다르면 비교 자체가 불가능하다</li>
+      <li>지금까지 진행한 프로젝트를 시급으로 환산해본다 (받은 금액 ÷ 실제 투입 시간)</li>
+      <li>업계 평균 M/D 단가를 AI에게 조사시켜서 내 경력·기술 수준과 비교할 기준점을 만든다</li>
+      <li>이후 모든 견적은 "총액"이 아니라 "단위당 단가 × 투입량" 구조로 계산하는 습관을 들인다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 단가는 정답이 없습니다. 업종·경력·지역에 따라 편차가 크기 때문에, "이 숫자가 맞다"보다 "내가 설명할 수 있는 숫자인가"가 더 중요합니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>AI로 내 몸값(단가) 산정하기</h2>
+    <p>가격을 부르지 못하는 가장 큰 이유는 "이 숫자가 맞는지 확신이 없어서"입니다. AI에게 근거를 만들게 하면 이 확신의 공백을 채울 수 있습니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 내 경력·기술 스택·포트폴리오 수준을 알려주고, 비슷한 프리랜서의 시장 단가 범위를 저가/중가/고가 3구간으로 추정받는다</li>
+      <li>방법 1에서 환산한 내 실제 시급과 비교해, 지금 내가 시장가보다 낮게/비슷하게/높게 받고 있는지 판단한다</li>
+      <li>내 최소 마지노선(이 아래로는 절대 안 받는 금액)을 먼저 정하고, 그다음 목표가와 희망가를 정한다</li>
+      <li>분기 1회 AI에게 최근 완료한 프로젝트 목록과 받은 금액을 주고 단가를 올려도 될지 근거와 함께 재점검받는다</li>
+    </ol>
+    <div class="worksheet-note">주의 — AI가 제시하는 시장 단가는 어디까지나 참고 범위입니다. 실제 지역·업종·경기에 따라 편차가 크므로, 방법 9의 협상 과정에서 조정할 여지를 남겨두세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">05</span>견적서 필수 구성요소 마스터하기</h2>
+    <p>견적서가 반려되는 이유의 절반은 "내용이 부실해서"가 아니라 "빠진 항목이 있어서"입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>필수 항목</th><th>왜 필요한가</th></tr>
+        <tr><td>작업 항목별 세부 내역</td><td>"무엇을" 하는지 클라이언트가 눈으로 확인해야 오해가 없다</td></tr>
+        <tr><td>시간/일수/수량 × 단가</td><td>총액이 어떻게 나온 숫자인지 근거를 보여준다</td></tr>
+        <tr><td>VAT 별도/포함 여부</td><td>명시하지 않으면 나중에 분쟁의 씨앗이 된다</td></tr>
+        <tr><td>납기·일정</td><td>"언제까지"가 없으면 계약이 아니라 그냥 안내문이다</td></tr>
+        <tr><td>입금 계좌·세금계산서 발행</td><td>결제 단계에서 다시 묻지 않도록 미리 명시한다</td></tr>
+        <tr><td>원천세 적용 여부</td><td>방법 8의 3.3%/4.4% 구분을 미리 안내하면 신뢰도가 올라간다</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>최근 프로젝트를 놓고, 위 6개 항목이 빠짐없이 들어간 견적서 뼈대를 AI에게 만들어달라고 요청한다</li>
+      <li>작업 항목을 지나치게 뭉뚱그리지 않았는지 확인한다 — 쪼개야 나중에 추가 요청에 대응할 수 있다</li>
+      <li>수정 횟수·범위를 반드시 명시한다 — 견적서에 없는 항목은 "당연히 포함"이라는 요청으로 돌아온다</li>
+      <li>완성된 뼈대를 파일 템플릿으로 저장해, 다음부터는 숫자와 항목만 바꿔 재사용한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">06</span>AI로 견적서 초안 만들기</h2>
+    <p>뼈대가 있으면 실제 작성 시간은 크게 줄어듭니다. AI에게 프로젝트 정보만 넘기면 항목별 견적서 초안이 몇 분 안에 나옵니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>프로젝트 개요(범위, 예상 기간, 요구사항)를 AI에게 주고 방법 5의 뼈대에 맞춰 견적서 초안을 요청한다</li>
+      <li>초안에서 항목별 단가가 방법 4에서 정한 내 단가 기준과 일치하는지 대조한다</li>
+      <li>총액만 크게 보여주지 말고, 중간 소계로 나눠 클라이언트가 어디에 돈이 드는지 이해할 수 있게 만든다</li>
+      <li>견적 유효기간(보통 2~4주)을 명시해, 상황이 바뀌었을 때 재협상할 여지를 남겨둔다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 초안은 어디까지나 "말하기 편한 형태로 정리된 초안"입니다. 최종 숫자를 정하는 건 항상 나여야 합니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">07</span>제안서 vs 견적서</h2>
+    <p>견적서와 제안서는 목적이 다릅니다. 이 둘을 섞어서 쓰면 클라이언트가 원하는 정보를 못 찾고 혼란스러워합니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>클라이언트가 "얼마예요?"라고 명확히 물었다면 견적서(가격과 범위 중심)로 답한다</li>
+      <li>클라이언트가 "어떻게 해결할 건가요?"라고 물었거나 경쟁 프리랜서와 비교당하는 상황(입찰·공모)이라면 제안서로 답한다</li>
+      <li>큰 프로젝트일수록 제안서를 먼저 보내 신뢰를 쌓고, 승인되면 견적서로 세부 조율하는 2단계 구조를 쓴다</li>
+      <li>작은 건(단발성 외주)은 제안서 없이 견적서만으로 충분하다 — 불필요하게 긴 문서는 응답률을 떨어뜨린다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">08</span>AI로 설득력 있는 제안서 쓰기</h2>
+    <p>제안서에서 가장 중요한 건 화려한 문장이 아니라 "이 사람이 내 문제를 정확히 이해했다"는 느낌을 주는 것입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>클라이언트가 올린 의뢰글을 AI에게 주고, 그 안에 숨어 있는 진짜 문제를 요약시킨다</li>
+      <li>"문제 이해 → 해결 전략 → 진행 프로세스 → 왜 나인가 → 가격" 순서로 제안서 뼈대를 요청한다</li>
+      <li>"왜 나여야 하는가" 섹션에는 반드시 구체적인 과거 사례나 수치를 넣는다</li>
+      <li>완성된 초안을 "발주자가 3초 안에 이 사람에게 맡길 이유를 알 수 있는가" 기준으로 재검토한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — AI가 만든 제안서 문장이 너무 매끄러우면 오히려 진심이 없어 보일 수 있습니다. 내 실제 경험 문장 1~2개는 손으로 직접 보태세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">09</span>업종별 견적서·제안서 차별화하기</h2>
+    <p>같은 뼈대라도 업종에 따라 강조점이 다릅니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>업종</th><th>강조할 것</th><th>흔한 실수</th></tr>
+        <tr><td>디자인·영상</td><td>수정 횟수, 시안 개수, 원본 파일 제공 범위</td><td>수정 무제한으로 암묵 합의됨</td></tr>
+        <tr><td>개발</td><td>유지보수 기간, 범위 외 추가 개발 단가</td><td>배포 이후 책임 범위 불명확</td></tr>
+        <tr><td>카피·콘텐츠</td><td>분량, 리서치 포함 여부, 저작권 귀속</td><td>무제한 재작성 요청에 시달림</td></tr>
+        <tr><td>번역·통역</td><td>분량(글자/단어 수), 전문 분야 가산</td><td>전문 용어 난이도를 단가에 반영 안 함</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>내 업종에서 클라이언트가 자주 오해하는 지점을 AI에게 조사시켜 확인한다</li>
+      <li>위 표의 "흔한 실수" 항목이 내 견적서에 이미 빠져 있는지 점검한다</li>
+      <li>업종별로 견적서 템플릿을 분리해서 관리한다 — 문구가 섞이면 신뢰도가 떨어진다</li>
+      <li>업종이 여러 개라면 AI에게 각각의 뼈대를 따로 만들게 하고, 공통 항목만 통일한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">10</span>세금(원천세) 처리와 계산서 발행</h2>
+    <p>가격을 아무리 잘 협상해도 세금 처리를 모르면 실수령액에서 손해를 봅니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>적용 세율</th><th>해당 사례</th></tr>
+        <tr><td>사업소득</td><td>3.3%</td><td>지속적·반복적 용역(매달 정기 납품 계약)</td></tr>
+        <tr><td>기타소득</td><td>4.4%</td><td>일시적·1회성 용역(단발성 프로젝트, 강연 1회 등)</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>계약 성격이 "지속적"인지 "1회성"인지 먼저 판단한다 — 애매하면 클라이언트와 미리 확인한다</li>
+      <li>견적서에 "원천세 공제 후 지급" 문구를 미리 넣어, 입금액이 견적 금액보다 적어도 당황하지 않게 한다</li>
+      <li>AI에게 견적 총액에서 원천세 공제 후 실수령액을 계산시켜, 협상 전 체감 금액을 파악한다</li>
+      <li>지속적으로 일을 받는다면 사업자등록·부가세 신고 여부를 세무사와 상담한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 세법은 자주 바뀌고 개인 상황에 따라 다르게 적용될 수 있습니다. 이 책의 세율 정보는 참고용이며, 실제 신고 전에는 반드시 국세청 홈택스나 세무 전문가를 통해 최신 기준을 확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">11</span>가격 협상·후려치기 대응하기</h2>
+    <p>"좀 깎아주실 수 있나요?"는 프리랜서라면 누구나 듣는 말입니다. 여기서 흔들리면 방법 4에서 정한 마지노선이 무너집니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>협상 요청이 오면 가격을 바로 깎지 말고, "범위를 줄이면 가격도 함께 줄어든다"는 원칙을 먼저 제시한다</li>
+      <li>후려치기성 요청에는 감정적으로 대응하지 않고, 내 견적이 왜 그 금액인지(방법 6의 소계 구조)를 다시 보여준다</li>
+      <li>안 되면 "가격 유지 + 범위 축소" 또는 "일정 조정" 대안을 함께 제시해, 협상이 결렬이 아니라 조율로 끝나게 만든다</li>
+      <li>마지노선 아래로 내려가는 요청은 정중한 거절 문구로 명확히 선을 긋는다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 협상에서 먼저 숫자를 말하는 쪽이 대체로 불리합니다. "생각하시는 예산 범위가 있으실까요?"로 먼저 되묻는 습관만 들여도 후려치기 확률이 크게 줄어듭니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">12</span>견적서·제안서 대행 서비스로 수익화하기</h2>
+    <p>여기까지 익혔다면, 이 공정 자체가 다른 프리랜서에게 팔 수 있는 상품이 됩니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>업종별 뼈대(방법 9)를 포트폴리오 삼아, "AI 기반 견적서·제안서 초안 + 검수" 서비스를 크몽·숨고 등에 등록한다</li>
+      <li>처음에는 낮은 가격(1건 검토 1만~2만 원대)으로 시작해 후기를 쌓고, 반응이 좋으면 템플릿 팩으로 확장한다</li>
+      <li>의뢰가 들어오면 고객의 프로젝트 정보를 받아 AI로 초안을 뽑고, 방법 8의 검토 기준으로 다듬어 납품한다</li>
+      <li>반복 의뢰가 늘면 업종별 템플릿을 미리 만들어두고 항목만 바꿔 납품 속도를 높인다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">13</span>반려/거절 이유 분석하고 개선하기</h2>
+    <p>견적서·제안서가 통과되지 않았을 때 그냥 넘기면 같은 실수를 반복합니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>거절 또는 무응답으로 끝난 견적서·제안서를 모아, AI에게 공통 패턴을 분석시킨다</li>
+      <li>가능하다면 클라이언트에게 짧게라도 아쉬웠던 부분을 직접 물어본다</li>
+      <li>반복적으로 지적되는 항목을 방법 5의 뼈대에 반영해 업데이트한다</li>
+      <li>통과율이 낮은 채널과 높은 채널을 구분해, 시간을 어디에 더 쓸지 판단한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">14</span>나만의 템플릿 시스템 구축하기</h2>
+    <p>매번 새로 만들지 않도록, 지금까지의 방법을 하나의 재사용 가능한 시스템으로 묶습니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>방법 5~9에서 만든 업종별 뼈대를 파일로 정리해 폴더 하나에 모아둔다</li>
+      <li>자주 쓰는 프롬프트(이 책의 16개)를 AI 챗봇의 저장 기능에 등록해, 매번 새로 타이핑하지 않게 한다</li>
+      <li>분기마다 방법 4(단가 재점검)와 방법 13(반려 이유 분석)을 루틴으로 돌려 시스템을 업데이트한다</li>
+      <li>시스템이 안정되면 방법 12의 대행 서비스에 이 시스템 전체를 "실행 키트" 형태로 패키징해 판매한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">15</span>바로 쓰는 프롬프트 16선</h2>
+    <p class="lede">대괄호 부분만 바꿔서 그대로 붙여넣으세요. 카테고리별로 정리했습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 단가·견적 산정</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">A1 시장 단가 추정</div><div class="prompt">나는 [업종/경력/기술스택]을 가진 프리랜서야. 비슷한 조건의 프리랜서 시장 단가를 저가/중가/고가 3구간으로 근거와 함께 추정해줘. M/D(맨데이) 기준으로도 알려줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A2 견적서 뼈대 설계</div><div class="prompt">[업종] 프로젝트 견적서에 반드시 들어가야 할 항목을 작업 세부내역/단가/일정/결제조건 기준으로 뼈대를 만들어줘. 이 업종에서 클라이언트가 자주 오해하는 지점도 짚어줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A3 견적서 초안 작성</div><div class="prompt">다음 프로젝트 정보로 견적서 초안을 만들어줘. 항목별 소계와 총액, 견적 유효기간까지 포함해서: [프로젝트 범위, 예상 기간, 요구사항]</div></div>
+        <div class="prompt-block"><div class="prompt-id">A4 단가 인상 판단</div><div class="prompt">최근 완료한 프로젝트 목록과 받은 금액을 줄게: [데이터]. 지금 단가를 올려도 될지 근거와 함께 판단해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 제안서 작성</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">B1 의뢰 배경 분석</div><div class="prompt">다음은 클라이언트가 올린 의뢰글이야. 표면적 요청 뒤에 숨은 진짜 문제와 목표를 짚어줘: [의뢰글 원문]</div></div>
+        <div class="prompt-block"><div class="prompt-id">B2 제안서 뼈대 설계</div><div class="prompt">[프로젝트 개요]에 대한 제안서를 '문제 이해 → 해결 전략 → 진행 프로세스 → 왜 나인가 → 가격' 구조로 작성해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B3 강점 섹션 작성</div><div class="prompt">다음은 내 포트폴리오 요약이야. 이 내용을 '왜 나여야 하는가' 섹션에 구체적인 사례와 수치 중심으로 녹여줘: [포트폴리오 요약]</div></div>
+        <div class="prompt-block"><div class="prompt-id">B4 협상·거절 문구</div><div class="prompt">클라이언트가 가격을 깎아달라고 요청했어. 관계를 해치지 않으면서 원칙을 지키는 정중한 답변을 만들어줘. 정 안 되면 예의 있게 거절하는 버전도 함께.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 세금·협상 리스크 대응</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">C1 원천세 안내 문구</div><div class="prompt">견적서에 원천세(사업소득 3.3% 또는 기타소득 4.4%) 공제 안내 문구를 넣으려고 해. 클라이언트가 오해 없이 이해할 수 있는 담백한 문장으로 만들어줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C2 계약 조건 점검</div><div class="prompt">다음 견적서/계약 조건을 검토해줘. 수정 횟수, 저작권 귀속, 유지보수 범위처럼 자주 분쟁이 생기는 항목이 빠지지 않았는지 확인해줘: [견적서 내용]</div></div>
+        <div class="prompt-block"><div class="prompt-id">C3 후려치기 대응 문구</div><div class="prompt">'다른 데는 더 싸던데요'라는 말을 들었어. 감정적이지 않게, 내 견적 근거를 다시 보여주는 방식으로 대응 문구를 만들어줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C4 실수령액 계산</div><div class="prompt">견적 총액이 [금액]일 때 원천세(3.3% 또는 4.4%) 공제 후 실수령액이 얼마인지 계산해줘. 계산 과정도 보여줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 운영·대행 서비스화</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">D1 서비스 상세페이지 작성</div><div class="prompt">'AI 기반 견적서·제안서 작성 대행' 서비스의 상세페이지 카피를 써줘. 이런 걸 고민하는 프리랜서를 타겟으로, 문제공감-해결-신뢰-CTA 구조로.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D2 업종별 템플릿 확장</div><div class="prompt">지금까지 만든 [업종명] 견적서 뼈대를 참고해서, [다른 업종명]에 맞는 견적서 뼈대도 같은 형식으로 만들어줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D3 반려 이유 분석</div><div class="prompt">거절되거나 무응답으로 끝난 견적서/제안서 목록을 줄게. 공통된 패턴(가격/범위/신뢰 부족 등)을 분석해줘: [사례 목록]</div></div>
+        <div class="prompt-block"><div class="prompt-id">D4 대행 서비스 가격 전략</div><div class="prompt">'견적서·제안서 검토 및 작성 대행' 서비스의 가격을 건당/구독형 중 어떤 방식이 나을지, 시장 사례를 참고해서 근거와 함께 제안해줘.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">16</span>실전 체크리스트</h2>
+
+    <div class="checklist-group">
+      <h4><span class="wk">오늘</span>30분</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 A1로 내 시장 단가 저가/중가/고가 3구간 받아보기</li>
+        <li><input type="checkbox" disabled>최근 프로젝트 1건을 시급으로 환산해보고 충격 받아보기</li>
+        <li><input type="checkbox" disabled>프롬프트 A2로 내 업종 견적서 뼈대 초안 만들기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 주</span>1차 완성</h4>
+      <ul>
+        <li><input type="checkbox" disabled>방법 4의 마지노선/목표가/희망가 3단계 가격 정하기</li>
+        <li><input type="checkbox" disabled>프롬프트 A3으로 실제 프로젝트 견적서 작성해보기</li>
+        <li><input type="checkbox" disabled>프롬프트 B2로 제안서 뼈대 만들고 방법 8의 3초 기준으로 검토하기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 달</span>확장</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 C1로 원천세 안내 문구 만들어 견적서에 반영하기</li>
+        <li><input type="checkbox" disabled>반려/거절 사례 3건 이상 모아 프롬프트 D3로 패턴 분석하기</li>
+        <li><input type="checkbox" disabled>방법 12 참고해 견적서·제안서 대행 서비스 1개 채널에 등록해보기</li>
+        <li><input type="checkbox" disabled>업종별 뼈대 파일로 정리해 나만의 템플릿 시스템 만들기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>프리랜서로 오래 버티는 사람과 금방 지치는 사람의 차이는 실력이 아니라, 자기 가치를 숫자로 말할 수 있는가에서 갈립니다. AI가 순식간에 초안을 뽑아주는 시대에도, 마지노선을 정하고 그 숫자를 지키는 건 여전히 내 몫입니다.</p>
+    <div class="close">
+      <p>오늘, 방법 4에서 정한 내 마지노선부터 종이에 적어보세요.</p>
+      <div class="sign">— 끝 —</div>
+    </div>
+  </div>
+
+</div>
