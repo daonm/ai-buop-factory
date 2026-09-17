@@ -1,0 +1,533 @@
+<title>업종별 견적서 템플릿 10종</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — A.크리에이티브·디자인 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — B.개발·기술 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — C.콘텐츠·언어 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — D.마케팅·비주얼 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #7D4F73;   /* plum — E.컨설팅·문서 */
+    --cat-e-tint: #E6D9E3;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C990BE; --cat-e-tint: #332030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C990BE; --cat-e-tint: #332030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 110px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 64px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.06rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.65rem; font-weight:700; margin:0 0 15px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:14px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.08rem; margin:22px 0 10px; color:var(--ink); break-after:avoid; }
+  h4.sub-label{ font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.06em; color:var(--ink-soft); margin:9px 0 6px; text-transform:uppercase; break-after:avoid; }
+  section.chapter{ padding:20px 0 22px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 11px; max-width:68ch; }
+  .lede{ font-size:1rem; color:var(--ink-soft); max-width:62ch; margin-bottom:12px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:8px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:16px 18px 12px; margin:0 0 12px; break-inside:avoid; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:4px 0 9px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:9px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.86rem; background:var(--paper); }
+  th,td{ text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.77rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-top:4px; }
+
+  /* ---------- Domain blocks (category-colored) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:13px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:table; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid-page; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; break-after:avoid-page; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:9px 12px 7px; margin:0 0 8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* categorized worksheet: same worksheet card, colored by parent .cat accent */
+  .cat .worksheet::before{ background:var(--accent); }
+  .cat .worksheet-num{ background:var(--accent); }
+  .cat .worksheet h4{ color:var(--accent); }
+  .cat .worksheet .table-wrap{ border-color:var(--accent); }
+  .cat .worksheet table th{ background:var(--accent); }
+  .cat .worksheet tr:nth-child(even) td{ background:var(--accent-tint); }
+
+  /* ---------- Copy cards (prompt grid) ---------- */
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:9px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:8px 10px 9px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.74rem; color:var(--accent); font-weight:700; margin-bottom:4px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:8px 10px; font-family:var(--font-mono); font-size:0.77rem; line-height:1.5; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin-bottom:8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 11px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.91rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .close{ break-inside:avoid; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:16px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 30 · 실행 키트</span>
+    <span class="badge">『일은 잘하는데, 견적은 못 냅니다』 실전 부록</span>
+    <h1><span class="nowrap">10개 업종 견적서,</span><br>다 있습니다</h1>
+    <p class="subtitle">디자인부터 문서작성까지 — 그대로 복사해 <span class="nowrap">숫자만 바꾸는</span> 업종별 견적서 뼈대 <span class="nowrap">10종</span> + 커스터마이징 프롬프트 <span class="nowrap">10개</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>개 카테고리</div>
+      <div class="nowrap"><strong>10</strong>종 템플릿</div>
+      <div class="nowrap"><strong>10</strong>개 프롬프트</div>
+    </div>
+    <div class="byline">『일은 잘하는데, 견적은 못 냅니다』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">견적서가 반려되는 이유의 절반은 내용이 부실해서가 아니라, 업종마다 다른 "빠진 항목" 때문입니다.</em> 이 키트는 전자책 방법 3(필수 구성요소)·방법 7(업종별 차별화)을 실제 업종 10개에 맞춰 미리 채워 넣은 실행 도구입니다.</p>
+    <p>세 가지로 구성했습니다.</p>
+    <ol class="steps">
+      <li><strong>업종 5개 카테고리 빠른 참고표</strong> — 크리에이티브·디자인부터 컨설팅·문서까지, 카테고리별 강조 포인트와 흔한 실수를 한 장에 담았습니다.</li>
+      <li><strong>견적서 템플릿 10종</strong> — 업종별로 이미 채워진 작업 항목·비고와, 내 프로젝트에 맞게 숫자만 채우면 되는 빈칸으로 구성했습니다. 전문은 `업종별_견적서_템플릿_10종.md`에 있습니다.</li>
+      <li><strong>커스터마이징 프롬프트 10선</strong> — Day29 전자책 프롬프트 16개와 겹치지 않는 신규 프롬프트로, 업종별 뼈대를 내 프로젝트에 맞게 다듬습니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 참고표에서 내 업종이 어느 카테고리인지 확인하고, 해당 워크시트 표를 복사한 뒤 프롬프트로 다듬고 체크리스트로 마무리하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>업종 5개 카테고리 빠른 참고표</h2>
+    <p class="lede">업종 10개를 성격이 비슷한 5개 카테고리로 묶었습니다. 겸업 중이라면 해당하는 카테고리를 모두 확인하세요.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 크리에이티브·디자인</div>
+      <div class="cat-flow">로고·브랜딩 디자인 · 영상 편집·촬영</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>공통 강조 포인트</td><td>시안·수정 횟수, 원본 파일 제공 범위, 2차 활용·상표 사용 범위</td></tr>
+            <tr><td>흔한 실수</td><td>"수정 무제한"으로 암묵 합의됨, 이동비·식비 같은 부대비용 누락</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 개발·기술</div>
+      <div class="cat-flow">웹사이트·랜딩페이지 개발 · 데이터 분석·자동화 스크립트</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>공통 강조 포인트</td><td>유지보수 기간, 범위 외 추가 개발·분석 단가, 산출물 형태(코드/리포트) 명시</td></tr>
+            <tr><td>흔한 실수</td><td>배포·납품 이후 "버그 수정"과 "추가 기능"의 경계가 불명확함</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 콘텐츠·언어</div>
+      <div class="cat-flow">카피라이팅·콘텐츠 제작 · 번역·통역</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>공통 강조 포인트</td><td>분량(글자·단어수), 전문성 가산, 저작권 귀속 시점</td></tr>
+            <tr><td>흔한 실수</td><td>수정 범위·전문 용어 난이도를 단가에 반영하지 않음</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 마케팅·비주얼</div>
+      <div class="cat-flow">SNS·마케팅 대행 · 사진 촬영</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>공통 강조 포인트</td><td>월 산출물 수량, 광고비·이동비 별도 여부, 사용 범위·기간 제한</td></tr>
+            <tr><td>흔한 실수</td><td>"관리"·"보정"처럼 뭉뚱그린 표현으로 업무 범위가 무한정 넓어짐</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 컨설팅·문서</div>
+      <div class="cat-flow">온라인 강의·컨설팅 · 사업계획서·문서작성 대행</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td>공통 강조 포인트</td><td>회차·페이지 분량 기준 단가, 재사용·재판매 권리, 기밀유지</td></tr>
+            <tr><td>흔한 실수</td><td>강의와 1:1 컨설팅을 같은 단가로, 검토와 작성을 같은 항목으로 취급</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>견적서 템플릿 10종</h2>
+    <p class="lede">업종별 핵심 라인아이템만 요약했습니다. 항목별 수량·단가 빈칸까지 전부 채워진 표는 `업종별_견적서_템플릿_10종.md`에 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 크리에이티브·디자인</div>
+
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+        <h3>로고·브랜딩 디자인</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>항목</th><th>내용/기준</th><th>참고 단가</th></tr>
+            <tr><td>로고 디자인</td><td>시안 3개, 최종 1개, 수정 1회 포함</td><td>30만~80만 원</td></tr>
+            <tr><td>브랜드 가이드북</td><td>색상·폰트·사용 예시 1식(선택)</td><td>+20만~50만 원</td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">특이 조항 — 저작권은 잔금 완납 시점에 이전, 상표 사용 범위(국내/해외, 인쇄/디지털)를 견적서에 명시하세요.</div>
+      </div>
+
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2</h4></div>
+        <h3>영상 편집·촬영</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>항목</th><th>내용/기준</th><th>참고 단가</th></tr>
+            <tr><td>촬영</td><td>일 단위, 이동비·식비 별도</td><td>1일 40만~80만 원</td></tr>
+            <tr><td>편집</td><td>완성본 러닝타임 기준, 모션그래픽 별도</td><td>1분당 5만~15만 원</td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">특이 조항 — 2차 활용(광고 송출·재편집) 범위와 원본 소스 제공 여부를 반드시 명시하세요.</div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 개발·기술</div>
+
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">3</span><h4>Worksheet 3</h4></div>
+        <h3>웹사이트·랜딩페이지 개발</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>항목</th><th>내용/기준</th><th>참고 단가</th></tr>
+            <tr><td>랜딩페이지</td><td>1페이지, 반응형 대응 포함</td><td>50만~150만 원</td></tr>
+            <tr><td>소형 쇼핑몰</td><td>반응형, DB 연동 포함</td><td>300만 원~</td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">특이 조항 — 배포 후 무상 유지보수 기간을 명시하고, 종료 후 SLA(월 단가)는 별도 항목으로 분리하세요.</div>
+      </div>
+
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">4</span><h4>Worksheet 4</h4></div>
+        <h3>데이터 분석·자동화 스크립트</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>항목</th><th>내용/기준</th><th>참고 단가</th></tr>
+            <tr><td>1회성 분석 리포트</td><td>데이터 정제+분석+시각화</td><td>30만~100만 원</td></tr>
+            <tr><td>자동화 스크립트 구축</td><td>정기 실행, 문서화 포함</td><td>50만~200만 원(+월 유지보수 10만~30만 원)</td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">특이 조항 — 1회성 산출물과 정기 구독형(월 유지보수)을 반드시 분리해서 견적하고, 원본 데이터 보안·기밀유지 조항을 넣으세요.</div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 콘텐츠·언어</div>
+
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">5</span><h4>Worksheet 5</h4></div>
+        <h3>카피라이팅·콘텐츠 제작</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>항목</th><th>내용/기준</th><th>참고 단가</th></tr>
+            <tr><td>블로그 콘텐츠</td><td>1,500자 내외, 리서치 포함</td><td>1건 5만~15만 원</td></tr>
+            <tr><td>상세페이지</td><td>수정 1회 포함</td><td>1건 15만~40만 원</td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">특이 조항 — 저작권은 잔금 완납 시점에 이전하고, 브랜드 톤앤매너 가이드를 사전에 수령해두세요.</div>
+      </div>
+
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">6</span><h4>Worksheet 6</h4></div>
+        <h3>번역·통역</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>항목</th><th>내용/기준</th><th>참고 단가</th></tr>
+            <tr><td>일반 번역</td><td>매당(200자) 기준</td><td>5천~1만 원</td></tr>
+            <tr><td>전문분야 번역 · 통역</td><td>법률·의료·기술 가산 / 통역 시간당</td><td>1만~2만 원 · 시간당 5만~15만 원</td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">특이 조항 — 기밀유지(NDA) 여부와 원문 오류에 대한 책임 소재를 견적서 단계에서 미리 명확히 하세요.</div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 마케팅·비주얼</div>
+
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">7</span><h4>Worksheet 7</h4></div>
+        <h3>SNS·마케팅 대행</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>항목</th><th>내용/기준</th><th>참고 단가</th></tr>
+            <tr><td>채널 관리</td><td>월 게시물 수 기준, 채널당</td><td>월 50만~150만 원</td></tr>
+            <tr><td>광고 운영 대행</td><td>광고비는 클라이언트 직접 집행</td><td>광고비의 10~20%</td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">특이 조항 — 채널 계정 소유권은 클라이언트 귀속임을 명시하고, "관리" 대신 실제 업무를 항목별로 나열하세요.</div>
+      </div>
+
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">8</span><h4>Worksheet 8</h4></div>
+        <h3>사진 촬영</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>항목</th><th>내용/기준</th><th>참고 단가</th></tr>
+            <tr><td>제품 사진</td><td>20컷, 기본 보정 포함</td><td>20만~50만 원</td></tr>
+            <tr><td>인물·프로필</td><td>보정 컷수 명시</td><td>15만~40만 원</td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">특이 조항 — 보정 컷수 초과 시 추가 단가, 사용 기간·매체(인쇄/온라인) 제한, 인물 촬영 시 초상권 동의서를 넣으세요.</div>
+      </div>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 컨설팅·문서</div>
+
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">9</span><h4>Worksheet 9</h4></div>
+        <h3>온라인 강의·컨설팅</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>항목</th><th>내용/기준</th><th>참고 단가</th></tr>
+            <tr><td>강의 진행</td><td>회차당, 2시간 기준</td><td>1회 20만~50만 원</td></tr>
+            <tr><td>1:1 컨설팅</td><td>그룹 강의와 별도 단가</td><td>시간당 10만~20만 원</td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">특이 조항 — 녹화본의 재수강·재판매 가능 여부와 저작권 귀속(강사)을 명시하세요.</div>
+      </div>
+
+      <div class="worksheet">
+        <div class="worksheet-head"><span class="worksheet-num">10</span><h4>Worksheet 10</h4></div>
+        <h3>사업계획서·문서작성 대행</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>항목</th><th>내용/기준</th><th>참고 단가</th></tr>
+            <tr><td>사업계획서 초안</td><td>인터뷰·리서치 포함</td><td>30만~80만 원</td></tr>
+            <tr><td>정부지원사업 맞춤형</td><td>지정 양식 대응</td><td>50만~150만 원</td></tr>
+          </table>
+        </div>
+        <div class="worksheet-note">특이 조항 — 선정 여부와 무관하게 작성비는 환불 불가임을 사전 고지하고, 사업 아이디어 기밀유지(NDA)를 넣으세요.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>업종별 커스터마이징 프롬프트 10선</h2>
+    <p class="lede">Day29 전자책 프롬프트 16개와 겹치지 않는 신규 구성입니다. `[템플릿 표 붙여넣기]`·`[요구사항]` 자리만 바꿔서 그대로 씁니다. 전체 프롬프트 전문은 `업종별_커스터마이징_프롬프트_10선.md`에 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 크리에이티브·디자인</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">A1 · 로고·브랜딩 견적서 다듬기</div>
+          <p class="prompt">"로고·브랜딩 디자인 견적서 뼈대를 줄게: [템플릿]. 클라이언트 요구사항은 [요구사항]이야. 시안 개수와 수정 횟수를 조정하고 빠진 항목이 없는지 점검해줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">A2 · 영상 편집 견적서 다듬기</div>
+          <p class="prompt">"영상 편집·촬영 견적서 뼈대를 줄게: [템플릿]. 프로젝트는 [러닝타임/촬영일수/용도]야. 조건에 맞게 단가 항목을 조정하고 2차 활용 범위 문구도 제안해줘."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 개발·기술</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">B1 · 웹 개발 견적서 다듬기</div>
+          <p class="prompt">"웹사이트 개발 견적서 뼈대를 줄게: [템플릿]. 프로젝트 범위는 [페이지 수/기능 목록]이야. 범위 외 추가 개발 요청 시 쓸 단가 산정 기준 문구도 만들어줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">B2 · 데이터 분석 견적서 다듬기</div>
+          <p class="prompt">"데이터 분석·자동화 견적서 뼈대를 줄게: [템플릿]. 원하는 산출물은 [리포트/대시보드/스크립트]야. 1회성과 정기 유지보수를 분리한 견적으로 다시 짜줘."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 콘텐츠·언어</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">C1 · 카피라이팅 견적서 다듬기</div>
+          <p class="prompt">"카피라이팅 견적서 뼈대를 줄게: [템플릿]. 콘텐츠 종류·분량은 [블로그/상세페이지, 글자수]야. 수정 횟수 초과 시 청구 문구도 정중하게 만들어줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">C2 · 번역·통역 견적서 다듬기</div>
+          <p class="prompt">"번역·통역 견적서 뼈대를 줄게: [템플릿]. 분량·전문 분야는 [분량/전문분야]야. 전문분야 가산율과 긴급 납기 할증률을 시장 사례 기준으로 제안해줘."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 마케팅·비주얼</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">D1 · SNS 마케팅 견적서 다듬기</div>
+          <p class="prompt">"SNS·마케팅 대행 견적서 뼈대를 줄게: [템플릿]. 채널과 월 게시물 수는 [채널/게시물 수]야. '관리' 대신 실제 업무 범위를 구체적으로 나열해줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">D2 · 사진 촬영 견적서 다듬기</div>
+          <p class="prompt">"사진 촬영 견적서 뼈대를 줄게: [템플릿]. 촬영 종류·컷수는 [제품/인물, 컷수]야. 보정 컷수 초과 단가와 사용 범위 제한 문구를 만들어줘."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 컨설팅·문서</div>
+      <div class="prompt-grid">
+        <div class="prompt-block">
+          <div class="prompt-id">E1 · 강의·컨설팅 견적서 다듬기</div>
+          <p class="prompt">"온라인 강의·컨설팅 견적서 뼈대를 줄게: [템플릿]. 회차와 1:1 컨설팅 비중은 [회차/시간]이야. 녹화본 재사용 권리 조항 문구도 제안해줘."</p>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-id">E2 · 사업계획서 견적서 다듬기</div>
+          <p class="prompt">"사업계획서 대행 견적서 뼈대를 줄게: [템플릿]. 문서 종류·목적은 [정부지원사업/투자유치]야. 작성비 환불 불가 문구를 오해 없이 만들어줘."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>사용법 체크리스트</h2>
+    <p class="lede">견적서를 처음 보낼 때부터 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>업종 확인</h4>
+      <ul>
+        <li><input type="checkbox" disabled>5개 카테고리 참고표에서 내 업종이 어디에 속하는지 확인하기</li>
+        <li><input type="checkbox" disabled>겸업 중이라면 해당하는 카테고리를 모두 확인하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>표 복사</h4>
+      <ul>
+        <li><input type="checkbox" disabled>`업종별_견적서_템플릿_10종.md`에서 해당 업종 표를 엑셀·노션에 복사하기</li>
+        <li><input type="checkbox" disabled>Day29 방법 4에서 정한 내 단가 기준으로 "수량/일정"·"단가" 빈칸 채우기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>프롬프트로 다듬기</h4>
+      <ul>
+        <li><input type="checkbox" disabled>같은 업종의 커스터마이징 프롬프트를 찾아 실제 프로젝트 정보 채워 넣기</li>
+        <li><input type="checkbox" disabled>AI가 다듬은 문구가 방법 3의 6개 필수 항목을 빠짐없이 담았는지 다시 확인하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>기본값 고정</h4>
+      <ul>
+        <li><input type="checkbox" disabled>VAT·원천세·결제 조건 기본값을 정하고 모든 견적서에 동일하게 적용하기</li>
+        <li><input type="checkbox" disabled>완성한 업종별 템플릿을 폴더 하나에 정리해 다음부터 숫자만 바꿔 재사용하기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>업종마다 백지에서 다시 시작하지 마세요. 표를 복사하고, 숫자를 채우고, 프롬프트로 다듬으면 끝입니다.</p>
+    <div class="close">
+      <p><strong>다음 견적서는 5분이면 나갑니다.</strong></p>
+      <div class="sign">— 끝 —</div>
+    </div>
+  </div>
+
+</div>
