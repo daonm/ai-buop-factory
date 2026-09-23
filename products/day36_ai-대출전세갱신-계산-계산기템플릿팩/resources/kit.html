@@ -1,0 +1,309 @@
+<title>대출상환·전월세전환 계산기 템플릿팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 대출상환 비교 계산기 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 대환대출 순이익 계산기 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 전월세전환율 계산기 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 전세갱신 상한 계산기 */
+    --cat-d-tint: #E3E6CE;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 110px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 64px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.06rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.65rem; font-weight:700; margin:0 0 15px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:14px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.08rem; margin:22px 0 10px; color:var(--ink); break-after:avoid; }
+  h4.sub-label{ font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.06em; color:var(--ink-soft); margin:9px 0 6px; text-transform:uppercase; break-after:avoid; }
+  section.chapter{ padding:20px 0 22px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 11px; max-width:68ch; }
+  .lede{ font-size:1rem; color:var(--ink-soft); max-width:62ch; margin-bottom:12px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:8px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:16px 18px 12px; margin:0 0 12px; break-inside:avoid; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:4px 0 9px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:9px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.86rem; background:var(--paper); }
+  th,td{ text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .blank-line{ display:inline-block; border-bottom:1px dotted var(--gold); min-width:200px; margin-left:6px; }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.77rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-top:4px; }
+
+  /* ---------- Domain blocks (category-colored) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:13px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:9px 12px 7px; margin:0 0 8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin-bottom:8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 11px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.91rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:16px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 36 · 실행 키트</span>
+    <span class="badge">『은행원도 아닌데, 대출 계산은 해드릴 수 있습니다』 실전 부록</span>
+    <h1>계산기가 답을<br>먼저 드립니다</h1>
+    <p class="subtitle"><span class="nowrap">대출상환 비교</span> · <span class="nowrap">대환대출</span> <span class="nowrap">순이익</span> · <span class="nowrap">전월세전환율</span> · <span class="nowrap">전세갱신 상한</span> <span class="nowrap">계산기</span> — <span class="nowrap">수식이 이미</span> <span class="nowrap">짜인 엑셀 4종</span>, <span class="nowrap">조건만 넣으면</span> <span class="nowrap">숫자가 나옵니다</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>4</strong>계산기</div>
+      <div class="nowrap"><strong>2026</strong>년 기준표</div>
+      <div class="nowrap"><strong>4</strong>단계 판매 체크리스트</div>
+    </div>
+    <div class="byline">『은행원도 아닌데, 대출 계산은 해드릴 수 있습니다』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">계산기는 다 만들어놨습니다. 이제 조건만 넣으면 됩니다.</em> 이 키트는 전자책 방법 2·3·4·5·6(상환 계산·대환 순이익·중도상환수수료·전월세전환·갱신 상한)을 이미 끝낸 완성본입니다.</p>
+    <p>엑셀 파일 4개 모두 같은 구조로 만들었습니다.</p>
+    <ol class="steps">
+      <li><strong>안내 시트</strong> — "참고용 계산 도구이며 법률·금융 자문을 대신하지 않는다"는 경계를 첫 화면에 명시합니다.</li>
+      <li><strong>기준표 시트(해당 파일만)</strong> — 중도상환수수료 감면 구조, 전월세전환율 법정 상한처럼 자주 바뀌는 기준을 따로 모아뒀습니다.</li>
+      <li><strong>계산기 시트</strong> — 노란색 칸에 숫자를 입력하면 올리브색 칸에 결과가 바로 뜹니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 계산기별 참고표에서 원하는 것부터 확인하고, 실제 파일을 열어 본인(또는 상담 대상) 조건으로 한 번 테스트해본 뒤 상담·판매를 시작하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>계산기 4종 빠른 참고표</h2>
+    <p class="lede">각 계산기의 입력값 예시, 결과값, 그리고 어떤 순서로 이어 쓰는지를 정리했습니다. 실제 파일에 그대로 입력해 결과를 재현할 수 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 대출상환 비교 계산기</div>
+      <div class="cat-flow">파일 — 대출상환_비교_계산기.xlsx · 원금·연이율·상환개월수를 입력하면 원리금균등·원금균등 두 방식의 월상환액·총이자·회차별 내역을 나란히 계산합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>원금 / 연이율 / 기간</td><td>3억원 / 4.5% / 360개월</td><td>원리금균등 월상환액</td><td>1,520,056원</td></tr>
+            <tr><td>원금균등 첫 달 상환액</td><td>1,958,333원</td><td>총이자 차액</td><td>44,157,635원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "매달 똑같이 낼지, 초반에 조금 더 내고 이자를 아낄지" 고민하는 대출 초기 상담. 회차별 내역표로 초반 부담 차이를 눈으로 보여줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 대환대출 순이익 계산기</div>
+      <div class="cat-flow">파일 — 대환대출_순이익_계산기.xlsx · 기존·신규 대출 조건과 중도상환수수료를 입력하면 "갈아탔을 때 진짜 남는 돈"과 손익분기 개월수를 계산합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>잔액 3억 / 4.8%→3.9%</td><td>남은 240개월</td><td>대환 순이익</td><td>32,028,102원</td></tr>
+            <tr><td>중도상환수수료 + 부대비용</td><td>2,200,000원 + 500,000원</td><td>손익분기 개월수</td><td>18.7개월</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "금리가 낮아졌는데 갈아타야 할지" 묻는 대환 상담. 수수료를 빼먹지 않고 계산한 순이익과 손익분기 개월수, 두 숫자를 함께 보여주면 신뢰가 생깁니다.</p>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 전월세전환율 계산기</div>
+      <div class="cat-flow">파일 — 전월세전환율_계산기.xlsx · 줄이는 보증금과 전환율을 입력하면 월세와 법정 상한 월세를 함께 계산하고, 갱신 계약의 적법 여부를 자동 판정합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>줄이는 보증금 / 전환율</td><td>5,000만원 / 5.5%</td><td>월세</td><td>229,167원</td></tr>
+            <tr><td>한국은행 기준금리</td><td>3.0%</td><td>법정 상한 월세(갱신 한정)</td><td>208,333원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "보증금 일부를 월세로 돌리면 얼마가 될지" 궁금한 세입자. 법정 상한은 갱신 계약에만 강제된다는 점을 먼저 설명한 뒤 이 계산기를 보여주세요.</p>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 전세갱신 상한 계산기</div>
+      <div class="cat-flow">파일 — 전세갱신_상한_계산기.xlsx · 기존 보증금과 집주인 요구액을 입력하면 갱신청구권 5% 상한 기준 적법 여부를 판정하고, 인상분 분산 시나리오 3개를 비교합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>기존 보증금 / 요구 인상액</td><td>3억원 / 2,000만원</td><td>적법 여부</td><td>상한 초과 — 협상 필요</td></tr>
+            <tr><td>인상 가능 최대 금액</td><td>1,500만원</td><td>초과 금액</td><td>500만원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 갱신 시기에 집주인이 인상을 요구했는데 "이게 맞는 금액인지" 확인하고 싶은 세입자. 상한 초과 금액과 분산 시나리오까지 한 번에 보여줄 수 있습니다.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>패키지 구성 &amp; 검증 워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>패키지·가격 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지 유형</th><th>가격대</th><th>내 판매가</th></tr>
+          <tr><td>계산기 1종(엑셀)</td><td>5,000~9,900원</td><td class="fill"></td></tr>
+          <tr><td>계산기 세트(4종 전체)</td><td>15,000~25,000원</td><td class="fill"></td></tr>
+          <tr><td>전자책+계산기 4종 묶음</td><td>20,000~35,000원</td><td class="fill"></td></tr>
+          <tr><td>1회성 계산 상담(직접 진행)</td><td>10,000~30,000원</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">추천 — 처음엔 A(대출상환 비교) 또는 D(전세갱신 상한) 단품으로 판매 기록부터 쌓고, 반응이 오면 4종 세트로 묶어 객단가를 높이세요.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 판매 전 필수</h4></div>
+      <h3>내 조건으로 교차검증하기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>계산기</th><th>내 실제 값 입력</th><th>은행 앱/실제 계약과 비교</th></tr>
+          <tr><td>A. 대출상환 비교</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>B. 대환대출 순이익</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>C. 전월세전환율</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>D. 전세갱신 상한</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">비교 대상 — 은행 앱에 표시된 실제 월 상환액, 은행의 실제 중도상환수수료 조회 결과, 실제 임대차계약서상 보증금·인상액. 오차가 크면 상담 전에 반드시 기준값(금리·수수료율·거치기간)을 다시 점검하세요.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>판매 준비 체크리스트</h2>
+    <p class="lede">브리프부터 등록까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>검증</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 2로 계산기 4종 모두 내(또는 지인의) 실제 조건으로 테스트하기</li>
+        <li><input type="checkbox" disabled>은행 앱 실제 상환 스케줄·중도상환수수료 조회 결과와 대조해 오차 확인하기</li>
+        <li><input type="checkbox" disabled>계산기 시트에 확인한 금리·수수료율과 확인 날짜 메모 남기기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>다듬기</h4>
+      <ul>
+        <li><input type="checkbox" disabled>입력 셀(노란색) 옆에 "여기에 숫자를 입력하세요" 안내 문구 확인하기</li>
+        <li><input type="checkbox" disabled>"법률·금융 자문이 아닌 참고용 계산"이라는 경계 문구가 각 파일에 잘 붙어있는지 확인하기</li>
+        <li><input type="checkbox" disabled>파일명·시트명에 오탈자 없는지 최종 점검하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>등록</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 1로 패키지·가격 확정하기</li>
+        <li><input type="checkbox" disabled>래피드에 상품명 "계산기/대환/전세갱신" 단어 포함해 등록하기</li>
+        <li><input type="checkbox" disabled>Day35 전자책과 세트 상품(업셀) 옵션도 함께 등록하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>갱신 관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>한국은행 기준금리·DSR 규제 비율 변경 공지 분기마다 확인해 캘린더에 표시해두기</li>
+        <li><input type="checkbox" disabled>기존 상담 고객 연락처/알림 목록 만들어두기(다음 갱신 시점 안내용)</li>
+        <li><input type="checkbox" disabled>법정 상한·수수료율 변경 시 C·D 계산기 기준표만 교체 후 Worksheet 2 검증 다시 거치기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>조건을 넣고, 검증하고, 숫자로 답하세요.</p>
+    <p><strong>완벽한 상담보다, 오늘 신뢰를 얻는 계산이 더 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
