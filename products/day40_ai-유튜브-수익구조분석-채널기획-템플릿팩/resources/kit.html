@@ -1,0 +1,354 @@
+<title>유튜브 수익 구조 분석 — 수익 계산기 + 채널 기획 템플릿팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 니치별 RPM·수익성 계산기 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — YPP 달성 로드맵 계산기 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 협찬단가·제휴수익 계산기 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 채널기획서·캘린더·아이디어 템플릿 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #8B5A83;   /* plum — 상담 진행 체크리스트 */
+    --cat-e-tint: #E7DAE5;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C994C0; --cat-e-tint: #332030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C994C0; --cat-e-tint: #332030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.04rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.62rem; font-weight:700; margin:0 0 14px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:14px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.06rem; margin:20px 0 9px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:18px 0 20px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 10px; max-width:68ch; }
+  .lede{ font-size:0.98rem; color:var(--ink-soft); max-width:62ch; margin-bottom:14px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:7px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:15px 17px 12px; margin:0 0 12px; break-inside:avoid; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:4px 0 8px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.85rem; background:var(--paper); }
+  th,td{ text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin-top:4px; }
+
+  /* ---------- Domain blocks (category-colored, 계산기 4종) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:12px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:9px 12px 7px; margin:0 0 8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Task grid (상담 진행 체크리스트, category-colored 2단 배치) ---------- */
+  .task-grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:10px; }
+  .task-card{ background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:10px; padding:9px 12px 10px; break-inside:avoid; }
+  .task-card .tn{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:999px; background:var(--accent); color:#fff; font-family:var(--font-mono); font-size:0.7rem; font-weight:700; margin-right:7px; flex-shrink:0; }
+  .task-card h5{ display:inline; font-size:0.89rem; font-weight:700; margin:0; color:var(--ink); }
+  .task-card p{ margin:5px 0 0; font-size:0.79rem; color:var(--ink-soft); line-height:1.5; }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:11px 15px; margin-bottom:8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 10px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.9rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:30px 20px 18px; break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:14px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 40 · 실행 키트</span>
+    <span class="badge">『구독자가 없어도, 유튜브 채널 기획은 대신 해드릴 수 있습니다』 실전 부록</span>
+    <h1>숫자는 계산기가,<br>기획은 템플릿이 대신합니다</h1>
+    <p class="subtitle"><span class="nowrap">니치별 RPM</span> · <span class="nowrap">YPP 달성 로드맵</span> · <span class="nowrap">협찬·제휴</span> <span class="nowrap">수익 계산기</span> <span class="nowrap">3종</span> + <span class="nowrap">채널 기획서</span>·<span class="nowrap">4주 캘린더</span>·<span class="nowrap">영상 아이디어</span> <span class="nowrap">30개 템플릿</span> — <span class="nowrap">조건만 넣으면</span> <span class="nowrap">진단·기획서가</span> <span class="nowrap">완성됩니다</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>3</strong>계산기</div>
+      <div class="nowrap"><strong>18</strong>단계 체크리스트</div>
+      <div class="nowrap"><strong>4</strong>단계 판매 체크리스트</div>
+    </div>
+    <div class="byline">『구독자가 없어도, 유튜브 채널 기획은 대신 해드릴 수 있습니다』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">계산기는 다 만들어놨습니다. 이제 니치와 조건만 넣으면 됩니다.</em> 이 키트는 전자책 방법 2·5·6·7·8(니치별 수익성 진단·채널 기획서·영상 아이디어·수익 다각화·YPP 로드맵)을 이미 끝낸 완성본입니다.</p>
+    <p>엑셀 파일 5개 모두 같은 구조로 만들었습니다.</p>
+    <ol class="steps">
+      <li><strong>안내 시트</strong> — "조회수·수익을 보장하지 않는 참고용 진단 도구"라는 경계를 첫 화면에 명시합니다.</li>
+      <li><strong>기준값(해당 파일만)</strong> — YPP 가입 조건처럼 자주 바뀌는 기준을 계산기 시트 안에 따로 모아뒀습니다.</li>
+      <li><strong>계산기·템플릿 시트</strong> — 노란색 칸에 값을 입력하면 올리브색 칸에 결과가 바로 뜹니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 계산기별 참고표에서 원하는 것부터 확인하고, 실제 파일을 열어 본인(또는 상담 대상) 조건으로 한 번 테스트해본 뒤 채널 기획 템플릿까지 이어서 진행하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>계산기·템플릿 5종 빠른 참고표</h2>
+    <p class="lede">각 파일의 입력값 예시, 결과값, 그리고 어떤 순서로 이어 쓰는지를 정리했습니다. 실제 파일에 그대로 입력해 결과를 재현할 수 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 니치별 RPM·수익성 진단 계산기</div>
+      <div class="cat-flow">파일 — 니치별_RPM_수익성_계산기.xlsx · 니치별 RPM 하단/상단을 입력하면 월 조회수 1만/10만/100만 구간별 예상 광고수익과 니치 간 배율을 계산합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>재테크 RPM 3,000~8,000원</td><td>월 10만 조회</td><td>예상 광고수익</td><td>300,000~800,000원</td></tr>
+            <tr><td>브이로그 RPM 800~1,500원</td><td>같은 10만 조회</td><td>재테크 대비 배율</td><td>약 5.3배</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "무슨 주제로 시작해야 돈이 될지" 니치부터 못 정한 지망생. 같은 조회수라도 니치에 따라 광고 수익이 몇 배씩 갈린다는 걸 숫자로 먼저 보여주면 방향이 명확해집니다.</p>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. YPP 달성 로드맵 계산기</div>
+      <div class="cat-flow">파일 — YPP_달성_로드맵_계산기.xlsx · 주당 업로드·평균 조회수·시청 지속시간·구독 전환율을 입력하면 펜 펀딩·전체 광고수익 조건 도달까지 예상 개월수를 역산합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>주 2회 업로드 / 평균 3천회</td><td>시청 4분 / 전환 0.5%</td><td>구독자 500명 도달</td><td>약 3.9개월</td></tr>
+            <tr><td>쇼츠 주 5회 / 평균 8천회</td><td>쇼츠 경로</td><td>쇼츠 300만 회 도달</td><td>약 17.4개월</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "언제부터 수익화가 되는지" 막막한 신규 크리에이터. 롱폼·쇼츠 두 경로를 나란히 계산해 더 빠른 쪽을 전략으로 제안할 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 협찬단가·제휴수익 계산기</div>
+      <div class="cat-flow">파일 — 협찬단가_제휴수익_계산기.xlsx · 구독자·평균 조회수·참여율·기준 단가를 입력하면 영상 유형별(언급형·전용리뷰형·콜라보형) 협찬 단가와 월 제휴마케팅 예상 수익을 계산합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>구독자 5천 / 평균 4천회</td><td>참여율 4.0%</td><td>전용리뷰형 협찬 단가</td><td>약 110,400원</td></tr>
+            <tr><td>월 4편 관련 영상</td><td>클릭 3% / 전환 5%</td><td>월 제휴마케팅 수익</td><td>약 72,000원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 협찬 제안을 처음 받아 단가를 어떻게 불러야 할지 모르는 크리에이터. 조회수만이 아니라 참여율까지 반영한 근거 있는 단가표를 함께 보여주면 협상에서 밀리지 않습니다.</p>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 채널기획서·4주캘린더·영상아이디어 템플릿</div>
+      <div class="cat-flow">파일 — 채널기획서_4주캘린더_영상아이디어30개.xlsx · 채널명·시리즈·업로드 캘린더·영상 아이디어 30개를 빈 칸에 채우면 난이도 분포까지 자동 집계되는 완성형 기획 문서</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>시트</th><th>구성</th><th>자동 집계</th><th>값</th></tr>
+            <tr><td>채널기획서</td><td>채널명 후보 3 / 페르소나 3 / 시리즈 4</td><td>—</td><td>수기 확정</td></tr>
+            <tr><td>영상아이디어30개</td><td>번호·시리즈·제목후보·썸네일문구</td><td>난이도 분포</td><td>COUNTIF 자동 갱신</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 기획서는 받았는데 "그래서 뭘 먼저 찍어야 하는지" 막막한 신규 크리에이터. 30개 아이디어를 난이도순으로 미리 배치해주면 시작하자마자 멈추지 않습니다.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>패키지 구성 &amp; 검증 워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>패키지·가격 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지 유형</th><th>가격대</th><th>내 판매가</th></tr>
+          <tr><td>계산기 1종(엑셀)</td><td>5,000~9,900원</td><td class="fill"></td></tr>
+          <tr><td>계산기 세트(3종 전체)</td><td>12,000~20,000원</td><td class="fill"></td></tr>
+          <tr><td>전자책+계산기 3종+기획서 템플릿 묶음</td><td>25,000~40,000원</td><td class="fill"></td></tr>
+          <tr><td>1회성 진단 리포트(직접 진행)</td><td>10,000~30,000원</td><td class="fill"></td></tr>
+          <tr><td>채널 기획서 풀패키지(직접 진행)</td><td>30,000~70,000원</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">추천 — 처음엔 A(니치별 RPM) 또는 B(YPP 로드맵) 단품으로 판매 기록부터 쌓고, 반응이 오면 3종 세트+기획서 템플릿으로 묶어 객단가를 높이세요.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 판매 전 필수</h4></div>
+      <h3>내 조건으로 교차검증하기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>계산기</th><th>내 실제 값 입력</th><th>실제 채널/공고와 비교</th></tr>
+          <tr><td>A. 니치별 RPM·수익성</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>B. YPP 달성 로드맵</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>C. 협찬단가·제휴수익</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">비교 대상 — 실제 애드센스 리포트(있다면), 유튜브 스튜디오의 실제 시청시간·구독자 추이, 동종 니치 크리에이터의 공개된 협찬 후기. 오차가 크면 상담 전에 반드시 기준값(RPM 시세·YPP 조건)을 다시 점검하세요.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>상담 진행 체크리스트</h2>
+    <p class="lede">온보딩부터 납품까지 18단계로 정리했습니다. <strong>상담_진행_체크리스트.xlsx</strong>에 완료 여부를 기록하면서 그대로 상담 진행 관리표로 사용할 수 있습니다.</p>
+
+    <div class="cat-label" style="--accent:var(--cat-a);--accent-tint:var(--cat-a-tint)">온보딩·진단 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">1</span><h5>니치 후보 확정</h5><p>상담 대상이 시작하려는 채널 주제 1~3개 후보 확정</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">2</span><h5>온보딩 질문지 발송·회수</h5><p>가용 시간·장비·목표를 빠짐없이 받는 질문지 사용</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">3</span><h5>니치별 RPM 진단</h5><p>계산기 A로 후보 니치의 광고 수익성 비교</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">4</span><h5>경쟁 채널 벤치마킹</h5><p>채널 유형 3~5개 분류 및 빈틈 정리</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">5</span><h5>타깃·포지셔닝 확정</h5><p>페르소나와 차별화 포인트 확정</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">6</span><h5>진단 리포트 초안 작성</h5><p>면책 문구 포함한 고객용 리포트 작성</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">7</span><h5>고객 검토·피드백 반영</h5><p>니치 확정 여부 확인 후 다음 단계 진행</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-e);--accent-tint:var(--cat-e-tint)">채널 기획 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">1</span><h5>채널명·한줄소개 확정</h5><p>채널기획서 시트에 최종안 기입</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">2</span><h5>핵심 시리즈 3~4개 확정</h5><p>포맷·길이·주기까지 확정</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">3</span><h5>4주 업로드 캘린더 작성</h5><p>주차별 시리즈·주제·제목 초안 채우기</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">4</span><h5>영상 아이디어 30개 작성</h5><p>난이도까지 표시해 순서 정리</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">5</span><h5>제목·썸네일 문구 세트</h5><p>아이디어별 제목 후보·썸네일 문구 완성</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">6</span><h5>YPP 로드맵 계산</h5><p>계산기 B로 조건 도달 예상 개월 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">7</span><h5>수익 다각화 로드맵</h5><p>계산기 C로 성장 단계별 수익원 정리</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-c);--accent-tint:var(--cat-c-tint)">납품·마무리 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">1</span><h5>최종 기획서 패키징</h5><p>기획서·캘린더·아이디어·로드맵을 문서/PDF로 정리</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">2</span><h5>가격·패키지 확정</h5><p>진단 리포트 또는 풀패키지 가격 확정 후 청구</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">3</span><h5>면책 문구 최종 확인</h5><p>"조회수·수익 보장 안 함" 안내 포함 여부 점검</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">4</span><h5>후속 상담·갱신 안내</h5><p>RPM·YPP 조건 변경 시 재상담 가능함을 안내</p></div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>판매 준비 체크리스트</h2>
+    <p class="lede">브리프부터 등록까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>검증</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 2로 계산기 3종 모두 내(또는 지인의) 실제 조건으로 테스트하기</li>
+        <li><input type="checkbox" disabled>실제 애드센스·유튜브 스튜디오 데이터와 대조해 오차 확인하기</li>
+        <li><input type="checkbox" disabled>계산기 시트에 확인한 RPM·YPP 조건과 확인 날짜 메모 남기기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>다듬기</h4>
+      <ul>
+        <li><input type="checkbox" disabled>입력 셀(노란색) 옆에 "여기에 숫자를 입력하세요" 안내 문구 확인하기</li>
+        <li><input type="checkbox" disabled>"조회수·수익을 보장하지 않는 참고용 진단"이라는 경계 문구가 각 파일에 붙어있는지 확인하기</li>
+        <li><input type="checkbox" disabled>파일명·시트명에 오탈자 없는지 최종 점검하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>등록</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 1로 패키지·가격 확정하기</li>
+        <li><input type="checkbox" disabled>래피드에 상품명 "계산기/유튜브/채널기획" 단어 포함해 등록하기</li>
+        <li><input type="checkbox" disabled>Day39 전자책과 세트 상품(업셀) 옵션도 함께 등록하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>갱신 관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>YPP 가입 조건(2027년 2월 상향 예고)·니치별 RPM 시세 변경 공지 분기마다 확인해 캘린더에 표시해두기</li>
+        <li><input type="checkbox" disabled>기존 상담 고객 연락처/알림 목록 만들어두기(다음 진단·갱신 시점 안내용)</li>
+        <li><input type="checkbox" disabled>조건 변경 시 B 계산기 기준값 시트만 교체 후 Worksheet 2 검증 다시 거치기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>조건을 넣고, 검증하고, 숫자와 문서로 답하세요.</p>
+    <p><strong>완벽한 조회수 예언보다, 오늘 신뢰를 얻는 진단이 더 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
