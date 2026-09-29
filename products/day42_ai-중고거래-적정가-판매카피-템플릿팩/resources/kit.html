@@ -1,0 +1,351 @@
+<title>중고거래 적정가 계산 · 판매카피 대행 — 계산기 + 카피 템플릿팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 카테고리별 감가율·적정가 계산기 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 시세밴드·등록가 계산기 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 플랫폼별 판매카피 템플릿 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 가격재조정·끌올 판단표 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #8B5A83;   /* plum — 의뢰접수·상담진행 체크리스트 */
+    --cat-e-tint: #E7DAE5;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C994C0; --cat-e-tint: #332030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C994C0; --cat-e-tint: #332030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.04rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.62rem; font-weight:700; margin:0 0 14px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:14px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.06rem; margin:20px 0 9px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:18px 0 20px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 10px; max-width:68ch; }
+  .lede{ font-size:0.98rem; color:var(--ink-soft); max-width:62ch; margin-bottom:14px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:7px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:15px 17px 12px; margin:0 0 12px; break-inside:avoid; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:4px 0 8px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.85rem; background:var(--paper); }
+  th,td{ text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin-top:4px; }
+
+  /* ---------- Domain blocks (category-colored, 계산기·템플릿 5종) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:12px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:9px 12px 7px; margin:0 0 8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Task grid (상담 진행 체크리스트, category-colored 2단 배치) ---------- */
+  .task-grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:10px; }
+  .task-card{ background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:10px; padding:9px 12px 10px; break-inside:avoid; }
+  .task-card .tn{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:999px; background:var(--accent); color:#fff; font-family:var(--font-mono); font-size:0.7rem; font-weight:700; margin-right:7px; flex-shrink:0; }
+  .task-card h5{ display:inline; font-size:0.89rem; font-weight:700; margin:0; color:var(--ink); }
+  .task-card p{ margin:5px 0 0; font-size:0.79rem; color:var(--ink-soft); line-height:1.5; }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:11px 15px; margin-bottom:8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 10px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.9rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:30px 20px 18px; break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:14px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 42 · 실행 키트</span>
+    <span class="badge">『그 가격, AI한테 먼저 물어보고 올리세요』 실전 부록</span>
+    <h1>가격은 계산기가,<br>판매글은 템플릿이 대신합니다</h1>
+    <p class="subtitle"><span class="nowrap">카테고리별 감가율</span> · <span class="nowrap">시세밴드·등록가</span> <span class="nowrap">계산기</span> <span class="nowrap">2종</span> + <span class="nowrap">플랫폼별 판매카피</span> · <span class="nowrap">가격재조정 판단표</span> <span class="nowrap">템플릿 3종</span> — <span class="nowrap">조건만 넣으면</span> <span class="nowrap">적정가와 판매글이</span> <span class="nowrap">완성됩니다</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>계산기·템플릿</div>
+      <div class="nowrap"><strong>16</strong>단계 체크리스트</div>
+      <div class="nowrap"><strong>4</strong>단계 판매 체크리스트</div>
+    </div>
+    <div class="byline">『그 가격, AI한테 먼저 물어보고 올리세요』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">계산기는 다 만들어놨습니다. 이제 물건 정보만 넣으면 됩니다.</em> 이 키트는 전자책 방법 1~8(감가상각 공식·시세 밴드·등록가 산정·판매 카피·플랫폼별 최적화·가격 재조정)을 이미 끝낸 완성본입니다.</p>
+    <p>엑셀 파일 5개 모두 같은 구조로 만들었습니다.</p>
+    <ol class="steps">
+      <li><strong>안내 시트</strong> — "감정평가·판매 보장이 아니라 참고용 리서치·계산 도구"라는 경계를 첫 화면에 명시합니다.</li>
+      <li><strong>계산기·템플릿 시트</strong> — 노란색 칸에 값을 입력하면 올리브색 칸에 결과가 바로 뜹니다.</li>
+      <li><strong>참고표(해당 파일만)</strong> — 카테고리별 감가율처럼 반복해서 쓰는 기준을 계산기 시트 상단에 함께 정리해뒀습니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 계산기별 참고표에서 원하는 것부터 확인하고, 실제 파일을 열어 본인(또는 의뢰인) 물건 조건으로 한 번 테스트해본 뒤 판매카피 템플릿까지 이어서 진행하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>계산기·템플릿 5종 빠른 참고표</h2>
+    <p class="lede">각 파일의 입력값 예시, 결과값, 그리고 어떤 순서로 이어 쓰는지를 정리했습니다. 실제 파일에 그대로 입력해 결과를 재현할 수 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 카테고리별 감가율·적정가 계산기</div>
+      <div class="cat-flow">파일 — 카테고리별_감가율_적정가_계산기.xlsx · 카테고리별 감가율 참고표에서 확인한 감가율과 기준가·상태감점·구성품감점·희소성가점을 입력하면 최종 적정가와 네고 여지 포함 등록가를 계산합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>노트북 150만원 / 감가율 35%</td><td>상태감점 8% / 구성품감점 3%</td><td>최종 적정가</td><td>약 866,700원</td></tr>
+            <tr><td>위 적정가 기준</td><td>네고 여지 +7.5%</td><td>네고 포함 등록가</td><td>약 931,700원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "얼마에 올려야 할지" 감이 전혀 없는 첫 중고거래 의뢰인. 감가율·상태·구성품을 숫자로 쪼개서 보여주면 "왜 이 가격인지" 설득력이 생깁니다.</p>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 시세밴드·등록가 계산기</div>
+      <div class="cat-flow">파일 — 시세밴드_등록가_계산기.xlsx · 실제 검색한 거래완료가 최대 10건을 입력하면 최저·최고·평균·중간값과 이상치 여부를 계산하고, 목표 실수령가 기준 3가지 등록가 시나리오를 제안합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>거래완료가 7건 입력</td><td>47~61만원대</td><td>시세 밴드(평균)</td><td>약 517,900원</td></tr>
+            <tr><td>목표 실수령가 50만원</td><td>적정가 우선(+7.5%)</td><td>등록가 / 마지노선</td><td>537,500원 / 475,000원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "판매중 호가만 보고 시세를 착각하는" 의뢰인. 반드시 거래완료가 기준으로 밴드를 잡아야 실제 팔릴 가격에 가까워진다는 걸 보여줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 플랫폼별 판매카피 템플릿</div>
+      <div class="cat-flow">파일 — 플랫폼별_판매카피_템플릿.xlsx · 물건 정보를 한 번 입력하면 당근마켓·번개장터·중고나라 시트에 제목 후보가 자동으로 채워지고, 5단 구조로 판매글을 옮겨 적는 템플릿입니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>시트</th><th>강조 포인트</th><th>제목 자동 미리보기</th></tr>
+            <tr><td>당근마켓</td><td>동네 인증·직거래</td><td>"갤럭시북4 프로 팝니다 (상태 상)"</td></tr>
+            <tr><td>번개장터</td><td>번개페이·검수·택배</td><td>"갤럭시북4 프로 판매 (번개페이 안전결제 가능…)"</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 같은 판매글을 세 플랫폼에 그대로 복사해서 반응이 떨어진 의뢰인. 플랫폼마다 다른 강조 포인트를 구조적으로 나눠주면 클릭률이 달라집니다.</p>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 가격재조정·끌올 판단표</div>
+      <div class="cat-flow">파일 — 가격재조정_끌올_판단표.xlsx · 경과일수·조회수·채팅·찜 수를 입력하면 가격 저항·관심 대비 전환 부족·노출 부족 신호를 판정하고, 현재 등록가 기준 단계적 인하가를 계산합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>경과 10일 / 조회 45</td><td>채팅 0건 / 찜 12개</td><td>신호 판정</td><td>가격 저항 의심 + 전환 부족</td></tr>
+            <tr><td>현재 등록가 55만원</td><td>1차 인하(−7.5%)</td><td>1차 인하가 / 마지노선</td><td>508,750원 / 467,500원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 안 팔리는 매물을 감으로 방치하거나 감으로 확 내리는 의뢰인. 신호를 근거로 "왜 지금 내려야 하는지"를 숫자로 설명할 수 있습니다.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>패키지 구성 &amp; 검증 워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>패키지·가격 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지 유형</th><th>가격대</th><th>내 판매가</th></tr>
+          <tr><td>계산기 1종(엑셀)</td><td>3,000~6,900원</td><td class="fill"></td></tr>
+          <tr><td>계산기·템플릿 세트(5종 전체)</td><td>9,900~15,000원</td><td class="fill"></td></tr>
+          <tr><td>전자책+계산기·템플릿 5종 묶음</td><td>15,000~25,000원</td><td class="fill"></td></tr>
+          <tr><td>1건당 적정가+판매글 세트(직접 진행)</td><td>5,000~10,000원</td><td class="fill"></td></tr>
+          <tr><td>3~5건 묶음 패키지(이사·정리 시즌)</td><td>15,000~35,000원</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">추천 — 처음엔 A(감가율 계산기) 또는 B(시세밴드 계산기) 단품으로 판매 기록부터 쌓고, 반응이 오면 5종 세트+전자책 묶음으로 객단가를 높이세요.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 판매 전 필수</h4></div>
+      <h3>내 조건으로 교차검증하기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>계산기</th><th>내 실제 값 입력</th><th>실제 거래완료가와 비교</th></tr>
+          <tr><td>A. 카테고리별 감가율·적정가</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>B. 시세밴드·등록가</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>D. 가격재조정·끌올</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">비교 대상 — 당근마켓 "가격 렌즈"가 보여주는 카테고리 시세, 번개장터·중고나라에서 직접 검색한 거래완료가. 오차가 크면 상담 전에 반드시 감가율 참고표를 다시 점검하세요.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>상담 진행 체크리스트</h2>
+    <p class="lede">접수부터 사후관리까지 16단계로 정리했습니다. <strong>의뢰접수_상담진행_체크리스트.xlsx</strong>에 완료 여부를 기록하면서 그대로 진행 관리표로 사용할 수 있습니다.</p>
+
+    <div class="cat-label" style="--accent:var(--cat-a);--accent-tint:var(--cat-a-tint)">접수·리서치 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">1</span><h5>접수 질문지 발송·회수</h5><p>사진·구매시기·사용감·하자·목표금액까지 빠짐없이 받기</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">2</span><h5>사진·정보 완비 확인</h5><p>전체샷·측면·하자부위·구성품 사진 누락 여부 점검</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">3</span><h5>카테고리별 감가율 확인</h5><p>계산기 A 참고표에서 해당 카테고리·연차 감가율 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">4</span><h5>거래완료가 5건 이상 검색</h5><p>판매중 호가가 아닌 거래완료 매물만 수집</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">5</span><h5>이상치 제외·시세밴드 확정</h5><p>계산기 B로 최저·최고·평균·중간값 정리</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-e);--accent-tint:var(--cat-e-tint)">계산·카피작성 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">1</span><h5>최종 적정가 산출</h5><p>계산기 A로 감가·상태·구성품·희소성 반영해 계산</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">2</span><h5>등록가 시나리오 3안 계산</h5><p>빠른판매·적정가·최고가 시나리오와 마지노선 확정</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">3</span><h5>목표 실수령가 합의</h5><p>의뢰인과 최종 등록가·네고 마지노선 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">4</span><h5>AI 판매글 초안 작성</h5><p>프롬프트 B5로 신뢰가 가는 판매글 초안 확보</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">5</span><h5>플랫폼별 버전 완성</h5><p>계산기 C로 당근·번개장터·중고나라 버전 완성</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">6</span><h5>하자 기재 검수</h5><p>과장 표현 제거, 하자·구성품 정확히 기재됐는지 확인</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-c);--accent-tint:var(--cat-c-tint)">납품·사후관리 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">1</span><h5>적정가 리포트 정리</h5><p>계산 근거(기준가·감가율·상태감점)를 표로 정리</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">2</span><h5>면책 문구 최종 확인</h5><p>"참고용 추정치이며 보장 아님" 문구 포함 여부 점검</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">3</span><h5>의뢰인 전달·피드백 수렴</h5><p>리포트+판매글 세트 전달 후 반응 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">4</span><h5>반응 없을 시 재조정 안내</h5><p>계산기 D 판단표로 인하 시점·폭 재상담 안내</p></div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>판매 준비 체크리스트</h2>
+    <p class="lede">브리프부터 등록까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>검증</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 2로 계산기 A·B·D 모두 내(또는 지인의) 실제 물건 조건으로 테스트하기</li>
+        <li><input type="checkbox" disabled>당근마켓 가격 렌즈·실제 거래완료가와 대조해 오차 확인하기</li>
+        <li><input type="checkbox" disabled>계산기 시트에 확인한 감가율·시세와 확인 날짜 메모 남기기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>다듬기</h4>
+      <ul>
+        <li><input type="checkbox" disabled>입력 셀(노란색) 옆에 "여기에 값을 입력하세요" 안내 문구 확인하기</li>
+        <li><input type="checkbox" disabled>"참고용 리서치·계산 도구이며 판매를 보장하지 않는다"는 경계 문구가 각 파일에 붙어있는지 확인하기</li>
+        <li><input type="checkbox" disabled>파일명·시트명에 오탈자 없는지 최종 점검하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>등록</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 1로 패키지·가격 확정하기</li>
+        <li><input type="checkbox" disabled>래피드에 상품명 "계산기/중고거래/적정가" 단어 포함해 등록하기</li>
+        <li><input type="checkbox" disabled>Day41 전자책과 세트 상품(업셀) 옵션도 함께 등록하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>갱신 관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>카테고리별 감가율 감각·플랫폼 수수료 정책 분기마다 확인해 캘린더에 표시해두기</li>
+        <li><input type="checkbox" disabled>기존 상담 고객 연락처/알림 목록 만들어두기(다음 물건 의뢰 안내용)</li>
+        <li><input type="checkbox" disabled>플랫폼 정책 변경 시 계산기 C의 강조 포인트 문구만 교체 후 Worksheet 2 검증 다시 거치기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>조건을 넣고, 검증하고, 숫자와 문장으로 답하세요.</p>
+    <p><strong>완벽한 판매 예언보다, 오늘 신뢰를 얻는 적정가와 판매글이 더 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
