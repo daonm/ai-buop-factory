@@ -1,0 +1,364 @@
+<title>연봉 실수령액·이직 협상 계산 대행 — 계산기 + 협상 템플릿팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 연봉 실수령액 계산기 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 오퍼 비교 계산기 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 퇴직금·연차수당·이직손익 계산기 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 처우협의서 검토 체크리스트 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #8B5A83;   /* plum — 희망연봉·협상멘트 템플릿 */
+    --cat-e-tint: #E7DAE5;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C994C0; --cat-e-tint: #332030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C994C0; --cat-e-tint: #332030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.04rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.62rem; font-weight:700; margin:0 0 10px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:12px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.06rem; margin:20px 0 9px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:18px 0 20px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 10px; max-width:68ch; }
+  .lede{ font-size:0.98rem; color:var(--ink-soft); max-width:62ch; margin-bottom:10px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:7px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:13px 16px 10px; margin:0 0 10px; break-inside:avoid; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:2px 0 6px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.85rem; background:var(--paper); }
+  th,td{ text-align:left; padding:5px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:6px 10px; margin-top:3px; }
+
+  /* ---------- Domain blocks (category-colored, 계산기·템플릿 5종) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:12px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:9px 12px 7px; margin:0 0 8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Task grid (상담 진행 체크리스트, category-colored 2단 배치) ---------- */
+  .task-grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:10px; }
+  .task-card{ background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:10px; padding:9px 12px 10px; break-inside:avoid; }
+  .task-card .tn{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:999px; background:var(--accent); color:#fff; font-family:var(--font-mono); font-size:0.7rem; font-weight:700; margin-right:7px; flex-shrink:0; }
+  .task-card h5{ display:inline; font-size:0.89rem; font-weight:700; margin:0; color:var(--ink); }
+  .task-card p{ margin:5px 0 0; font-size:0.79rem; color:var(--ink-soft); line-height:1.5; }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:11px 15px; margin-bottom:8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 10px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.9rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:30px 20px 18px; break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:14px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 46 · 실행 키트</span>
+    <span class="badge">『그 오퍼, AI한테 먼저 계산받으세요』 실전 부록</span>
+    <h1>그 오퍼, 계산기로<br>숫자부터 정리하세요</h1>
+    <p class="subtitle"><span class="nowrap">실수령액</span> <span class="nowrap">계산기</span> · <span class="nowrap">오퍼 비교</span> · <span class="nowrap">퇴직금</span> <span class="nowrap">계산기</span> <span class="nowrap">3종</span> + <span class="nowrap">처우협의서</span> <span class="nowrap">체크리스트</span> + <span class="nowrap">협상 멘트</span> <span class="nowrap">템플릿</span> — <span class="nowrap">조건만 넣으면</span> <span class="nowrap">실수령액과</span> <span class="nowrap">협상 근거가</span> <span class="nowrap">나옵니다</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>계산기·템플릿</div>
+      <div class="nowrap"><strong>13</strong>개 처우협의서 점검항목</div>
+      <div class="nowrap"><strong>4</strong>단계 판매 체크리스트</div>
+    </div>
+    <div class="byline">『그 오퍼, AI한테 먼저 계산받으세요』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">계산은 다 만들어놨습니다. 이제 조건만 넣으면 됩니다.</em> 이 키트는 전자책 방법 1~9(실수령액 구성 원리·2026년 요율 계산·비과세 최적화·오퍼 비교·희망연봉 산정·협상 멘트·처우협의서 체크리스트·퇴직금 손익 계산)를 이미 끝낸 완성본입니다.</p>
+    <p>엑셀 계산기 3종과 워드 템플릿 1종, 체크리스트 1종을 같은 톤으로 만들었습니다.</p>
+    <ol class="steps">
+      <li><strong>안내 시트</strong> — "확정 세액·보장 금액이 아니라 참고용 추정 계산 도구"라는 경계를 첫 화면에 명시합니다.</li>
+      <li><strong>계산기·템플릿 시트</strong> — 노란색 칸에 값을 입력하면 올리브색 칸에 결과가 바로 뜹니다.</li>
+      <li><strong>참고표(해당 파일만)</strong> — 4대보험 요율·비과세 한도처럼 반복해서 쓰는 기준을 계산기 시트 상단에 함께 정리해뒀습니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 계산기별 참고표에서 원하는 것부터 확인하고, 실제 파일을 열어 본인(또는 의뢰인) 조건으로 한 번 테스트해본 뒤 협상 멘트·처우협의서 체크리스트까지 이어서 진행하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>계산기·템플릿 5종 빠른 참고표</h2>
+    <p class="lede">각 파일의 입력값 예시, 결과값, 그리고 어떤 순서로 이어 쓰는지를 정리했습니다. 실제 파일에 그대로 입력해 결과를 재현할 수 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 연봉 실수령액 계산기</div>
+      <div class="cat-flow">파일 — 연봉실수령액_계산기.xlsx · 연봉·부양가족 수·비과세 적용 여부를 입력하면 2026년 4대보험 요율과 연간 추정 소득세를 반영한 월·연 실수령액을 자동 계산합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>연봉 5,000만원</td><td>부양가족 1인 / 식대 비과세 적용</td><td>월 실수령액</td><td>약 3,517,000원</td></tr>
+            <tr><td>위 조건 기준</td><td>연간 환산</td><td>연 실수령액 / 비율</td><td>약 42,207,000원 / 84.4%</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "연봉 OOOO면 한 달에 얼마 받는 거예요?"라고 묻는 사람. 4대보험·소득세를 뗀 실제 숫자를 바로 보여주면 "왜 생각보다 적은지" 설득력이 생깁니다.</p>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 오퍼 비교 계산기</div>
+      <div class="cat-flow">파일 — 오퍼비교_계산기.xlsx · 두 회사 오퍼의 기본급·고정성과급·변동성과급·사이닝보너스·복지포인트를 입력하면 확정 실수령액부터 1년차·2년차 총합까지 나란히 비교합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>A사 확정 5,500만원</td><td>B사 확정 5,300만원</td><td>확정 실수령액 우위</td><td>A사 (약 4,594만원)</td></tr>
+            <tr><td>변동성과급·사이닝보너스 반영</td><td>B사가 더 큼</td><td>1년차 총합 우위</td><td>B사 (약 5,594만원)</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 세전 연봉만 보고 어느 오퍼가 좋은지 헷갈려 하는 의뢰인. 확정 기준과 변동 요소 반영 기준이 다를 수 있다는 걸 숫자로 보여주면 바로 이해합니다.</p>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 퇴직금·연차수당·이직손익 계산기</div>
+      <div class="cat-flow">파일 — 퇴직금_연차수당_이직손익_계산기.xlsx · 입사일·퇴사일·최근 3개월 평균급여·미사용 연차를 입력하면 예상 퇴직금·연차수당·공백기 손실까지 자동 계산하고 단기·중기 이직 손익을 비교합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>근속 4.75년 / 평균급여 420만원</td><td>미사용 연차 8일</td><td>퇴직금 + 연차수당</td><td>약 21,084,000원</td></tr>
+            <tr><td>공백기 15일</td><td>소득 없음 기준</td><td>공백기 손실</td><td>약 2,100,000원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 이직 직후가 유리해 보여 성급히 결정하려는 의뢰인. 퇴직금·공백기까지 포함한 전체 손익을 보여주면 더 신중한 판단을 돕습니다.</p>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 처우협의서 검토 체크리스트</div>
+      <div class="cat-flow">파일 — 처우협의서_검토_체크리스트.xlsx · 연봉 숫자 외에 수습기간 급여, 성과급 지급 조건, 퇴직연금 유형 등 13개 항목을 숫자/지급/제도 3그룹으로 확인하고 완료율을 자동 집계합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>그룹</th><th>항목 수</th><th>예시 항목</th><th>확인 방식</th></tr>
+            <tr><td>숫자·지급·제도 조건</td><td>13개</td><td>수습기간 급여 비율, 퇴직연금 매칭</td><td>O 표시 + 완료율 자동 집계</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 연봉 숫자만 보고 서명하려는 의뢰인. 숫자 뒤에 숨은 조건들을 짚어주면 서명 전 꼭 필요한 확인 과정으로 신뢰를 얻습니다.</p>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 희망연봉·협상멘트 템플릿</div>
+      <div class="cat-flow">파일 — 희망연봉_협상멘트_템플릿.docx · 희망연봉 산정 워크시트 + 협상 이메일(격식체)·협상 멘트(구어체)·대안 제안 멘트 + 의뢰 접수 질문지까지 대괄호만 바꿔서 바로 쓰는 문서</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구성</th><th>내용</th><th>구성</th><th>내용</th></tr>
+            <tr><td>희망연봉 산정</td><td>최소수용선·희망선·협상시작가 3단계</td><td>협상 멘트</td><td>이메일 격식체 + 구어체 2종</td></tr>
+            <tr><td>대안 제안 멘트</td><td>입사일 조정·복지포인트·재검토 조항</td><td>의뢰 접수 질문지</td><td>9개 문항</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 숫자는 계산했는데 막상 뭐라고 말해야 할지 막막한 의뢰인. 이메일·구어체 멘트를 그대로 복사해 조건만 바꾸면 바로 쓸 수 있습니다.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>패키지 구성 &amp; 검증 워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>패키지·가격 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지 유형</th><th>가격대</th><th>내 판매가</th></tr>
+          <tr><td>계산기 1종(엑셀)</td><td>3,000~6,900원</td><td class="fill"></td></tr>
+          <tr><td>계산기·체크리스트·템플릿 세트(5종 전체)</td><td>9,900~15,000원</td><td class="fill"></td></tr>
+          <tr><td>전자책+계산기·템플릿 5종 묶음</td><td>15,000~25,000원</td><td class="fill"></td></tr>
+          <tr><td>1건당 실수령액·오퍼비교 리포트(직접 진행)</td><td>5,000~10,000원</td><td class="fill"></td></tr>
+          <tr><td>실수령액+오퍼비교+협상멘트 풀세트(직접 진행)</td><td>15,000~30,000원</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">추천 — 처음엔 A(연봉 실수령액 계산기) 또는 B(오퍼 비교 계산기) 단품으로 판매 기록부터 쌓고, 반응이 오면 5종 세트+전자책 묶음으로 객단가를 높이세요.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 판매 전 필수</h4></div>
+      <h3>내 조건으로 교차검증하기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>계산기</th><th>내 실제 값 입력</th><th>공식 자료와 비교</th></tr>
+          <tr><td>A. 연봉 실수령액 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>B. 오퍼 비교 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>C. 퇴직금·연차수당 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">비교 대상 — 본인(또는 지인)의 실제 급여명세서·원천징수영수증, 4대사회보험 정보연계센터(4insure.or.kr) 모의계산, 국세청 홈택스 간이세액표 조회. 오차가 크면 상담 전에 반드시 요율·세액표를 다시 점검하세요.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>상담 진행 체크리스트</h2>
+    <p class="lede">접수부터 사후관리까지 단계별로 정리했습니다. '희망연봉_협상멘트_템플릿.docx'의 의뢰 접수 질문지에 완료 여부를 기록하면서 그대로 진행 관리표로 사용할 수 있습니다.</p>
+
+    <div class="cat-label" style="--accent:var(--cat-a);--accent-tint:var(--cat-a-tint)">접수·리서치 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">1</span><h5>접수 질문지 발송·회수</h5><p>현재/제안 연봉·부양가족 수·비과세 항목·오퍼 구성까지 빠짐없이 받기</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">2</span><h5>처우협의서·오퍼 레터 확보</h5><p>원천징수영수증 또는 처우협의서 사본 보유 여부 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">3</span><h5>희망 결과물 확인</h5><p>실수령액 계산/오퍼 비교/협상 멘트/풀세트 중 범위 확정</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">4</span><h5>현재·제안 조건 정리</h5><p>근속연수, 미사용 연차, 새 회사 입사 예정일 확인</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-e);--accent-tint:var(--cat-e-tint)">계산·검증 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">1</span><h5>실수령액 계산</h5><p>계산기 A로 월·연 실수령액과 세전 대비 비율 산출</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">2</span><h5>오퍼 비교</h5><p>계산기 B로 확정·변동 시나리오별 순위 계산</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">3</span><h5>퇴직금·손익 계산</h5><p>계산기 C로 퇴직금·연차수당·공백기 손익 산출</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">4</span><h5>처우협의서 점검</h5><p>체크리스트 D로 숫자 외 조건 13개 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">5</span><h5>희망연봉 산정</h5><p>템플릿 E의 워크시트로 최소수용선·희망선·협상시작가 확정</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">6</span><h5>공식 자료 대조</h5><p>4insure.or.kr·홈택스 자료와 계산 결과 교차검증</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-c);--accent-tint:var(--cat-c-tint)">납품·사후관리 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">1</span><h5>비교 리포트 정리</h5><p>계산 근거(요율·공제·시나리오)를 표로 정리</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">2</span><h5>면책 문구 최종 확인</h5><p>"참고용 추정치이며 보장 아님" 문구 포함 여부 점검</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">3</span><h5>협상 멘트 전달</h5><p>템플릿 E의 이메일·구어체 멘트 함께 전달</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">4</span><h5>결과 피드백 수렴</h5><p>협상 결과·서명 여부 확인 후 후기 요청</p></div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>판매 준비 체크리스트</h2>
+    <p class="lede">브리프부터 등록까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>검증</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 2로 계산기 A·B·C 모두 내(또는 지인의) 실제 조건으로 테스트하기</li>
+        <li><input type="checkbox" disabled>4insure.or.kr 모의계산·홈택스 간이세액표와 대조해 오차 확인하기</li>
+        <li><input type="checkbox" disabled>계산기 시트에 확인한 요율과 확인 날짜 메모 남기기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>다듬기</h4>
+      <ul>
+        <li><input type="checkbox" disabled>입력 셀(노란색) 옆에 "여기에 값을 입력하세요" 안내 문구 확인하기</li>
+        <li><input type="checkbox" disabled>"참고용 추정치이며 보장된 금액이 아니다"는 경계 문구가 각 파일에 붙어있는지 확인하기</li>
+        <li><input type="checkbox" disabled>파일명·시트명에 오탈자 없는지 최종 점검하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>등록</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 1로 패키지·가격 확정하기</li>
+        <li><input type="checkbox" disabled>래피드에 상품명 "계산기/연봉/이직협상" 단어 포함해 등록하기</li>
+        <li><input type="checkbox" disabled>Day45 전자책과 세트 상품(업셀) 옵션도 함께 등록하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>갱신 관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>4대보험 요율·소득세 구간 매년 1월마다 확인해 캘린더에 표시해두기</li>
+        <li><input type="checkbox" disabled>기존 상담 고객 연락처/알림 목록 만들어두기(다음 연봉 협상·이직 시즌 안내용)</li>
+        <li><input type="checkbox" disabled>요율·세액표 변경 시 계산기 A·B·C의 참고표만 교체 후 Worksheet 2 검증 다시 거치기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>조건을 넣고, 비교하고, 숫자와 근거로 답하세요.</p>
+    <p><strong>무조건 더 받아내는 마법보다, 오늘 신뢰를 얻는 정확한 계산이 더 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
