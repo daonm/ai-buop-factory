@@ -1,0 +1,365 @@
+<title>자동차 구매 비교 계산 대행 — 계산기 + 견적 비교 템플릿팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 실구매가·취득세 계산기 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 할부·리스 비교 계산기 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 5년 총비용(TCO) 비교 계산기 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 사업자 절세효과 계산기 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #8B5A83;   /* plum — 견적비교·의뢰접수 템플릿 */
+    --cat-e-tint: #E7DAE5;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C994C0; --cat-e-tint: #332030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C994C0; --cat-e-tint: #332030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.04rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.62rem; font-weight:700; margin:0 0 10px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:12px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.06rem; margin:20px 0 9px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:18px 0 20px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 10px; max-width:68ch; }
+  .lede{ font-size:0.98rem; color:var(--ink-soft); max-width:62ch; margin-bottom:10px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:7px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:13px 16px 10px; margin:0 0 10px; break-inside:avoid; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:2px 0 6px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.85rem; background:var(--paper); }
+  th,td{ text-align:left; padding:5px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:6px 10px; margin-top:3px; }
+
+  /* ---------- Domain blocks (category-colored, 계산기·템플릿 5종) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:12px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:9px 12px 7px; margin:0 0 8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Task grid (상담 진행 체크리스트, category-colored 2단 배치) ---------- */
+  .task-grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:10px; }
+  .task-card{ background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:10px; padding:9px 12px 10px; break-inside:avoid; }
+  .task-card .tn{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:999px; background:var(--accent); color:#fff; font-family:var(--font-mono); font-size:0.7rem; font-weight:700; margin-right:7px; flex-shrink:0; }
+  .task-card h5{ display:inline; font-size:0.89rem; font-weight:700; margin:0; color:var(--ink); }
+  .task-card p{ margin:5px 0 0; font-size:0.79rem; color:var(--ink-soft); line-height:1.5; }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:11px 15px; margin-bottom:8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 10px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.9rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:30px 20px 18px; break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:14px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 48 · 실행 키트</span>
+    <span class="badge">『그 차, AI한테 먼저 계산받으세요』 실전 부록</span>
+    <h1>견적서 말고,<br>계산기로 비교하세요</h1>
+    <p class="subtitle"><span class="nowrap">실구매가</span> <span class="nowrap">계산기</span> · <span class="nowrap">할부·리스</span> <span class="nowrap">비교</span> · <span class="nowrap">TCO</span> <span class="nowrap">계산기</span> <span class="nowrap">4종</span> + <span class="nowrap">견적비교·의뢰접수</span> <span class="nowrap">템플릿</span> — <span class="nowrap">조건만 넣으면</span> <span class="nowrap">실구매가와</span> <span class="nowrap">비교 근거가</span> <span class="nowrap">나옵니다</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>계산기·템플릿</div>
+      <div class="nowrap"><strong>12</strong>개 견적 비교 항목</div>
+      <div class="nowrap"><strong>4</strong>단계 판매 체크리스트</div>
+    </div>
+    <div class="byline">『그 차, AI한테 먼저 계산받으세요』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">계산은 다 만들어놨습니다. 이제 조건만 넣으면 됩니다.</em> 이 키트는 전자책 방법 1~9(할부·리스·현금 기본 구조·2026년 취득세·개별소비세 계산·할부 조건별 비교·리스 조건별 비교·현금 기회비용·5년 TCO 비교·사업자 절세효과)를 이미 끝낸 완성본입니다.</p>
+    <p>엑셀 계산기 4종과 워드 템플릿 1종을 같은 톤으로 만들었습니다.</p>
+    <ol class="steps">
+      <li><strong>안내 시트</strong> — "확정 세액·보장 금액이 아니라 참고용 추정 계산 도구"라는 경계를 첫 화면에 명시합니다.</li>
+      <li><strong>계산기 시트</strong> — 노란색 칸에 값을 입력하면 올리브색 칸에 결과가 바로 뜹니다.</li>
+      <li><strong>참고표(해당 파일만)</strong> — 취득세율·할부 금리 구간처럼 반복해서 쓰는 기준을 계산기 시트 상단에 함께 정리해뒀습니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 계산기별 참고표에서 원하는 것부터 확인하고, 실제 파일을 열어 본인(또는 의뢰인) 조건으로 한 번 테스트해본 뒤 견적 비교·의뢰 접수 템플릿까지 이어서 진행하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>계산기·템플릿 5종 빠른 참고표</h2>
+    <p class="lede">각 파일의 입력값 예시, 결과값, 그리고 어떤 순서로 이어 쓰는지를 정리했습니다. 실제 파일에 그대로 입력해 결과를 재현할 수 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 실구매가·취득세 계산기</div>
+      <div class="cat-flow">파일 — 실구매가_취득세_계산기.xlsx · 차량 출고가·개별소비세율·전기차 감면 적용 여부를 입력하면 2026년 취득세율(7%)·지방교육세·개별소비세 탄력세율을 반영한 총 실구매가를 자동 계산합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>출고가 3,000만원</td><td>개소세 3.5%→5% 반영</td><td>총 실구매가</td><td>약 33,340,000원</td></tr>
+            <tr><td>위 조건 + 전기차 감면 적용</td><td>취득세 140만원 한도 감면</td><td>총 실구매가</td><td>약 31,520,000원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "이 차 출고가가 얼마인지는 아는데, 실제로 얼마를 더 내야 하는지 몰라요"라고 묻는 사람. 취득세·지방교육세까지 포함한 진짜 총액을 바로 보여주면 설득력이 생깁니다.</p>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 할부·리스 비교 계산기</div>
+      <div class="cat-flow">파일 — 할부_리스_비교_계산기.xlsx · 선수금·금리·기간(할부) 또는 보증금·잔존가치율·리스이자율(리스) 조건을 입력하면 월 납입금·총 이자·만기 처리 비용까지 같은 기준으로 비교합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>할부 선수금 30%·금리 4.5%·60개월</td><td>차량가 3,334만원</td><td>월 납입금 / 총이자</td><td>435,091원 / 2,767,460원</td></tr>
+            <tr><td>리스 보증금 10%·잔존가치 40%·이자율 6%</td><td>리스기간 60개월</td><td>월 리스료 / 만기인수비용</td><td>388,958원 / 13,336,000원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "할부로 사는 게 나아요, 리스로 하는 게 나아요?"라고 묻는 사람. 월 납입금만 비교하지 말고 만기 처리 비용까지 함께 보여주면 "왜 월 납입금이 싼지"가 설명됩니다.</p>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 5년 총비용(TCO) 비교 계산기</div>
+      <div class="cat-flow">파일 — 5년_총비용_TCO_비교_계산기.xlsx · 할부·리스·현금 각각의 초기지출·월 납입금과 자동차세·보험료·정비비 공통비용을 입력하면 5년 총소유비용과 월평균 현금흐름 부담을 자동 비교합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구매 방식</th><th>5년 총비용</th><th>월평균 현금흐름</th><th>비고</th></tr>
+            <tr><td>할부</td><td>약 36,207,000원</td><td>약 601,800원</td><td>총비용 최저</td></tr>
+            <tr><td>리스</td><td>약 38,271,000원</td><td>약 444,500원</td><td>현금흐름 최저</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 월 납입금이 싼 쪽으로만 끌리는 의뢰인. 총비용과 월 부담은 종종 순위가 뒤바뀐다는 걸 숫자로 보여주면 "내 상황엔 뭐가 중요한지" 스스로 판단하게 됩니다.</p>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 사업자 절세효과 계산기</div>
+      <div class="cat-flow">파일 — 사업자_절세효과_계산기.xlsx · 취득가액·감가상각 내용연수·연간 리스료·매입세액공제 가능 여부·적용 세율을 입력하면 할부(감가상각비+이자비용)와 리스(부가세 환급+비용처리)의 연간 절세효과를 비교합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구매 방식</th><th>연간 손금 인정액</th><th>연간 절세효과</th><th>비고</th></tr>
+            <tr><td>할부(자산취득)</td><td>7,618,000원</td><td>1,447,420원</td><td>감가상각 한도(800만원) 이내</td></tr>
+            <tr><td>리스</td><td>4,860,000원</td><td>923,400원</td><td>매입세액공제 불가 가정</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 사업자·법인 명의로 차량을 구매하려는 의뢰인. "리스가 무조건 절세에 유리하다"는 통념과 달리, 조건에 따라 할부(감가상각)가 더 유리할 수 있다는 걸 숫자로 보여줍니다.</p>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 견적비교·의뢰접수 템플릿</div>
+      <div class="cat-flow">파일 — 견적비교_의뢰접수_템플릿.docx · 영업사원 견적서 비교 워크시트 + 의뢰 접수 질문지 + 고객용 비교 리포트 템플릿 + 서비스 안내·가격 템플릿까지 대괄호만 바꿔서 바로 쓰는 문서</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구성</th><th>내용</th><th>구성</th><th>내용</th></tr>
+            <tr><td>견적서 비교 워크시트</td><td>12개 항목 × 견적 3곳 비교</td><td>의뢰 접수 질문지</td><td>9개 문항</td></tr>
+            <tr><td>고객용 비교 리포트</td><td>할부·리스·현금 요약표</td><td>서비스 안내·가격표</td><td>5단계 패키지</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 영업사원 견적서 2~3장을 받아놓고 뭐가 더 유리한지 못 정하는 의뢰인. 같은 항목으로 나란히 정리해주면 "총액 기준"으로 비교하는 습관을 만들어줍니다.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>패키지 구성 &amp; 검증 워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>패키지·가격 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지 유형</th><th>가격대</th><th>내 판매가</th></tr>
+          <tr><td>계산기 1종(엑셀)</td><td>3,000~6,900원</td><td class="fill"></td></tr>
+          <tr><td>계산기·템플릿 세트(5종 전체)</td><td>9,900~15,000원</td><td class="fill"></td></tr>
+          <tr><td>전자책+계산기·템플릿 5종 묶음</td><td>15,000~25,000원</td><td class="fill"></td></tr>
+          <tr><td>1건당 실구매가·할부리스비교 리포트(직접 진행)</td><td>5,000~10,000원</td><td class="fill"></td></tr>
+          <tr><td>실구매가+할부리스비교+TCO+사업자절세 풀세트(직접 진행)</td><td>15,000~30,000원</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">추천 — 처음엔 A(실구매가·취득세 계산기) 또는 B(할부·리스 비교 계산기) 단품으로 판매 기록부터 쌓고, 반응이 오면 5종 세트+전자책 묶음으로 객단가를 높이세요.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 판매 전 필수</h4></div>
+      <h3>내 조건으로 교차검증하기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>계산기</th><th>내 실제 값 입력</th><th>공식 자료와 비교</th></tr>
+          <tr><td>A. 실구매가·취득세 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>B. 할부·리스 비교 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>D. 사업자 절세효과 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">비교 대상 — 본인(또는 지인)이 실제로 받은 영업사원 견적서·금융사 할부 심사 결과, 위택스(wetax.go.kr) 취득세 안내, 국세청 개별소비세 공지. 오차가 크면 상담 전에 반드시 세율·금리를 다시 점검하세요.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>상담 진행 체크리스트</h2>
+    <p class="lede">접수부터 사후관리까지 단계별로 정리했습니다. '견적비교_의뢰접수_템플릿.docx'의 의뢰 접수 질문지에 완료 여부를 기록하면서 그대로 진행 관리표로 사용할 수 있습니다.</p>
+
+    <div class="cat-label" style="--accent:var(--cat-a);--accent-tint:var(--cat-a-tint)">접수·리서치 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">1</span><h5>접수 질문지 발송·회수</h5><p>차량가·고려 방식·전기차 여부·사업자 여부까지 빠짐없이 받기</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">2</span><h5>영업사원 견적서 확보</h5><p>견적서 2~3장 또는 가상의 차량가 1건 확보</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">3</span><h5>희망 결과물 확인</h5><p>실구매가 계산/할부리스비교/TCO/사업자절세 중 범위 확정</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">4</span><h5>조건 정리</h5><p>보유 예정 기간, 재판매 계획, 사업자 여부 확인</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-e);--accent-tint:var(--cat-e-tint)">계산·검증 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">1</span><h5>실구매가 계산</h5><p>계산기 A로 취득세·지방교육세 포함 총 실구매가 산출</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">2</span><h5>할부·리스 비교</h5><p>계산기 B로 월 납입금·총이자·만기 처리 비용 계산</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">3</span><h5>5년 TCO 비교</h5><p>계산기 C로 할부·리스·현금 총비용·현금흐름 비교</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">4</span><h5>사업자 절세효과 계산</h5><p>계산기 D로 할부·리스 연간 절세효과 비교(사업자만)</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">5</span><h5>견적서 비교 정리</h5><p>템플릿 E의 워크시트로 영업사원 견적 2~3곳 비교</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">6</span><h5>공식 자료 대조</h5><p>위택스·국세청 공지와 계산 결과 교차검증</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-c);--accent-tint:var(--cat-c-tint)">납품·사후관리 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">1</span><h5>비교 리포트 정리</h5><p>계산 근거(세율·금리·시나리오)를 표로 정리</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">2</span><h5>면책 문구 최종 확인</h5><p>"참고용 추정치이며 보장 아님" 문구 포함 여부 점검</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">3</span><h5>고객용 리포트 전달</h5><p>템플릿 E의 비교 리포트 양식으로 함께 전달</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">4</span><h5>결과 피드백 수렴</h5><p>실제 계약 조건·후기 요청</p></div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>판매 준비 체크리스트</h2>
+    <p class="lede">브리프부터 등록까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>검증</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 2로 계산기 A·B·D 모두 내(또는 지인의) 실제 조건으로 테스트하기</li>
+        <li><input type="checkbox" disabled>위택스·국세청 공지와 대조해 세율·감면 한도 오차 확인하기</li>
+        <li><input type="checkbox" disabled>계산기 시트에 확인한 세율·금리와 확인 날짜 메모 남기기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>다듬기</h4>
+      <ul>
+        <li><input type="checkbox" disabled>입력 셀(노란색) 옆에 "여기에 값을 입력하세요" 안내 문구 확인하기</li>
+        <li><input type="checkbox" disabled>"참고용 추정치이며 보장된 금액이 아니다"는 경계 문구가 각 파일에 붙어있는지 확인하기</li>
+        <li><input type="checkbox" disabled>파일명·시트명에 오탈자 없는지 최종 점검하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>등록</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 1로 패키지·가격 확정하기</li>
+        <li><input type="checkbox" disabled>래피드에 상품명 "계산기/자동차/할부리스비교" 단어 포함해 등록하기</li>
+        <li><input type="checkbox" disabled>Day47 전자책과 세트 상품(업셀) 옵션도 함께 등록하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>갱신 관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>개별소비세 탄력세율·전기차 감면 일몰 시점 분기마다 확인해 캘린더에 표시해두기</li>
+        <li><input type="checkbox" disabled>기존 상담 고객 연락처/알림 목록 만들어두기(다음 차량 교체 시즌 안내용)</li>
+        <li><input type="checkbox" disabled>세율·감면 한도 변경 시 계산기 A·D의 참고표만 교체 후 Worksheet 2 검증 다시 거치기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>조건을 넣고, 비교하고, 숫자와 근거로 답하세요.</p>
+    <p><strong>영업사원의 월 납입금 한 줄보다, 오늘 신뢰를 얻는 정확한 비교표가 더 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
