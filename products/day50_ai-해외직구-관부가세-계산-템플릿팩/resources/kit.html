@@ -1,0 +1,364 @@
+<title>해외직구 관부가세 계산 대행 — 계산기 + 사이트별 가이드 템플릿팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 면세판단·관부가세 계산기 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 합산과세·시나리오비교 계산기 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 품목별 추가세금 계산기 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 사이트별 직구 가이드 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #8B5A83;   /* plum — 의뢰접수·고객리포트 템플릿 */
+    --cat-e-tint: #E7DAE5;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C994C0; --cat-e-tint: #332030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C994C0; --cat-e-tint: #332030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.04rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.62rem; font-weight:700; margin:0 0 10px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:12px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.06rem; margin:20px 0 9px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:18px 0 20px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 10px; max-width:68ch; }
+  .lede{ font-size:0.98rem; color:var(--ink-soft); max-width:62ch; margin-bottom:10px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:7px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:13px 16px 10px; margin:0 0 10px; break-inside:avoid; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:2px 0 6px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.85rem; background:var(--paper); }
+  th,td{ text-align:left; padding:5px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:6px 10px; margin-top:3px; }
+
+  /* ---------- Domain blocks (category-colored, 계산기·가이드·템플릿 5종) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:12px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:9px 12px 7px; margin:0 0 8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Task grid (상담 진행 체크리스트, category-colored 2단 배치) ---------- */
+  .task-grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:10px; }
+  .task-card{ background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:10px; padding:9px 12px 10px; break-inside:avoid; }
+  .task-card .tn{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:999px; background:var(--accent); color:#fff; font-family:var(--font-mono); font-size:0.7rem; font-weight:700; margin-right:7px; flex-shrink:0; }
+  .task-card h5{ display:inline; font-size:0.89rem; font-weight:700; margin:0; color:var(--ink); }
+  .task-card p{ margin:5px 0 0; font-size:0.79rem; color:var(--ink-soft); line-height:1.5; }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:11px 15px; margin-bottom:8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 10px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.9rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:30px 20px 18px; break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:14px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 50 · 실행 키트</span>
+    <span class="badge">『그 직구, 관세청 문자 받기 전에 AI한테 먼저 계산받으세요』 실전 부록</span>
+    <h1>관세청 문자 오기 전에,<br>계산기로 먼저 확인하세요</h1>
+    <p class="subtitle"><span class="nowrap">면세판단·관부가세</span> <span class="nowrap">계산기</span> + <span class="nowrap">합산과세·시나리오비교</span> + <span class="nowrap">품목별 추가세금</span> <span class="nowrap">계산기 3종</span> + <span class="nowrap">사이트별 가이드</span> + <span class="nowrap">의뢰접수 템플릿</span> — <span class="nowrap">조건만 넣으면</span> <span class="nowrap">예상 관부가세가</span> <span class="nowrap">바로 나옵니다</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>계산기·가이드·템플릿</div>
+      <div class="nowrap"><strong>8</strong>개 사이트별 가이드</div>
+      <div class="nowrap"><strong>4</strong>단계 판매 체크리스트</div>
+    </div>
+    <div class="byline">『그 직구, 관세청 문자 받기 전에 AI한테 먼저 계산받으세요』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">계산은 이미 다 만들어져 있습니다. 조건만 넣으면 됩니다.</em> 이 키트는 전자책 방법 1~9(목록통관 면세 기준·자가사용 판단·과세환율 적용·품목별 관세율 계산·부가세 포함 총 관부가세 계산·합산과세 판단·면세 한도 시나리오 비교·개인통관고유부호 안내·품목별 주의사항)를 이미 끝내둔 완성본입니다.</p>
+    <p>엑셀 계산기 3종·엑셀 가이드 1종·워드 템플릿 1종을 같은 톤으로 만들었습니다.</p>
+    <ol class="steps">
+      <li><strong>안내 시트</strong> — "확정 세액이 아니라 참고용 추정 계산 도구"라는 경계를 첫 화면에 명시합니다.</li>
+      <li><strong>계산기 시트</strong> — 노란색 칸에 값을 입력하면 올리브색 칸에 결과가 바로 뜹니다.</li>
+      <li><strong>참고표(해당 파일만)</strong> — 면세 기준·품목별 간이세율·주류 세율처럼 반복해서 쓰는 기준을 계산기 시트 상단에 함께 정리해뒀습니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 계산기·가이드별 빠른 참고표에서 원하는 것부터 확인하고, 실제 파일을 열어 본인(또는 의뢰인) 조건으로 한 번 테스트해본 뒤 의뢰 접수·고객 리포트 템플릿까지 이어서 진행하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>계산기·가이드·템플릿 5종 빠른 참고표</h2>
+    <p class="lede">각 파일의 입력값 예시, 결과값, 그리고 어떤 순서로 이어 쓰는지를 정리했습니다. 실제 파일에 그대로 입력해 결과를 재현할 수 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 면세판단·관부가세 계산기</div>
+      <div class="cat-flow">파일 — 면세판단_관부가세_계산기.xlsx · 발송 국가·물품가격·배송비·품목·관세청 과세환율을 입력하면 목록통관 면세 여부부터 원화 과세가격·관세·부가세·총 관부가세·최종 총지출액까지 자동 계산합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>미국 발송·의류 195달러(물품180+배송15)</td><td>면세기준 200달러 이내</td><td>면세 대상 여부</td><td>면세 대상 (세금 0원)</td></tr>
+            <tr><td>미국 발송·의류 265달러(물품250+배송15)</td><td>면세기준 200달러 초과</td><td>총 관부가세 / 최종 지출액</td><td>88,865원 / 454,565원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "어, 이거 왜 관세 내라고 문자 와요?"라고 당황한 사람. 결제 전에 면세 여부와 예상 세액을 먼저 보여주면 신뢰가 빠르게 생깁니다.</p>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 합산과세·시나리오비교 계산기</div>
+      <div class="cat-flow">파일 — 합산과세_시나리오비교_계산기.xlsx · 같은 판매자·같은 날짜 여부를 입력하면 합산과세 대상인지 자동 판정하고, 면세 한도 내/소폭 초과/대폭 초과 세 시나리오의 예상 관부가세·실질 단가를 비교합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>같은 판매자·같은 날짜, 110+95달러</td><td>그 외 국가(기준 150달러)</td><td>합산과세 대상 여부</td><td>합산 대상 (205달러, 기준 초과)</td></tr>
+            <tr><td>미국 발송, 기준 대비 소폭 초과(+10달러)</td><td>관세율 13%·환율 1,380원</td><td>예상 관부가세 / 실질 총단가</td><td>70,421원 / 360,221원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "결제를 나눠서 하면 세금을 피할 수 있지 않나요?"라고 묻는 사람. 같은 날 같은 판매자 주문은 합산된다는 걸 숫자로 보여주면 오해가 바로 풀립니다.</p>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 품목별 추가세금 계산기</div>
+      <div class="cat-flow">파일 — 품목별_추가세금_계산기.xlsx · 주종·원화 과세가격·관세·반입 수량을 입력하면 주세·교육세·추가 부가세까지 자동 계산하고, 건강기능식품·전자기기 통관 체크리스트를 제공합니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>위스키 2병, 과세가격 50만원</td><td>1병 초과분 과세 대상</td><td>총 추가 세금(주세+교육세+부가세)</td><td>514,800원</td></tr>
+            <tr><td>건강기능식품 신고대상 성분 체크</td><td>체크리스트 4항목</td><td>통관 보류 위험 사전 점검</td><td>Y/N 체크 후 의뢰인 안내</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 술·영양제·무선기기를 직구하려는 사람. 기본 관부가세 계산만으로 끝나지 않는다는 걸 미리 알려주면 "통관 거부당했다"는 낭패를 막아줍니다.</p>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 사이트별 직구 가이드</div>
+      <div class="cat-flow">파일 — 사이트별_직구_가이드.xlsx · 아마존·알리익스프레스·테무·쉬인·이베이·큐텐/지마켓글로벌·라쿠텐·타오바오 8곳의 통관 특이사항 비교표 + 개인통관고유부호 발급·갱신 안내</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>사이트</th><th>특이사항</th><th>사이트</th><th>특이사항</th></tr>
+            <tr><td>타오바오(배대지 경유)</td><td>합포장 시 묶음 전체 금액 과세</td><td>큐텐/지마켓글로벌</td><td>플랫폼 대행 수입신고 구조 혼재</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "이 사이트는 처음 써봐서 뭐가 다른지 몰라요"라는 사람. 사이트마다 다른 통관 구조를 미리 알려주면 계산 결과에 대한 신뢰가 올라갑니다.</p>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 의뢰접수·고객리포트 템플릿</div>
+      <div class="cat-flow">파일 — 의뢰접수_고객리포트_템플릿.docx · 의뢰 접수 질문지(9문항) + 사이트·품목별 특이사항 체크 + 고객용 관부가세 리포트 템플릿 + 서비스 안내·가격 템플릿까지 대괄호만 바꿔서 바로 쓰는 문서</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구성</th><th>내용</th><th>구성</th><th>내용</th></tr>
+            <tr><td>의뢰 접수 질문지</td><td>9개 문항</td><td>고객용 리포트</td><td>6단계 요약 양식</td></tr>
+            <tr><td>사이트·품목 체크</td><td>4개 확인 항목</td><td>서비스 안내·가격표</td><td>4단계 패키지</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 의뢰가 들어오면 바로 접수할 수 있는 양식이 없어 매번 새로 질문을 만들던 상황. 질문지 한 장으로 빠짐없이 받고, 리포트 양식 그대로 전달하면 됩니다.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>패키지 구성 &amp; 검증 워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>패키지·가격 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지 유형</th><th>가격대</th><th>내 판매가</th></tr>
+          <tr><td>관부가세 예상 계산 1건(직접 진행)</td><td>3,000~5,000원</td><td class="fill"></td></tr>
+          <tr><td>계산기·가이드·템플릿 5종 세트</td><td>9,900~15,000원</td><td class="fill"></td></tr>
+          <tr><td>전자책+계산기·가이드·템플릿 5종 묶음</td><td>15,000~25,000원</td><td class="fill"></td></tr>
+          <tr><td>품목별 추가세금 포함 정밀 계산(직접 진행)</td><td>7,000~12,000원</td><td class="fill"></td></tr>
+          <tr><td>정기 직구족 월 구독형 안내(월 3건, 직접 진행)</td><td>12,000~20,000원</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">추천 — 처음엔 A(면세판단·관부가세 계산기) 단품으로 판매 기록부터 쌓고, 반응이 오면 5종 세트+전자책 묶음으로 객단가를 높이세요.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 판매 전 필수</h4></div>
+      <h3>내 조건으로 교차검증하기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>계산기</th><th>내 실제 값 입력</th><th>공식 자료와 비교</th></tr>
+          <tr><td>A. 면세판단·관부가세 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>B. 합산과세·시나리오비교 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>C. 품목별 추가세금 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">비교 대상 — 관세청 유니패스(unipass.customs.go.kr)의 관부가세 계산기, 그 주에 고시된 과세환율. 오차가 크면 상담 전에 반드시 환율·세율을 다시 점검하세요.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>상담 진행 체크리스트</h2>
+    <p class="lede">접수부터 사후관리까지 단계별로 정리했습니다. '의뢰접수_고객리포트_템플릿.docx'의 의뢰 접수 질문지에 완료 여부를 기록하면서 그대로 진행 관리표로 사용할 수 있습니다.</p>
+
+    <div class="cat-label" style="--accent:var(--cat-a);--accent-tint:var(--cat-a-tint)">접수·리서치 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">1</span><h5>접수 질문지 발송·회수</h5><p>사이트·물품가격·배송비·품목·개인통관고유부호 여부까지 빠짐없이 받기</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">2</span><h5>사이트별 가이드 대조</h5><p>D. 사이트별 직구 가이드에서 해당 사이트 특이사항 먼저 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">3</span><h5>과세환율 확인</h5><p>관세청 유니패스에서 그 주 고시 과세환율 직접 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">4</span><h5>희망 결과물 확인</h5><p>면세여부만/관부가세예상까지/품목별추가세금까지 범위 확정</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-e);--accent-tint:var(--cat-e-tint)">계산·검증 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">1</span><h5>면세 여부·관부가세 계산</h5><p>계산기 A로 원화 과세가격·관세·부가세·총 관부가세 산출</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">2</span><h5>합산과세 판단</h5><p>같은 날 다른 주문이 있으면 계산기 B로 합산 여부 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">3</span><h5>시나리오 비교</h5><p>면세 한도 근처 금액이면 계산기 B로 시나리오별 실질단가 비교</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">4</span><h5>품목별 추가세금 확인</h5><p>주류·건기식·전자기기면 계산기 C로 추가 세금·주의사항 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">5</span><h5>개인통관고유부호 확인</h5><p>가이드 D의 안내로 의뢰인 코드 유효 여부 체크</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">6</span><h5>공식 자료 대조</h5><p>유니패스 관부가세 계산기와 교차검증</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-c);--accent-tint:var(--cat-c-tint)">납품·사후관리 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">1</span><h5>리포트 정리</h5><p>계산 근거(관세율·과세환율·시나리오)를 표로 정리</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">2</span><h5>면책 문구 최종 확인</h5><p>"참고용 추정치이며 세관 최종 판단에 따라 달라짐" 문구 포함 여부 점검</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">3</span><h5>고객용 리포트 전달</h5><p>템플릿 E의 리포트 양식으로 함께 전달</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">4</span><h5>결과 피드백 수렴</h5><p>실제 통관 결과·후기 요청</p></div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>판매 준비 체크리스트</h2>
+    <p class="lede">브리프부터 등록까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>검증</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 2로 계산기 A·B·C 모두 내(또는 지인의) 실제 조건으로 테스트하기</li>
+        <li><input type="checkbox" disabled>유니패스 관부가세 계산기와 대조해 세율·환율 오차 확인하기</li>
+        <li><input type="checkbox" disabled>계산기 시트에 확인한 과세환율·간이세율과 확인 날짜 메모 남기기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>다듬기</h4>
+      <ul>
+        <li><input type="checkbox" disabled>입력 셀(노란색) 옆에 "여기에 값을 입력하세요" 안내 문구 확인하기</li>
+        <li><input type="checkbox" disabled>"참고용 추정치이며 세관의 최종 판단에 따라 달라질 수 있다"는 경계 문구가 각 파일에 붙어있는지 확인하기</li>
+        <li><input type="checkbox" disabled>파일명·시트명에 오탈자 없는지 최종 점검하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>등록</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 1로 패키지·가격 확정하기</li>
+        <li><input type="checkbox" disabled>래피드에 상품명 "계산기", "해외직구", "관부가세" 단어 포함해 등록하기</li>
+        <li><input type="checkbox" disabled>Day49 전자책과 세트 상품(업셀) 옵션도 함께 등록하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>갱신 관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>관세청 과세환율은 매주 바뀌므로, 신규 의뢰가 올 때마다 그 주 고시 환율로 재확인해 계산기에 입력하기</li>
+        <li><input type="checkbox" disabled>기존 상담 고객 연락처/알림 목록 만들어두기(다음 직구 시즌 안내용)</li>
+        <li><input type="checkbox" disabled>면세 기준·간이세율·개인통관고유부호 갱신 주기 변경 시 참고표만 교체 후 Worksheet 2 검증 다시 거치기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>조건을 넣고, 비교하고, 숫자와 근거로 답하세요.</p>
+    <p><strong>관세청 문자를 받고 당황하는 것보다, 오늘 미리 확인하는 숫자 하나가 더 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
