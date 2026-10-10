@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>청첩장 돌리기 전에, AI한테 예산부터 맞춰보세요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F; --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38; --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74; --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A; --cat-d-tint: #E3E6CE;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:780px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.0rem, 6vw, 3.1rem); line-height:1.3; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.1rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.7rem; font-weight:700; margin:0 0 20px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:18px; width:max-content; max-width:100%; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.1rem; margin:24px 0 10px; color:var(--ink); }
+  section.chapter{ padding:30px 0 34px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 14px; max-width:66ch; orphans:1; widows:1; }
+  .lede{ font-size:1.02rem; color:var(--ink-soft); max-width:62ch; margin-bottom:18px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  /* ---------- TOC ---------- */
+  .toc{ border-top:3px solid var(--gold); padding:20px 0 8px; margin-bottom:44px; }
+  .toc h2{ font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 16px; break-after:avoid; }
+  .toc ol{ list-style:none; margin:0; padding:0; }
+  .toc li{ display:flex; align-items:baseline; gap:6px; padding:6px 0; font-size:0.94rem; break-inside:avoid; }
+  .toc .n{ font-family:var(--font-mono); font-weight:700; color:var(--gold-strong); flex-shrink:0; }
+  .toc .leader{ flex:1; border-bottom:1px dotted var(--line); margin:0 2px 5px; min-width:16px; }
+  .toc .pg{ font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); flex-shrink:0; }
+
+  /* ---------- Method steps ---------- */
+  .method-meta{ display:inline-block; font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-bottom:16px; }
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; }
+  ol.steps li{ margin-bottom:9px; padding-left:4px; break-inside:avoid; }
+
+  /* ---------- Note callouts ---------- */
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:6px 0 4px; }
+
+  /* ---------- Table ---------- */
+  .table-wrap{ overflow-x:auto; margin-bottom:14px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.88rem; background:var(--paper); }
+  th,td{ text-align:left; padding:8px 13px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.72rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+
+  /* ---------- Prompt cards (categorized grid) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:6px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-label{ display:table; font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); border-radius:6px; padding:4px 12px; margin:0 0 8px; break-after:avoid-page; }
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:13px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:8px 10px 8px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.76rem; color:var(--accent); font-weight:700; margin-bottom:4px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:7px 9px; font-family:var(--font-mono); font-size:0.76rem; line-height:1.45; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:15px 18px; margin-bottom:10px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.88rem; letter-spacing:0.05em; margin:0 0 12px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.78rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:4px 0; font-size:0.92rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; }
+  .epilogue .close{ break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:10px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{
+    .cover{ page-break-after:always; margin-left:0; margin-right:0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 53</span>
+    <span class="badge">CLAUDE가 기획 · 집필</span>
+    <h1>청첩장 돌리기 전에,<br>AI한테 <span class="nowrap">예산부터</span> <span class="nowrap">맞춰보세요</span></h1>
+    <p class="subtitle">AI로 <span class="nowrap">결혼 준비 비용</span> <span class="nowrap">계산 대행하는 법</span> — <span class="nowrap">그대로 쓰는</span> <span class="nowrap">결혼예산 프롬프트 15개</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>13</strong>가지 방법</div>
+      <div class="nowrap"><strong>15</strong>개 프롬프트</div>
+      <div class="nowrap"><strong>3</strong>단계 체크리스트</div>
+    </div>
+    <div class="byline">이 책의 목차·본문·프롬프트까지, 전부 <strong>클로드가 기획하고 작성</strong>했습니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">"결혼하는 데 대체 돈이 얼마나 들어요?"</em> 상견례가 끝나고 나면 다음 질문은 거의 항상 이거입니다. 그런데 정작 답을 찾으려고 하면 정보가 사방에 흩어져 있습니다. 예식장 견적은 웨딩플래너한테 물어봐야 하고, 스드메 가격은 업체마다 패키지 구성이 달라서 비교가 안 되고, 혼수·신혼여행·신혼집까지 더하면 어디서부터 계산해야 할지 감이 안 잡힙니다.</p>
+    <p>하지만 이 계산도 결국 "항목을 빠짐없이 나열하고, 항목별 시세를 곱해서, 축의금과 분담 비율을 반영해 순수 부담액을 뽑는" 구조화된 작업입니다. 한국소비자원 조사 기준 결혼식장+스드메 패키지 평균이 전국 2,160만 원(수도권 2,665만 원, 비수도권 1,511만 원)이고, 여기에 혼수·신혼여행·신혼집을 더하면 신혼집을 제외하고도 평균 6천만 원대라는 공개된 통계가 있습니다 — 이 숫자들을 기준값으로 놓고, 각자 상황에 맞게 조정하는 일은 AI가 순서대로 도와줄 수 있는 영역입니다.</p>
+    <p>이 책은 AI를 <strong>"항목을 나열해주면 지역·규모별 시세로 기준값을 잡고, 축의금·분담 비율까지 반영해서 순수 부담액을 계산해주는 예산 설계 조수"</strong>로 써서, 결혼 준비 비용 전체를 항목별로 계산하는 법부터 자금 조달 계획, 예비부부 분담까지 정리하는 법을 다룹니다. 그리고 이 계산 결과물로 "우리 결혼 비용 좀 같이 뽑아줄 수 있어?"라는 주변의 흔한 부탁을 대행 서비스로 만드는 법까지 다룹니다.</p>
+  </section>
+
+  <div class="toc">
+    <h2>목차</h2>
+    <ol>
+      <li>왜 지금 AI로 결혼 준비 비용 계산 대행인가<span class="leader"></span><span class="n">01</span></li>
+      <li>시작 전에 딱 3가지만 준비하세요<span class="leader"></span><span class="n">02</span></li>
+      <li>방법 1 — 결혼 준비 비용 전체 항목 지도 그리기<span class="leader"></span><span class="n">03</span></li>
+      <li>방법 2 — 지역·예식장 유형별 시세 조사해서 기준값 잡기<span class="leader"></span><span class="n">04</span></li>
+      <li>방법 3 — 예식장 대관료+식대 계산하기<span class="leader"></span><span class="n">05</span></li>
+      <li>방법 4 — 스드메 패키지 비용 비교·계산하기<span class="leader"></span><span class="n">06</span></li>
+      <li>방법 5 — 축의금 수입 예상해서 순수 지출액 계산하기<span class="leader"></span><span class="n">07</span></li>
+      <li>방법 6 — 혼수·가전·가구 비용 체크리스트로 계산하기<span class="leader"></span><span class="n">08</span></li>
+      <li>방법 7 — 신혼여행 비용 계산하기<span class="leader"></span><span class="n">09</span></li>
+      <li>방법 8 — 신혼집 마련 비용과 대출 상환 계산 연동하기<span class="leader"></span><span class="n">10</span></li>
+      <li>방법 9 — 혼인증여재산공제 반영해서 자금 조달 계획 짜기<span class="leader"></span><span class="n">11</span></li>
+      <li>방법 10 — 분담 비율·예비비까지 더해 전체 예산표 완성하기<span class="leader"></span><span class="n">12</span></li>
+      <li>방법 11 — 결혼 준비 비용 계산 대행 부업으로 수익화하기<span class="leader"></span><span class="n">13</span></li>
+      <li>방법 12 — 흔한 실수와 개선법<span class="leader"></span><span class="n">14</span></li>
+      <li>방법 13 — 나만의 대행 시스템 구축하기<span class="leader"></span><span class="n">15</span></li>
+      <li>바로 쓰는 프롬프트 15선<span class="leader"></span><span class="n">16</span></li>
+      <li>실전 체크리스트<span class="leader"></span><span class="n">17</span></li>
+    </ol>
+  </div>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>왜 지금 AI로 결혼 준비 비용 계산 대행인가</h2>
+    <p>결혼 준비 비용은 웨딩플래너의 재량이 아니라, 공개된 시세 통계와 각자의 조건을 조합하는 계산입니다. 그런데도 대부분은 "항목이 너무 많아서 전문가한테 맡겨야 한다"고 생각하고 계산 자체를 미룹니다.</p>
+    <ol class="steps">
+      <li><strong>AI는 업체를 대신 섭외해주는 플래너가 아니라 "항목·시세·축의금·분담까지 반영해 숫자로 미리 보여주는 조수"입니다.</strong> 시세를 일일이 발품 팔아 조사할 필요 없이, 지역과 조건만 알려주면 예산 구간을 정리해줍니다.</li>
+      <li><strong>한 번 만든 계산 로직은 의뢰가 들어올 때마다 조건만 바꿔서 재사용할 수 있습니다.</strong> 시세 기준값만 최신 통계로 갱신하면 됩니다.</li>
+      <li><strong>이 결과물 자체가 대행 서비스로 팔릴 수 있습니다.</strong> 결혼을 앞두고 "대체 돈이 얼마나 드는지" 미리 알고 싶은 사람은 항상 있고, 숫자와 근거로 답해주는 서비스는 신뢰를 빠르게 얻습니다.</li>
+    </ol>
+    <p>이 책은 "결혼 비용을 아끼는 법"을 다루지 않습니다. 이미 정해진(또는 가정한) 조건을 가지고 "지금 이 조건이면 비용이 얼마나 나오는지" 계산하고 비교하는 법만 다룹니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>시작 전에 딱 3가지만</h2>
+    <div class="method-meta">준비물은 딱 3가지 — 웨딩플래너 자격이나 재무설계 경력이 없어도 괜찮습니다</div>
+    <ol class="steps">
+      <li><strong>AI 챗봇 계정</strong> — 비용 항목을 나열하고, 시세 기준값을 적용하고, 축의금·분담 비율까지 반영해 순수 부담액을 계산하는 과정을 순서대로 시킬 수 있는 도구면 충분합니다</li>
+      <li><strong>예비부부 조건 1건</strong> — 실제로 결혼을 준비 중인 지인의 조건(지역, 예상 하객 수, 예식 스타일)이 있으면 가장 좋고, 없다면 가상의 조건(예: 수도권, 하객 200명, 호텔 웨딩)을 하나 정해도 됩니다</li>
+      <li><strong>최근 시세 참고 링크 1개</strong> — 한국소비자원 참가격(price.kca.go.kr)이나 웨딩 플랫폼의 가격 비교 페이지를 즐겨찾기 해두면, AI 계산 결과를 바로 대조할 수 있습니다</li>
+    </ol>
+    <p>이 3가지가 준비되면, 방법 1부터 순서대로 따라 하기만 하면 오늘 안에 첫 결혼 준비 예산표를 완성할 수 있습니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>결혼 준비 비용 전체 항목 지도 그리기</h2>
+    <p>예산을 계산하기 전에 "빠뜨린 항목이 없는지"부터 확인해야 합니다. 결혼 준비는 항목이 많아서, 하나라도 빠뜨리면 예산 전체가 틀어집니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "결혼 준비 비용은 크게 예식(대관료·식대), 스드메, 예물·예단, 혼수, 신혼여행, 신혼집, 부대비용으로 나뉜다는 원칙을 전제로, 빠짐없는 체크리스트를 만들어달라"고 요청한다</li>
+      <li>완성된 체크리스트를 상황에 맞게 "해당/비해당"으로 1차 분류한다 — 예물·예단은 가족 문화에 따라 생략하는 경우도 많으므로 반드시 확인한다</li>
+      <li>"예식 당일 비용(예식장·스드메)과 예식 이후 생활 비용(혼수·신혼집)을 구분해 달라"고 요청해, 계산 순서를 정한다</li>
+      <li>완성된 항목 지도를 "대분류 / 세부 항목 / 해당 여부 / 비고"로 정리한 표로 저장한다 — 이 표가 이후 모든 계산의 기초 자료가 된다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 예물·예단, 혼주 상견례비, 결혼식 전 상담비 등은 가족·지역 문화에 따라 있고 없고가 다릅니다. AI에게 "일반적인 체크리스트"를 받은 뒤, 반드시 의뢰인에게 이 항목이 해당되는지 하나씩 확인하는 절차를 거치세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>지역·예식장 유형별 시세 조사해서 기준값 잡기</h2>
+    <p>항목이 정리됐다면, 각 항목에 적용할 "기준 시세"를 먼저 잡아야 합니다. 결혼 비용은 지역과 예식장 유형에 따라 차이가 매우 큽니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>결혼식장+스드메 패키지 평균</th></tr>
+        <tr><td>전국 평균</td><td>약 2,160만 원</td></tr>
+        <tr><td>수도권</td><td>약 2,665만 원</td></tr>
+        <tr><td>비수도권</td><td>약 1,511만 원</td></tr>
+        <tr><td>서울 강남권</td><td>약 3,509만 원</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 통계를 전제로, "[예비부부 지역]에 맞는 기준값을 제시해달라"고 요청한다</li>
+      <li>"예식장 유형(호텔·일반 웨딩홀·하우스웨딩·스몰웨딩)별로 대관료·식대 구조가 다르다는 원칙에 따라, [선택한 유형]의 일반적인 비용 구간을 알려달라"고 요청한다</li>
+      <li>식대는 "1인당 식대 중간값이 6만 원을 넘어섰다"는 최근 통계를 기준으로, [예상 하객 수]를 곱했을 때의 식대 총액 구간을 계산해달라고 요청한다</li>
+      <li>완성된 기준값을 "항목 / 전국 평균 / 지역 평균 / 선택한 기준값"으로 정리해 저장한다 — 이 기준값이 이후 모든 계산에 쓰인다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 결혼 비용 통계는 조사 기관·시점마다 수치가 꽤 다르게 나옵니다. AI가 제시한 기준값은 "최근 공개 통계 기반 추정"이며, 실제 견적은 반드시 2~3곳 이상의 예식장·업체 견적으로 재확인하도록 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">05</span>예식장 대관료+식대 계산</h2>
+    <p>기준값이 잡혔다면, 이제 예식 당일 비용 중 가장 비중이 큰 예식장·식대를 구체적으로 계산합니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "예식장 비용은 대관료와 식대(1인당 단가 × 하객 수)로 나뉜다는 원칙을 전제로, 대관료 [기준값]과 식대 단가 [1인당 금액]을 하객 수 [인원수]명에 곱해 총 식대와 전체 비용을 계산해달라"고 요청한다</li>
+      <li>"하객 수는 예상보다 10~15% 적게 오는 경우가 흔하다"는 경향을 짚어주도록 요청하고, 식대는 보증 인원(최소 결제 인원) 기준으로 계산되는 경우가 많다는 점도 확인한다</li>
+      <li>대관료 포함 항목(주차, 폐백실, 신부 대기실)과 별도 청구 항목(답례품, 화촉·축하영상)을 구분해달라고 요청한다</li>
+      <li>완성된 결과를 "대관료 + (식대 단가 × 보증 인원) = 예식장 총비용"으로 표에 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 결혼식장 비용 중간값이 1,580만 원대로 보도된 자료가 있지만, 이는 대관료·식대를 합친 금액 기준이며 스드메는 별도입니다. 계산 결과를 보여줄 때 "이 금액에 스드메·혼수는 포함되지 않았다"는 점을 반드시 명시하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">06</span>스드메 패키지 비용 비교·계산</h2>
+    <p>스드메는 업체별로 패키지 구성이 달라 가격 비교가 가장 헷갈리는 항목입니다. AI로 비교 기준을 통일하면 혼란을 줄일 수 있습니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "스드메는 스튜디오 촬영, 드레스(2부 포함 여부), 메이크업(원장급·실장급 여부)으로 구성되고 패키지에 따라 가격 차이가 크다는 원칙을 전제로, 패키지를 비교할 때 확인해야 할 체크 항목 리스트를 만들어달라"고 요청한다</li>
+      <li>"스드메 평균 비용은 지역·패키지 구성에 따라 300만 원대부터 500만 원 이상까지 폭이 넓다"는 점을 전제로, [받은 견적 2~3건]을 알려주면 항목별 비교표를 만들어달라고 요청한다</li>
+      <li>"본식 드레스 1벌만 포함된 패키지와 2부까지 포함된 패키지는 20만~50만 원 이상 차이가 날 수 있다"는 원칙에 따라, 견적에 숨은 추가비용(원본 사진 구매, 피팅 추가 횟수)을 짚어달라고 요청한다</li>
+      <li>완성된 비교표를 "업체 / 포함 항목 / 총 견적가 / 숨은 추가비용 / 실질 비교가"로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 스드메 견적서의 "총액"만 비교하면 안 됩니다. 원본 사진 구매비, 드레스 피팅 추가비, 헤어 리터치비처럼 견적서에 작게 표기된 추가 비용까지 더해야 실제 지출액에 가깝습니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">07</span>축의금 수입 예상해서 순수 지출액 계산</h2>
+    <p>예식 비용을 다 계산했다면, 이제 "실제로 내 주머니에서 얼마가 나가는지"를 알아야 합니다. 축의금 수입을 반영해야 진짜 예산이 나옵니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "축의금은 하객과의 관계(가족·친척, 직장 동료, 친구, 지인)에 따라 평균 금액이 다르고, 전체 하객 수와 관계 비율을 곱해 예상 수입을 추정할 수 있다는 원칙을 전제로, [하객 구성 비율]을 알려주면 예상 축의금 총액을 계산해달라"고 요청한다</li>
+      <li>"축의금 평균은 지역·연령대·물가에 따라 계속 바뀌므로, 최근 자료를 참고해 보수적으로 잡아달라"고 요청한다</li>
+      <li>"예식장 비용 + 스드메 − 예상 축의금" 공식으로 "예식 관련 순수 지출액"을 계산해달라고 요청한다</li>
+      <li>완성된 결과를 "하객 관계 / 예상 인원 / 평균 축의금 / 소계 / 전체 예상 축의금 / 예식 순수 지출액"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 축의금 추정은 가장 불확실성이 큰 항목입니다. 반드시 "보수적 추정"과 "평균 추정" 두 가지 시나리오로 계산해서, 축의금이 예상보다 적게 들어와도 예산이 무너지지 않도록 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">08</span>혼수·가전·가구 비용 체크리스트로 계산</h2>
+    <p>예식이 끝나면 생활을 시작할 혼수 비용이 남습니다. 품목이 많아서 체크리스트 없이 계산하면 빠뜨리기 쉽습니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "혼수는 대형가전, 소형가전, 가구, 생활용품으로 나뉜다는 원칙을 전제로, 신혼집 평수 [평수]에 맞는 품목별 체크리스트를 만들어달라"고 요청한다</li>
+      <li>"이미 한쪽이 보유한 품목은 제외하고, 새로 구매해야 하는 품목만 다시 추려달라"고 요청해 중복 구매를 방지한다</li>
+      <li>품목별로 "기본형 가격대 / 중급형 가격대"를 함께 제시해달라고 요청하고, 예산에 따라 등급을 선택할 수 있게 한다</li>
+      <li>완성된 결과를 "품목 / 필요 여부 / 선택 등급 / 예상 가격"으로 정리한 표로 저장하고, 합계를 혼수 총 예산으로 확정한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 혼수는 전체 결혼 비용에서 가장 조정 폭이 큰 항목입니다. 예산이 부족하다면 이 항목에서 등급을 낮추거나 품목을 줄이는 것이 가장 현실적인 조정 지점이라는 점을 의뢰인에게 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">09</span>신혼여행 비용 계산</h2>
+    <p>신혼여행은 시즌과 목적지에 따라 가격 변동이 가장 큰 항목입니다. AI로 예산 구간을 미리 좁혀두면 뒤늦게 당황하지 않습니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "신혼여행 비용은 항공권, 숙박, 현지 투어·액티비티, 예비비로 구성된다는 원칙을 전제로, [목적지]와 [기간]을 알려주면 항목별 예산 구간을 제시해달라"고 요청한다</li>
+      <li>"성수기와 비성수기는 항공권·숙박 가격이 1.5~2배 이상 차이 날 수 있다"는 원칙에 따라, [결혼식 예정 시기]가 성수기인지 확인하고 가격 구간을 조정해달라고 요청한다</li>
+      <li>"허니문 패키지와 자유여행 중 어느 쪽이 예산상 유리한지" 조건별로 비교해달라고 요청한다</li>
+      <li>완성된 결과를 "구성 항목 / 패키지 견적 / 자유여행 견적 / 선택안"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 신혼여행은 환율·유가·시즌에 따라 변동이 커서 몇 달 전 예상 견적과 실제 결제 시점 가격이 다를 수 있습니다. 결제 시점이 가까워지면 다시 한 번 AI에게 최신 가격대를 재확인시키도록 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">10</span>신혼집 마련 비용과 대출 상환 계산 연동</h2>
+    <p>결혼 비용 중 가장 큰 변수는 신혼집입니다. 전세·매매 여부와 대출 상환 계획까지 함께 봐야 전체 예산이 완성됩니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "신혼집은 전세, 월세, 매매로 유형이 나뉜다는 원칙을 전제로, [고려 중인 유형]에 맞는 초기 필요 자금을 계산해달라"고 요청한다</li>
+      <li>대출을 활용할 계획이라면 "대출 한도와 월 상환액은 규제와 금리에 따라 달라진다는 원칙을 전제로, [대출 희망 금액]과 [금리]를 기준으로 예상 월 상환액을 계산해달라"고 요청한다</li>
+      <li>"신혼집 마련 비용은 결혼 준비 비용과 별도의 큰 자금이므로, 두 예산을 섞지 않고 각각 계획을 세우는 것이 원칙"이라는 점을 짚어주도록 요청한다</li>
+      <li>완성된 결과를 "주거 유형 / 필요 자금 / 자기자금 / 대출 금액 / 예상 월 상환액"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 신혼집 자금은 결혼식·스드메·혼수와 완전히 별개의 자금 흐름입니다. 반드시 "예식·생활 준비 예산"과 "주거 마련 예산"을 구간을 나눠 따로 정리하세요. 대출상환 계산을 더 깊이 다루고 싶다면 시리즈의 대출·전세 계산 자료를 함께 참고하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">11</span>혼인증여재산공제 반영해서 자금 조달 계획 짜기</h2>
+    <p>부모님 등 직계존속의 지원을 받는 경우, 세금 없이 받을 수 있는 한도를 알고 계획을 짜야 자금 조달이 깔끔해집니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "2024년 1월 1일 이후 증여분부터, 혼인신고일 전 2년~후 2년(총 4년) 이내 직계존속으로부터 받는 증여는 기존 공제 5,000만 원에 1억 원이 추가되어 최대 1억 5,000만 원까지 비과세된다는 원칙을 전제로, [증여 예정 시점]이 이 기간에 해당하는지 판단해달라"고 요청한다</li>
+      <li>"양가 부모에게서 각각 받으면 부부 합산 최대 3억 원까지 비과세가 가능하다"는 원칙에 따라, [양가 지원 예정 금액]이 한도 내인지 확인해달라고 요청한다</li>
+      <li>"여러 번 혼인신고를 해도 합계 공제는 1억 원까지만 인정되고, 출산 증여공제와는 중복되지 않는다"는 예외를 답변에 포함시켜 확인한다</li>
+      <li>완성된 결과를 "증여자 / 수증자 / 증여 예정 시점 / 공제 한도 / 공제 적용 후 과세 여부"로 정리해, 신혼집 자금 조달 계획에 반영한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 혼인증여재산공제는 요건이 세부적이고 법 개정으로 바뀔 수 있습니다. 큰 금액을 증여받을 계획이라면 국세청 홈택스나 세무사 확인을 반드시 권유하세요. 이 주제를 세금 계산 자체로 더 깊이 다루고 싶다면 시리즈의 상속세·증여세 계산 대행 자료를 함께 참고하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">12</span>분담 비율·예비비까지 더해 전체 예산표 완성</h2>
+    <p>모든 항목의 비용이 나왔다면, 이제 "누가 얼마를 낼지"와 "예상치 못한 지출에 대비한 예비비"까지 더해 최종 예산표를 완성합니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "분담 방식은 (A) 전체를 50:50으로 나누는 방식, (B) 항목별 전통적 관례를 따르는 방식, (C) 소득 비율대로 나누는 방식이 있다는 원칙을 전제로, 각 방식으로 나눴을 때 [합계 금액]이 양쪽에 얼마씩 배분되는지 계산해달라"고 요청한다</li>
+      <li>"예식·혼수 준비 과정에서 평균적으로 예산의 10~15% 정도 예비비를 따로 두는 것이 안전하다"는 권장 비율을 적용해, 예비비를 더한 최종 금액을 계산해달라고 요청한다</li>
+      <li>"신혼집 자금은 별도 구간으로 유지하고, 예식·스드메·혼수·신혼여행만 합산해 '결혼 준비 예산'으로 묶어달라"고 요청해 두 예산 구간이 섞이지 않게 한다</li>
+      <li>완성된 최종 예산표를 "항목 / 금액 / 신랑측 분담 / 신부측 분담 / 비고"로 정리해 저장한다 — 이 표가 의뢰인에게 전달할 최종 산출물이다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 분담 비율은 정답이 없는 영역입니다. AI는 "일반적으로 쓰이는 방식들"을 숫자로 보여줄 뿐이고, 최종 결정은 반드시 예비부부(와 양가)가 직접 합의해야 한다는 점을 리포트에 명시하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">13</span>결혼 준비 비용 계산 대행 부업으로 수익화</h2>
+    <p>여기까지 만든 계산 로직은 결혼을 준비하는 모든 사람에게 필요합니다. "우리 결혼 비용 좀 같이 뽑아줄 수 있어?"라는 부탁은 주변에서 끊이지 않습니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>서비스 범위를 명확히 정한다 — "항목별 시세 기준값 제시, 조건별 예산 계산, 축의금·분담 반영 최종 예산표 제공"까지만 하고, "실제 업체 계약·예약 대행"은 웨딩플래너의 영역이라는 점을 안내문에 명시한다</li>
+      <li>가격을 "결혼 준비 예산표 1건", "신혼집 자금 계획 추가", "분담 비율 비교 리포트"로 나눠 설계한다 — 1건 5,000~10,000원으로 시작해, 항목이 많거나 여러 시나리오를 원할수록 추가 요금을 받는 구조를 권장한다</li>
+      <li>방법 1~10에서 만든 계산 로직을 조건 입력만 받으면 채워지는 표준 템플릿으로 정리해, 의뢰가 오면 지역·하객 수·예식 스타일만 받아 빠르게 예산표를 완성하는 구조로 만든다</li>
+      <li>처음에는 결혼을 앞두고 있는 지인·동료 대상으로 무료 또는 저가로 시작해 실제 사례를 후기로 쌓는다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 이 부업은 웨딩플래너 업무를 대신하는 것이 아니라 예산 계산과 비교입니다. 상담 시작 전에 "제시하는 금액은 공개 통계와 조건을 조합한 참고용 추정치이며, 실제 견적은 업체별로 직접 확인해야 한다"는 점을 명확히 안내해 오해를 예방하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">14</span>흔한 실수</h2>
+    <div class="table-wrap">
+      <table>
+        <tr><th>실수</th><th>왜 위험한가</th><th>개선법</th></tr>
+        <tr><td>스드메 "총액"만 비교하고 숨은 추가비용을 놓침</td><td>원본 사진·피팅 추가비 등이 더해지면 실제 지출이 20~50만 원 이상 늘어남</td><td>방법 4에서 견적서 전체 항목을 비교해 실질 비교가를 뽑음</td></tr>
+        <tr><td>축의금을 낙관적으로만 계산</td><td>실제 축의금이 예상보다 적게 들어오면 예식 예산이 바로 적자로 전환됨</td><td>방법 5에서 보수적 추정과 평균 추정 두 시나리오를 함께 계산</td></tr>
+        <tr><td>결혼 준비 예산과 신혼집 마련 자금을 한 표에 합쳐 계산</td><td>두 자금의 성격(소비성 vs 자산성)이 달라 전체 그림이 왜곡됨</td><td>방법 8·10에서 두 예산 구간을 처음부터 분리해서 관리</td></tr>
+        <tr><td>예비비 없이 견적 금액 그대로를 최종 예산으로 확정</td><td>결혼 준비 중 추가 비용·변심 비용이 거의 항상 발생함</td><td>방법 10에서 10~15% 예비비를 처음부터 포함</td></tr>
+        <tr><td>혼인증여재산공제의 기간·한도를 확인하지 않고 큰 금액을 먼저 증여받음</td><td>기간(혼인신고 전후 2년)을 벗어나거나 한도를 넘으면 증여세가 그대로 부과됨</td><td>방법 9에서 공제 요건부터 먼저 확인</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>지금 준비 중인(또는 가상의) 결혼 준비 조건을 위 표와 하나씩 대조한다</li>
+      <li>해당하는 실수가 있으면, 관련 방법 장으로 돌아가 즉시 보완한다</li>
+      <li>이 표를 그대로 체크리스트로 저장해, 새로운 의뢰가 들어올 때마다 확인한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">15</span>나만의 대행 시스템 구축</h2>
+    <p>매번 새로 계산하지 않도록, 지금까지 만든 것을 하나의 재사용 가능한 시스템으로 묶습니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>방법 1의 항목 지도, 방법 2의 지역·유형별 기준값, 방법 3~7의 계산 로직, 방법 8~9(신혼집·증여공제)를 하나의 문서 템플릿에 섹션으로 나눠 통합한다</li>
+      <li>방법 13의 의뢰 접수 질문지(지역, 예상 하객 수, 예식 스타일, 혼수 보유 현황, 신혼집 계획, 양가 지원 예정 금액)를 저장해두고, 새 의뢰가 올 때마다 그대로 사용한다</li>
+      <li>결혼 비용 통계·공제 기준처럼 시점마다 바뀔 수 있는 값은 의뢰가 들어올 때마다 AI에게 최신 자료를 재확인시켜, 템플릿 상단의 "기준값" 섹션만 갱신하는 구조로 설계한다</li>
+      <li>시스템이 안정되면 이 전체를 "결혼 준비 비용 계산 대행 패키지"로 정식 서비스화한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">16</span>바로 쓰는 프롬프트 15선</h2>
+    <p class="lede">대괄호 부분만 바꿔서 그대로 붙여넣으세요. 카테고리별로 정리했습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 예산 항목·시세 조사</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">A1 항목 지도</div><div class="prompt">너는 결혼 준비 비용 설계 전문가야. 예식, 스드메, 예물·예단, 혼수, 신혼여행, 신혼집, 부대비용으로 나눠서 빠짐없는 체크리스트를 만들어줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A2 지역 기준값</div><div class="prompt">결혼식장+스드메 패키지 평균이 전국 2,160만 원, 수도권 2,665만 원, 비수도권 1,511만 원이라는 통계를 참고해서, [지역]에 맞는 기준값을 제시해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A3 예식장 유형 비교</div><div class="prompt">호텔·일반 웨딩홀·하우스웨딩·스몰웨딩의 일반적인 대관료·식대 구조를 비교해서 표로 보여줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A4 숨은 비용 찾기</div><div class="prompt">다음 견적서 내용을 보여줄 테니: [견적서 내용], 총액에 포함되지 않은 숨은 추가비용이 있는지 찾아줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 핵심 비용 계산</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">B1 예식장 비용</div><div class="prompt">대관료 [금액]과 식대 단가 [1인당 금액]을 하객 [인원수]명 기준으로 계산해서 예식장 총비용을 보여줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B2 스드메 비교</div><div class="prompt">스드메 견적 [업체A 내용]과 [업체B 내용]을 항목별로 비교해서 실질 비교가를 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B3 혼수 체크리스트</div><div class="prompt">신혼집 평수 [평수] 기준으로, 이미 보유한 품목([보유 품목])은 제외하고 새로 구매해야 할 혼수 품목과 예상 가격을 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B4 신혼여행 예산</div><div class="prompt">[목적지]로 [기간] 신혼여행을 갈 때, 성수기/비성수기 여부를 반영해서 항공권·숙박·현지비용 예산 구간을 계산해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 자금 조달·분담 계산</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">C1 축의금 예상</div><div class="prompt">하객 구성이 [관계별 인원수]일 때, 관계별 평균 축의금을 적용해서 예상 축의금 총액을 보수적 추정과 평균 추정 두 가지로 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C2 혼인증여공제</div><div class="prompt">[증여자]가 [증여 예정 시점]에 [금액]을 증여할 계획이야. 혼인증여재산공제(혼인신고 전후 2년, 한도 1억 5,000만 원) 요건에 해당하는지 판단해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C3 신혼집 자금</div><div class="prompt">신혼집으로 [전세/매매] [금액]을 고려 중이야. 자기자금 [금액]을 빼고 필요한 대출 금액과 [금리] 기준 예상 월 상환액을 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C4 분담 비율 비교</div><div class="prompt">결혼 준비 총비용 [금액]을 50:50 방식, 전통적 관례 방식, 소득 비율([비율]) 방식으로 나눴을 때 각각 부담액을 비교해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 대행 서비스화</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">D1 접수 질문지</div><div class="prompt">결혼 준비 비용 계산 대행 서비스를 시작하려고 해. 의뢰인에게 받아야 할 정보(지역, 하객 수, 예식 스타일, 혼수 보유 현황, 신혼집 계획)를 빠짐없이 받을 수 있는 접수 질문지를 만들어줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D2 고객용 리포트</div><div class="prompt">다음 계산 결과를 의뢰인에게 보여줄 리포트로 정리해줘: [계산 결과 데이터]. 마지막에 '제시 금액은 공개 통계와 조건을 조합한 참고용 추정치이며 실제 견적은 업체별로 확인해야 한다'는 안내 문구를 포함해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D3 서비스 소개 문구</div><div class="prompt">결혼 준비 비용 계산 대행 서비스를 한 문단으로 소개하는 홍보 문구를 써줘. 업체 계약 대행이 아니라 예산 계산·비교라는 점을 명확히 포함해줘.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">17</span>실전 체크리스트</h2>
+
+    <div class="checklist-group">
+      <h4><span class="wk">오늘</span>30분</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 A1로 내가 준비 중인(또는 가상의) 결혼 준비 항목 지도 만들어보기</li>
+        <li><input type="checkbox" disabled>프롬프트 A2로 지역 기준값부터 확인해보기</li>
+        <li><input type="checkbox" disabled>방법 1~2의 항목·기준값을 한국소비자원 참가격이나 웨딩 플랫폼 가격 비교와 한 번 대조해보기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 주</span>1차 완성</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 B1~B4로 예식장·스드메·혼수·신혼여행 비용까지 계산 완성하기</li>
+        <li><input type="checkbox" disabled>프롬프트 C1~C2로 축의금 예상과 혼인증여공제 적용 여부까지 정리하기</li>
+        <li><input type="checkbox" disabled>프롬프트 C3~C4로 신혼집 자금 계획과 분담 비율 비교까지 준비하기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 달</span>확장</h4>
+      <ul>
+        <li><input type="checkbox" disabled>방법 15대로 계산 프로세스를 하나의 문서 템플릿 시스템으로 통합하기</li>
+        <li><input type="checkbox" disabled>프롬프트 D1~D3으로 접수 질문지·고객용 리포트·소개 문구 준비해서 지인·동료 대상 첫 의뢰 진행하기</li>
+        <li><input type="checkbox" disabled>첫 의뢰 후기를 바탕으로 서비스 범위·안내 문구를 다듬어 정식 서비스로 확장하기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>결혼 준비는 감정적으로도, 금전적으로도 부담이 큰 일입니다. "대체 돈이 얼마나 드는지" 막막한 그 순간을, AI와 함께라면 오늘 안에 숫자로 바꿀 수 있습니다.</p>
+    <div class="close">
+      <p>오늘, 프롬프트 A1로 지금 준비 중인(또는 가상의) 결혼 준비 항목부터 지도를 그려보세요.</p>
+      <div class="sign">— 끝 —</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
