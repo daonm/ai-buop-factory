@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>반려동물 양육비 계산 대행 — 계산기 + 비교 체크리스트 템플릿팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 평생양육비 계산기 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 다두사육 비교 계산기 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 펫보험 가입여부 비교 계산기 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 입양 체크리스트 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #8B5A83;   /* plum — 의뢰접수·고객리포트 템플릿 */
+    --cat-e-tint: #E7DAE5;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C994C0; --cat-e-tint: #332030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C994C0; --cat-e-tint: #332030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.04rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.62rem; font-weight:700; margin:0 0 10px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:12px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.06rem; margin:20px 0 9px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:18px 0 20px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 10px; max-width:68ch; }
+  .lede{ font-size:0.98rem; color:var(--ink-soft); max-width:62ch; margin-bottom:10px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:7px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:11px 15px 8px; margin:0 0 9px; break-inside:avoid; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:2px 0 6px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.85rem; background:var(--paper); }
+  th,td{ text-align:left; padding:4px 9px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:6px 10px; margin-top:3px; }
+
+  /* ---------- Domain blocks (category-colored, 계산기·체크리스트·템플릿 5종) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:12px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:9px 12px 7px; margin:0 0 8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Task grid (상담 진행 체크리스트, category-colored 2단 배치) ---------- */
+  .task-grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:10px; }
+  .task-card{ background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:10px; padding:9px 12px 10px; break-inside:avoid; }
+  .task-card .tn{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:999px; background:var(--accent); color:#fff; font-family:var(--font-mono); font-size:0.7rem; font-weight:700; margin-right:7px; flex-shrink:0; }
+  .task-card h5{ display:inline; font-size:0.89rem; font-weight:700; margin:0; color:var(--ink); }
+  .task-card p{ margin:5px 0 0; font-size:0.79rem; color:var(--ink-soft); line-height:1.5; }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:11px 15px; margin-bottom:8px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 10px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.9rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:30px 20px 18px; break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:14px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 56 · 실행 키트</span>
+    <span class="badge">『입양하기 전에, AI한테 평생 양육비부터 물어보세요』 실전 부록</span>
+    <h1>반려동물 양육비,<br>계산기로 먼저 <span class="nowrap">맞춰보세요</span></h1>
+    <p class="subtitle"><span class="nowrap">평생양육비</span> <span class="nowrap">계산기</span> + <span class="nowrap">다두사육 비교</span> <span class="nowrap">계산기</span> + <span class="nowrap">펫보험 비교</span> <span class="nowrap">계산기</span> + <span class="nowrap">입양 체크리스트</span> + <span class="nowrap">의뢰접수 템플릿</span> — <span class="nowrap">종류·크기만</span> <span class="nowrap">넣으면</span> <span class="nowrap">평생 비용이</span> <span class="nowrap">바로 나옵니다</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>계산기·체크리스트·템플릿</div>
+      <div class="nowrap"><strong>12</strong>종 초기용품 체크 품목</div>
+      <div class="nowrap"><strong>4</strong>단계 판매 체크리스트</div>
+    </div>
+    <div class="byline">『입양하기 전에, AI한테 평생 양육비부터 물어보세요』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">계산은 이미 다 만들어져 있습니다. 동물 종류와 크기만 넣으면 됩니다.</em> 이 키트는 전자책 방법 1~9(양육비 항목 지도·종류별 사료비 기준값·입양 초기비용·월 고정비·보험 비교·의료비 변동 시나리오·생애주기별 총액·다두 사육·돌봄·장례비)를 이미 끝내둔 완성본입니다.</p>
+    <p>엑셀 계산기 3종·엑셀 체크리스트 1종·워드 템플릿 1종을 같은 톤으로 만들었습니다.</p>
+    <ol class="steps">
+      <li><strong>안내 시트</strong> — "확정 비용이 아니라 참고용 추정 계산 도구"라는 경계를 첫 화면에 명시합니다.</li>
+      <li><strong>계산기 시트</strong> — 노란색 칸에 값을 입력하면 올리브색 칸에 결과가 바로 뜹니다.</li>
+      <li><strong>참고표(해당 파일만)</strong> — 농림축산식품부 종류별 월평균 양육비처럼 반복해서 쓰는 기준을 계산기 시트 상단에 함께 정리해뒀습니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 계산기·체크리스트별 빠른 참고표에서 원하는 것부터 확인하고, 실제 파일을 열어 본인(또는 의뢰인) 조건으로 한 번 테스트해본 뒤 의뢰 접수·고객 리포트 템플릿까지 이어서 진행하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>계산기·체크리스트·템플릿 5종 빠른 참고표</h2>
+    <p class="lede">각 파일의 입력값 예시, 결과값, 그리고 어떤 순서로 이어 쓰는지를 정리했습니다. 실제 파일에 그대로 입력해 결과를 재현할 수 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 반려동물 평생양육비 계산기</div>
+      <div class="cat-flow">파일 — 반려동물_평생양육비_계산기.xlsx · 동물 종류·크기·예상수명을 입력하면 입양 초기비용+월 고정비(사료·병원·미용·용품)+생애주기별 의료비 변동 반영 총비용+돌봄·장례비까지 더한 평생 양육비 최종 총액이 자동 계산</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>소형견, 예상수명 14년</td><td>입양 초기비용</td><td>1,030,000원</td><td>&nbsp;</td></tr>
+            <tr><td>월 고정비+의료비 적립</td><td>월 고정비 합계</td><td>165,350원</td><td>&nbsp;</td></tr>
+            <tr><td>유아기+성년기+노령기+돌봄·장례</td><td>★평생 총액</td><td>36,291,300원</td><td>&nbsp;</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "이 강아지 입양하면 평생 돈이 얼마나 들까"를 막막해하는 예비 보호자. 생애주기별 숫자로 바로 보여주면 신뢰가 빠르게 생깁니다.</p>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 다두사육 비교 계산기</div>
+      <div class="cat-flow">파일 — 다두사육_비교_계산기.xlsx · 마리 수와 1마리 기준 월 고정비를 입력하면 항목별 '규모의 경제' 배율과 동시 진료·미용 할인율을 반영해 단순 n배 적용 대비 실제 총액과 절감액이 자동으로 뜸</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>3마리, 할인율 10%</td><td>단순 n배 적용 월총액</td><td>415,800원</td><td>&nbsp;</td></tr>
+            <tr><td>항목별 규모의경제 배율</td><td>★배율+할인 적용 월총액</td><td>337,770원</td><td>&nbsp;</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "2마리째부터는 2배가 아니라던데 정확히 얼마나 절감되나요?"라는 질문. 항목별 배율로 바로 답해줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 펫보험 가입여부 비교 계산기</div>
+      <div class="cat-flow">파일 — 펫보험_가입여부_비교_계산기.xlsx · 월 보험료·가입연수와 무사고/사고 치료비 시나리오를 입력하면 보험 가입 시 총 납입액 vs 미가입 시 비용을 비교하고 손익분기 연간 치료비·사고 횟수까지 자동 계산</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>월 2.5만원, 10년 납입</td><td>손익분기 연간 치료비</td><td>428,571원</td><td>&nbsp;</td></tr>
+            <tr><td>사고 2회(150만원/회)</td><td>★사고 시 차액(가입 유리)</td><td>1,100,000원</td><td>&nbsp;</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "보험 들어야 할지 말아야 할지 모르겠다"는 사람. 손익분기 숫자와 시나리오별 비교로 바로 확인시켜줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 반려동물 입양 체크리스트</div>
+      <div class="cat-flow">파일 — 반려동물_입양체크리스트.xlsx · '입양전_준비타임라인' 시트(입양예정일 입력→D-day 자동 역산)와 '초기용품_체크리스트' 시트(12개 품목, 보유여부·구매여부 드롭다운)로 구성</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>입양예정일 2027-02-15</td><td>동물등록 D-day</td><td>자동 계산</td><td>&nbsp;</td></tr>
+            <tr><td>초기용품 12품목 중 보유 체크</td><td>신규구매 합계</td><td>자동 계산</td><td>&nbsp;</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "뭐부터 언제까지 준비해야 하는지 모르겠다"는 사람. 입양예정일 하나만 넣으면 항목별 마감 기한이 전부 나옵니다.</p>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 의뢰접수·고객리포트 템플릿</div>
+      <div class="cat-flow">파일 — 의뢰접수_고객리포트_템플릿.docx · 의뢰 접수 질문지(14문항) + 조건·보유 품목 체크 + 고객용 예상비용 리포트 템플릿 + 서비스 안내·가격 템플릿까지 대괄호만 바꿔서 바로 쓰는 문서</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구성</th><th>내용</th><th>구성</th><th>내용</th></tr>
+            <tr><td>의뢰 접수 질문지</td><td>14개 문항</td><td>고객용 리포트</td><td>10단계 요약 양식</td></tr>
+            <tr><td>조건·보유 품목 체크</td><td>5개 확인 항목</td><td>서비스 안내·가격표</td><td>4단계 패키지</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 의뢰가 들어오면 바로 접수할 수 있는 양식이 없어 매번 새로 질문을 만들던 상황. 질문지 한 장으로 빠짐없이 받고, 리포트 양식 그대로 전달하면 됩니다.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>패키지 구성 &amp; 검증 워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>패키지·가격 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지 유형</th><th>가격대</th><th>내 판매가</th></tr>
+          <tr><td>평생 양육비 리포트 1건(직접 진행)</td><td>5,000~10,000원</td><td class="fill"></td></tr>
+          <tr><td>다두사육 비교 추가(직접 진행)</td><td>3,000~5,000원</td><td class="fill"></td></tr>
+          <tr><td>펫보험 가입여부 비교 추가(직접 진행)</td><td>3,000~5,000원</td><td class="fill"></td></tr>
+          <tr><td>계산기 3종+체크리스트+템플릿 5종 세트</td><td>12,000~20,000원</td><td class="fill"></td></tr>
+          <tr><td>전자책+계산기·체크리스트·템플릿 5종 묶음</td><td>16,900~25,000원</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">추천 — 처음엔 A(평생양육비 계산기) 단품으로 판매 기록부터 쌓고, 반응이 오면 5종 세트+전자책 묶음으로 객단가를 높이세요.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 판매 전 필수</h4></div>
+      <h3>내 조건으로 교차검증하기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>계산기</th><th>내 실제 값 입력</th><th>공식 자료와 비교</th></tr>
+          <tr><td>A. 반려동물 평생양육비 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>B. 다두사육 비교 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>C. 펫보험 가입여부 비교 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">비교 대상 — 농림축산식품부 동물보호관리시스템(animal.go.kr), 거주 지역 동물병원 진료비 게시 페이지(2025년 1월부터 공개 항목 20개), 펫보험사 공식 약관·보험료 모의계산. 오차가 크면 상담 전에 반드시 기준값을 다시 점검하세요.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>상담 진행 체크리스트</h2>
+    <p class="lede">접수부터 사후관리까지 단계별로 정리했습니다. '의뢰접수_고객리포트_템플릿.docx'의 의뢰 접수 질문지에 완료 여부를 기록하면서 그대로 진행 관리표로 사용할 수 있습니다.</p>
+
+    <div class="cat-label" style="--accent:var(--cat-a);--accent-tint:var(--cat-a-tint)">접수·리서치 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">1</span><h5>접수 질문지 발송·회수</h5><p>동물 종류, 크기, 나이, 입양경로, 거주지역까지 빠짐없이 받기</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">2</span><h5>입양예정일 먼저 확인</h5><p>D. 체크리스트의 입양전_준비타임라인으로 D-day부터 확인해 일정 관리</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">3</span><h5>보유 품목·마리 수 확인</h5><p>초기용품 보유 현황과 다두 사육 여부 확보</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">4</span><h5>희망 결과물 확인</h5><p>평생양육비만/다두사육 포함/보험비교까지 범위 확정</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-e);--accent-tint:var(--cat-e-tint)">계산·검증 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">1</span><h5>초기비용+월고정비</h5><p>계산기 A로 입양 초기비용과 월 고정비부터 산출</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">2</span><h5>의료비 변동 반영</h5><p>계산기 A에서 무사고/사고 시나리오 월 적립액 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">3</span><h5>생애주기별 총액 계산</h5><p>계산기 A에서 유아기·성년기·노령기 구간 총비용 확정</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">4</span><h5>다두 사육 비교</h5><p>해당 시 계산기 B로 규모의경제 반영 실제 총액 계산</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">5</span><h5>보험 가입여부 비교</h5><p>해당 시 계산기 C로 손익분기 치료비 계산</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">6</span><h5>공식 자료 대조</h5><p>동물보호관리시스템·동물병원 게시가와 교차검증</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-c);--accent-tint:var(--cat-c-tint)">납품·사후관리 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">1</span><h5>리포트 정리</h5><p>계산 근거(기준값·통계 확인 시점)를 표로 정리</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">2</span><h5>면책 문구 최종 확인</h5><p>"참고용 추정치이며 병원·업체별 견적으로 재확인" 포함 여부 점검</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">3</span><h5>고객용 리포트 전달</h5><p>템플릿 E의 리포트 양식으로 함께 전달</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">4</span><h5>결과 피드백 수렴</h5><p>실제 입양·병원 방문 후기 요청</p></div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>판매 준비 체크리스트</h2>
+    <p class="lede">브리프부터 등록까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>검증</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 2로 계산기 A·B·C 모두 내(또는 지인의) 실제 조건으로 테스트하기</li>
+        <li><input type="checkbox" disabled>농림축산식품부 조사·동물병원 게시가와 대조해 기준값 오차 확인하기</li>
+        <li><input type="checkbox" disabled>계산기 시트에 확인한 통계와 확인 날짜 메모 남기기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>다듬기</h4>
+      <ul>
+        <li><input type="checkbox" disabled>입력 셀(노란색) 옆에 "여기에 값을 입력하세요" 안내 문구 확인하기</li>
+        <li><input type="checkbox" disabled>"참고용 추정치이며 실제 비용은 병원·업체별로 확인해야 한다"는 경계 문구가 각 파일에 붙어있는지 확인하기</li>
+        <li><input type="checkbox" disabled>파일명·시트명에 오탈자 없는지 최종 점검하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>등록</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 1로 패키지·가격 확정하기</li>
+        <li><input type="checkbox" disabled>래피드에 상품명 "계산기", "반려동물 양육비", "입양 전 체크리스트" 단어 포함해 등록하기</li>
+        <li><input type="checkbox" disabled>Day55 전자책과 세트 상품(업셀) 옵션도 함께 등록하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>갱신 관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>반려동물 양육비 통계·진료비 공개 항목은 조사 시점·제도 개정에 따라 바뀌므로, 신규 의뢰가 올 때마다 최신 자료로 재확인해 계산기에 반영하기</li>
+        <li><input type="checkbox" disabled>기존 상담 고객 연락처/알림 목록 만들어두기(기준값 갱신 시 재안내용)</li>
+        <li><input type="checkbox" disabled>지역 평균·진료비 기준 변경 시 참고표만 교체 후 Worksheet 2 검증 다시 거치기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>동물 종류와 크기를 넣고, 생애주기와 의료비 변동을 반영하고, 숫자와 근거로 답하세요.</p>
+    <p><strong>입양하기 전에 미리 확인하는 숫자 하나가, 나중에 당황하는 것보다 훨씬 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
+</body>
+</html>
