@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>신청 전에, AI한테 육아휴직급여부터 물어보세요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F; --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38; --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74; --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A; --cat-d-tint: #E3E6CE;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:780px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.0rem, 6vw, 3.1rem); line-height:1.3; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.1rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.7rem; font-weight:700; margin:0 0 20px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:18px; width:max-content; max-width:100%; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.1rem; margin:24px 0 10px; color:var(--ink); }
+  section.chapter{ padding:30px 0 34px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 14px; max-width:66ch; orphans:1; widows:1; }
+  .lede{ font-size:1.02rem; color:var(--ink-soft); max-width:62ch; margin-bottom:18px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  /* ---------- TOC ---------- */
+  .toc{ border-top:3px solid var(--gold); padding:20px 0 8px; margin-bottom:44px; }
+  .toc h2{ font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 16px; break-after:avoid; }
+  .toc ol{ list-style:none; margin:0; padding:0; }
+  .toc li{ display:flex; align-items:baseline; gap:6px; padding:6px 0; font-size:0.94rem; break-inside:avoid; }
+  .toc .n{ font-family:var(--font-mono); font-weight:700; color:var(--gold-strong); flex-shrink:0; }
+  .toc .leader{ flex:1; border-bottom:1px dotted var(--line); margin:0 2px 5px; min-width:16px; }
+  .toc .pg{ font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); flex-shrink:0; }
+
+  /* ---------- Method steps ---------- */
+  .method-meta{ display:inline-block; font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-bottom:16px; }
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; }
+  ol.steps li{ margin-bottom:9px; padding-left:4px; break-inside:avoid; }
+
+  /* ---------- Note callouts ---------- */
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:6px 0 4px; }
+
+  /* ---------- Table ---------- */
+  .table-wrap{ overflow-x:auto; margin-bottom:14px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.88rem; background:var(--paper); }
+  th,td{ text-align:left; padding:8px 13px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.72rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+
+  /* ---------- Prompt cards (categorized grid) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:6px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-label{ display:table; font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); border-radius:6px; padding:4px 12px; margin:0 0 8px; break-after:avoid-page; }
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:13px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:8px 10px 8px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.76rem; color:var(--accent); font-weight:700; margin-bottom:4px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:7px 9px; font-family:var(--font-mono); font-size:0.76rem; line-height:1.45; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:15px 18px; margin-bottom:10px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.88rem; letter-spacing:0.05em; margin:0 0 12px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.78rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:4px 0; font-size:0.92rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; }
+  .epilogue .close{ break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:10px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{
+    .cover{ page-break-after:always; margin-left:0; margin-right:0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 59</span>
+    <span class="badge">CLAUDE가 기획 · 집필</span>
+    <h1>신청 전에,<br>AI한테 <span class="nowrap">육아휴직급여부터</span> <span class="nowrap">물어보세요</span></h1>
+    <p class="subtitle">AI로 <span class="nowrap">육아휴직급여·출산휴가급여</span> <span class="nowrap">계산 대행하는 법</span> — <span class="nowrap">그대로 쓰는</span> <span class="nowrap">급여 프롬프트 15개</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>12</strong>가지 방법</div>
+      <div class="nowrap"><strong>15</strong>개 프롬프트</div>
+      <div class="nowrap"><strong>3</strong>단계 체크리스트</div>
+    </div>
+    <div class="byline">이 책의 목차·본문·프롬프트까지, 전부 <strong>클로드가 기획하고 작성</strong>했습니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">"휴직하면 월급이 얼마나 줄어들까?"</em> 임신 소식을 알리거나 복직을 고민할 때마다 누구나 한 번쯤 던지는 질문입니다. 회사 담당자도 정확히 모르는 경우가 많고, 고용24 안내문은 구간과 조건이 복잡해서 읽다가 포기하기 쉽습니다. 그런데 정작 신청하기 전에 "내가 대략 얼마를 받을지" 미리 계산해보는 사람은 드뭅니다.</p>
+    <p>하지만 이 계산도 결국 구조화된 작업입니다. "통상임금을 확인하고, 급여 종류별 지급률을 적용하고, 월별·구간별 상한액을 반영하고, 6+6 특례나 한부모 특례 해당 여부를 판단하는" 순서가 정해져 있고, 이 순서를 그대로 따라가면 누구나 자신이 받을 급여를 미리 가늠해볼 수 있습니다. 상한액·특례 조건은 저출생 대책으로 자주 바뀔 수 있지만, "계산하는 순서" 자체는 거의 바뀌지 않습니다.</p>
+    <p>이 책은 AI를 <strong>"출산·육아휴직 조건을 입력하면, 그 시점 고용보험 고시 기준(지급률·상한액·하한액·특례 조건)을 전제로 출산전후휴가급여와 육아휴직급여를 순서대로 계산해주는 급여 추정 조수"</strong>로 써서, 통상임금 산정부터 6+6 부모육아휴직제 특례까지 단계별로 계산하는 법을 다룹니다. 그리고 이 계산 결과물로 "나 휴직하면 얼마 받는지 좀 봐줄 수 있어?"라는 동료·지인의 흔한 부탁을 대행 서비스로 만드는 법까지 다룹니다.</p>
+  </section>
+
+  <div class="toc">
+    <h2>목차</h2>
+    <ol>
+      <li>왜 지금 AI로 육아휴직급여·출산휴가급여 계산 대행인가<span class="leader"></span><span class="n">01</span></li>
+      <li>시작 전에 딱 3가지만 준비하세요<span class="leader"></span><span class="n">02</span></li>
+      <li>방법 1 — 출산전후휴가급여, 통상임금 기준부터 산정하기<span class="leader"></span><span class="n">03</span></li>
+      <li>방법 2 — 출산전후휴가급여 상한액 적용해 실제 지급액 계산<span class="leader"></span><span class="n">04</span></li>
+      <li>방법 3 — 배우자 출산휴가 급여 계산하기<span class="leader"></span><span class="n">05</span></li>
+      <li>방법 4 — 육아휴직급여 기본 구조로 월별 금액 계산<span class="leader"></span><span class="n">06</span></li>
+      <li>방법 5 — 구간별 상한액 적용해 실제 월 지급액 확정<span class="leader"></span><span class="n">07</span></li>
+      <li>방법 6 — 하한액·사후지급금 폐지 반영한 최종 수령액<span class="leader"></span><span class="n">08</span></li>
+      <li>방법 7 — 6+6 부모육아휴직제 특례 적용해 재계산<span class="leader"></span><span class="n">09</span></li>
+      <li>방법 8 — 한부모·장애아 부모 특례 조건 반영하기<span class="leader"></span><span class="n">10</span></li>
+      <li>방법 9 — 육아휴직 기간 연장 조건 판단하기<span class="leader"></span><span class="n">11</span></li>
+      <li>방법 10 — 계산 대행 부업으로 수익화하기<span class="leader"></span><span class="n">12</span></li>
+      <li>방법 11 — 흔한 실수와 개선법<span class="leader"></span><span class="n">13</span></li>
+      <li>방법 12 — 나만의 대행 시스템 구축하기<span class="leader"></span><span class="n">14</span></li>
+      <li>바로 쓰는 프롬프트 15선<span class="leader"></span><span class="n">15</span></li>
+      <li>실전 체크리스트<span class="leader"></span><span class="n">16</span></li>
+    </ol>
+  </div>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>왜 지금 AI로 육아휴직급여·출산휴가급여 계산 대행인가</h2>
+    <p>육아휴직급여·출산휴가급여는 회사의 재량이 아니라, 공개된 지급률·상한액 기준과 각자의 근무 조건을 조합하는 계산입니다. 그런데도 대부분은 "신청하면 그때 알게 된다"고 생각하고 계산 자체를 미룹니다.</p>
+    <ol class="steps">
+      <li><strong>AI는 노무사를 대신하는 전문가가 아니라 "지급률·상한액·특례까지 반영해 숫자로 미리 보여주는 조수"입니다.</strong> 구간표를 일일이 찾아볼 필요 없이, 근무 조건만 알려주면 추정액을 정리해줍니다.</li>
+      <li><strong>한 번 만든 계산 로직은 의뢰가 들어올 때마다 조건만 바꿔서 재사용할 수 있습니다.</strong> 상한액·특례 조건만 최신 고시로 갱신하면 됩니다.</li>
+      <li><strong>이 결과물 자체가 대행 서비스로 팔릴 수 있습니다.</strong> 신청하기 전에 "내가 얼마나 받을지" 미리 알고 싶은 사람은 항상 있고, 숫자와 근거로 답해주는 서비스는 신뢰를 빠르게 얻습니다.</li>
+    </ol>
+    <p>이 책은 "휴직 신청 서류를 대신 작성하는 법(노무 대리)"을 다루지 않습니다. 이미 정해진(또는 가정한) 근무 조건을 가지고 "지금 이 조건이면 급여가 얼마나 나오는지" 계산하고 비교하는 법만 다룹니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>시작 전에 딱 3가지만</h2>
+    <div class="method-meta">준비물은 딱 3가지 — 노무사 자격이나 인사 경력이 없어도 괜찮습니다</div>
+    <ol class="steps">
+      <li><strong>AI 챗봇 계정</strong> — 근무 조건을 넣으면 통상임금을 구하고, 지급률을 적용하고, 구간별 상한액까지 반영해 급여를 계산하는 과정을 순서대로 시킬 수 있는 도구면 충분합니다</li>
+      <li><strong>휴직 조건 1건</strong> — 실제로 급여를 궁금해하는 동료·지인의 조건(월 통상임금, 휴직 예정 기간, 배우자 동시 휴직 여부, 한부모 여부)이 있으면 가장 좋고, 없다면 가상의 조건(예: 월 통상임금 300만 원, 육아휴직 12개월, 부모 모두 사용 예정)을 하나 정해도 됩니다</li>
+      <li><strong>고용24 접속 정보 1개</strong> — 고용24(work24.go.kr)를 즐겨찾기 해두면, 신청 시점의 정확한 상한액·하한액과 신청 절차를 바로 확인할 수 있습니다</li>
+    </ol>
+    <p>이 3가지가 준비되면, 방법 1부터 순서대로 따라 하기만 하면 오늘 안에 첫 급여 추정표를 완성할 수 있습니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>출산전후휴가급여, 통상임금부터 산정하기</h2>
+    <p>급여 계산은 항상 "통상임금"을 구하는 데서 시작합니다. 출산전후휴가급여는 실수령액이 아니라 통상임금을 기준으로 산정되는데, 기본급 외에 정기적·일률적으로 받는 수당까지 포함해야 한다는 점이 첫 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "통상임금은 기본급처럼 정기적·일률적·고정적으로 지급되는 임금을 말하고, 비정기 성과급이나 실비 변동 수당은 제외하는 구조"라는 원칙을 전제로, [월급 구성 내역]에서 통상임금 포함·제외 항목을 구분해달라고 요청한다</li>
+      <li>"월 통상임금을 1일 통상임금으로 환산하려면, 월 통상임금을 그달의 산정 기준(또는 30일)으로 나눈다"는 원칙으로 [월 통상임금]을 1일 기준으로 환산해달라고 요청한다</li>
+      <li>"이 산정 방식은 회사 급여 규정에 따라 세부 항목이 달라질 수 있다"는 점을 리포트에 명시하도록 요청한다</li>
+      <li>완성된 결과를 "월급 구성 항목 / 통상임금 포함 여부 / 월 통상임금 / 1일 통상임금"으로 정리한 표로 저장한다 — 이 표가 이후 모든 급여 계산의 출발점이 된다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 통상임금 판단은 수당 구성에 따라 사람마다 다르고 분쟁이 생기기 쉬운 항목입니다. 애매한 수당은 "확인 필요"로 표시하고, 최종 판단은 인사팀·노무사 확인을 권장하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>출산전후휴가급여 상한액 적용과 실제 지급액</h2>
+    <p>통상임금이 나왔다면, 이제 출산전후휴가급여의 지급률과 상한액을 적용합니다. 통상임금의 100%가 지급되는 대신, 고용보험이 지원하는 금액에는 월 상한선이 있다는 점이 두 번째 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>기준값</th></tr>
+        <tr><td>지급률</td><td>통상임금의 100%</td></tr>
+        <tr><td>30일 기준 월 상한액</td><td>약 220만 원 수준</td></tr>
+        <tr><td>전체 기간</td><td>90일 (다태아 120일)</td></tr>
+        <tr><td>출산 후 확보 기간</td><td>45일 이상 (다태아 60일)</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 기준값을 전제로, 방법 1에서 구한 [1일 통상임금]을 상한액과 비교해달라고 요청한다</li>
+      <li>"통상임금이 상한액보다 낮으면 전액이, 높으면 상한액까지만 고용보험에서 지급되고 나머지는 사업주 부담 구간이 생길 수 있다"는 원칙으로 지급 구조를 구분해달라고 요청한다</li>
+      <li>"출산 후 45일(다태아 60일) 이상이 반드시 남아야 한다"는 원칙으로 [출산 예정일] 기준 휴가 시작·종료일을 역산해달라고 요청한다</li>
+      <li>완성된 결과를 "휴가 기간 / 1일 통상임금 / 상한액 적용 여부 / 고용보험 지급액 / 사업주 부담분(해당 시)"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 월 상한액·하한액은 고시로 매년 조정됩니다. 이 책의 220만 원은 계산 구조를 보여주는 기준값이며, 실제 적용 상한액은 신청 시점 고용24 공지로 재확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">05</span>배우자 출산휴가 급여 계산하기</h2>
+    <p>출산한 당사자뿐 아니라 배우자도 유급 휴가 급여를 받을 수 있습니다. 기간이 짧고 구조가 단순하지만, 출산전후휴가와 혼동해서 빠뜨리기 쉬운 항목이라는 점이 세 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "배우자 출산휴가는 출산일로부터 일정 기간(최근 기준 20일 수준으로 확대되어 온 값) 안에 사용할 수 있고, 전 기간 유급으로 통상임금 100%가 지급되는 구조"라는 원칙을 전제로, [배우자 월 통상임금]으로 전체 급여를 계산해달라고 요청한다</li>
+      <li>"사업장 규모(우선지원대상기업 여부)에 따라 고용보험 지원 구간과 사업주 부담 구간이 나뉠 수 있다"는 원칙으로 사업장 규모별 지원 구간을 구분해달라고 요청한다</li>
+      <li>"1회에 한해 분할 사용이 가능한 경우가 있다"는 원칙으로 [분할 사용 희망 여부]에 맞춰 일정을 나눠 계산해달라고 요청한다</li>
+      <li>완성된 결과를 "전체 휴가일 / 통상임금 / 고용보험 지원분 / 사업주 부담분(해당 시) / 사용 일정"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 배우자 출산휴가의 사용 가능 기간과 지원 범위는 사업장 규모와 법 개정 시점에 따라 달라질 수 있습니다. 실제 지원 여부는 고용24에서 다시 확인하도록 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">06</span>육아휴직급여 기본 구조로 월별 금액 계산</h2>
+    <p>출산 관련 급여 계산이 끝났다면, 이제 육아휴직급여를 계산합니다. 통상임금의 80%가 기본 지급률이라는 점이 출산전후휴가급여(100%)와 가장 다른 부분입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "육아휴직급여는 통상임금의 80%를 기본 지급률로 하되, 월별로 별도의 상한액·하한액이 적용되는 구조"라는 원칙을 전제로, 방법 1에서 구한 [월 통상임금]의 80%를 계산해달라고 요청한다</li>
+      <li>"2025년 1월부터 사후지급금 제도가 폐지되어, 복직 여부와 관계없이 휴직 기간 중 매달 전액이 지급되는 구조로 바뀌었다"는 원칙을 전제로 지급 시점을 "매달 전액 지급"으로 정리해달라고 요청한다</li>
+      <li>"신청은 고용24에서, 휴직 시작 1개월 후부터 가능하고 종료 후 12개월 이내에 마쳐야 한다"는 원칙으로 [휴직 시작일] 기준 신청 가능 시점과 마감일을 계산해달라고 요청한다</li>
+      <li>완성된 결과를 "월 통상임금 / 지급률(80%) / 상한액 적용 전 월 급여액 / 신청 가능 시점 / 신청 마감일"로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 사후지급금 폐지는 비교적 최근 제도 변경 사항입니다. "현재는 매달 전액 지급"이라는 점을 리포트 앞부분에 명확히 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">07</span>구간별 상한액 적용해 실제 월 지급액 확정</h2>
+    <p>기본 지급률을 적용한 금액이 나왔다면, 이제 휴직 기간에 따라 달라지는 구간별 상한액을 적용합니다. 1~3개월, 4~6개월, 7개월 이후로 상한액이 단계적으로 낮아지는 구조라는 점이 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>휴직 구간</th><th>지급률</th><th>월 상한액(기준값)</th></tr>
+        <tr><td>1~3개월</td><td>통상임금의 80%</td><td>약 250만 원</td></tr>
+        <tr><td>4~6개월</td><td>통상임금의 80%</td><td>약 200만 원</td></tr>
+        <tr><td>7개월 이후</td><td>통상임금의 80%</td><td>약 160만 원</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 구간표를 전제로, 방법 4에서 구한 [월 급여액(상한 적용 전)]을 휴직 개월 수에 맞는 구간 상한액과 비교해달라고 요청한다</li>
+      <li>"급여액이 구간 상한액보다 높으면 상한액까지만, 낮으면 계산된 금액 그대로 지급된다"는 원칙으로 월별 실제 지급액을 확정해달라고 요청한다</li>
+      <li>"전체 기간(예: 12개월)에 걸쳐 구간이 바뀔 때마다 지급액이 달라지므로 월별로 나눠 표로 정리해달라"고 요청한다</li>
+      <li>완성된 결과를 "휴직 월차 / 구간 / 상한액 적용 전 금액 / 상한액 적용 후 실제 지급액"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 구간별 상한액은 저출생 대책으로 자주 조정되는 값입니다. 이 표의 250만/200만/160만 원은 계산 구조를 보여주는 기준값이며, 실제 상한액은 신청 시점 고용24 고시로 반드시 재확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">08</span>하한액·사후지급금 폐지 반영한 최종 수령액</h2>
+    <p>상한액만 신경 쓰다가 하한액을 놓치는 경우가 많습니다. 통상임금이 낮아도 일정 금액 이상을 보장하는 하한액까지 반영해야 최종 수령액이 완성된다는 점이 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "육아휴직급여 하한액은 월 70만 원 수준으로 고시되어 온 값이고, 계산된 급여액이 하한액보다 낮으면 하한액만큼 지급하는 구조"라는 원칙을 전제로, 방법 5에서 구한 [월별 지급액]이 하한액보다 낮은 달이 있는지 확인해달라고 요청한다</li>
+      <li>"하한액보다 낮은 달이 있다면 하한액으로 상향해서 최종 수령액을 다시 정리해달라"고 요청한다</li>
+      <li>"사후지급금 폐지로 복직 여부와 무관하게 매달 전액이 지급되므로, 별도의 복직 후 정산 항목은 포함하지 않는다"는 점을 재확인시켜달라고 요청한다</li>
+      <li>완성된 결과를 "휴직 월차 / 상한액 적용 후 금액 / 하한액 적용 여부 / 최종 월 수령액 / 전체 기간 총 수령액"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 하한액은 최저임금 인상과 연동해 조정될 수 있는 값입니다. 전체 기간 총 수령액까지 계산해두면 의뢰인이 휴직 결정을 고민할 때 가장 유용한 숫자가 됩니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">09</span>6+6 부모육아휴직제 특례 적용해 재계산</h2>
+    <p>부모가 함께, 또는 순차적으로 육아휴직을 쓰면 더 높은 특례 상한액을 받을 수 있는 제도가 있습니다. 이 특례는 조건이 맞을 때만 적용되므로, 해당 여부를 먼저 판단하는 것이 중요합니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "6+6 부모육아휴직제는 자녀가 생후 18개월 안에 부모 모두가 각각 육아휴직을 사용하는 경우, 첫 6개월 동안 통상임금의 100%를, 월차가 올라갈수록 더 높아지는 특례 상한액으로 지급하는 제도"라는 원칙을 전제로, [자녀 생년월일]과 [부모 각각의 휴직 시작일]을 비교해 특례 대상 여부를 판단해달라고 요청한다</li>
+      <li>"특례가 적용되면 지급률이 100%가 되고, 월차별 상한액도 일반 구조(방법 5)보다 높은 별도 구간표가 적용된다"는 원칙으로 특례 대상 기간만 따로 떼어 재계산해달라고 요청한다</li>
+      <li>"특례가 끝나는 7개월째부터는 다시 일반 구조(방법 4~6)로 돌아간다"는 원칙으로 전체 휴직 기간을 "특례 구간"과 "일반 구간"으로 나눠 이어 붙여달라고 요청한다</li>
+      <li>완성된 결과를 "구간(특례/일반) / 지급률 / 월 상한액 / 월 실제 지급액"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 6+6 특례의 월별 상한액은 자료마다 수치가 다르게 소개될 정도로 계속 조정되고 있는 항목입니다. 반드시 고용24에서 신청 시점의 정확한 월별 특례 상한액표를 재확인하세요. 부모 중 한 명만 휴직하면 이 특례는 적용되지 않습니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">10</span>한부모·장애아 부모 특례 조건 반영</h2>
+    <p>한부모 근로자나 장애아를 양육하는 부모에게는 별도의 완화된 조건이나 더 높은 상한액이 적용될 수 있습니다. 이 특례를 놓치면 받을 수 있는 금액보다 적게 안내하게 됩니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "한부모 근로자는 1~3개월 구간 상한액이 일반 기준보다 높게(최근 기준 300만 원 수준으로 소개되어 온 값) 적용되는 경우가 있다"는 원칙을 전제로, [한부모 여부]를 확인하고 해당하면 1~3개월 구간을 상향해서 재계산해달라고 요청한다</li>
+      <li>"장애아를 양육하는 부모는 기간 연장(방법 9) 조건에서 '부모 모두 3개월 이상 사용' 요건 없이도 연장이 인정되는 경우가 있다"는 원칙으로 [자녀의 장애 여부]를 확인하고 해당하면 연장 조건 판단을 단순화해달라고 요청한다</li>
+      <li>"한부모·장애아 특례는 서류 증빙(한부모가족증명서, 장애인등록증 등)이 필요한 경우가 많다"는 점을 함께 안내해달라고 요청한다</li>
+      <li>완성된 결과를 "특례 유형 / 해당 여부 / 조정되는 항목 / 필요 증빙"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 한부모·장애아 특례의 구체적인 상한액·조건은 일반 구조보다 자료를 찾기 어렵고 오차가 클 수 있는 항목입니다. "특례 대상일 가능성이 높다"까지만 안내하고, 정확한 금액은 고용24 상담을 권장하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">11</span>육아휴직 기간 연장 조건 판단</h2>
+    <p>육아휴직의 기본 기간은 1년이지만, 조건을 충족하면 1년 6개월까지 늘어납니다. 이 조건을 정확히 판단해야 전체 수령액 계산의 기준 기간이 맞아집니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "기간 연장(1년 6개월)은 부모가 각각 3개월 이상 육아휴직을 사용한 경우에 적용되고, 한부모 근로자나 장애아 양육 부모는 이 조건 없이도 연장이 인정되는 구조"라는 원칙을 전제로, [부모 각각의 휴직 계획]과 [한부모·장애아 여부]를 종합해 연장 가능 여부를 판단해달라고 요청한다</li>
+      <li>"연장이 인정되면 방법 4~8에서 계산한 월별 급여 구조를 7개월째 이후까지(최대 18개월) 그대로 이어서 계산해달라"고 요청한다</li>
+      <li>"연장이 인정되지 않으면 12개월 시점에서 급여가 종료되므로 전체 기간 총 수령액을 12개월 기준으로 다시 확정해달라"고 요청한다</li>
+      <li>완성된 결과를 "연장 조건 충족 여부 / 적용 가능 전체 기간 / 전체 기간 총 수령액"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 기간 연장 여부는 전체 수령액을 크게 바꾸는 변수입니다. 아직 확정되지 않은 계획에 의존하는 경우, "확정 계획 기준"과 "연장 미인정 가정" 두 시나리오를 함께 보여주는 것이 안전합니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">12</span>계산 대행 부업으로 수익화</h2>
+    <p>여기까지 만든 계산 로직은 출산·육아를 앞둔 거의 모든 직장인에게 필요합니다. "나 휴직하면 얼마 받는지 좀 봐줄 수 있어?"라는 질문은 임신 소식을 알릴 때마다, 복직이 다가올 때마다 반복됩니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>서비스 범위를 명확히 정한다 — "근무·가족 조건 기반 출산전후휴가급여·육아휴직급여 추정 계산, 6+6·한부모·장애아 특례 적용 여부 판단, 기간 연장 시나리오 비교 리포트 제공"까지만 하고, "실제 고용24 신청서 작성 대행·이의신청 대행"은 노무사·고용센터의 고유 업무라는 점을 안내문에 명시한다</li>
+      <li>가격을 "추정 리포트 1건", "6+6·한부모·장애아 특례 적용 검토 추가", "부모 공동휴직 시나리오 비교 추가"로 나눠 설계한다 — 1건 5,000~15,000원으로 시작해, 특례 조건이 많거나 시나리오가 복잡할수록 추가 요금을 받는 구조를 권장한다</li>
+      <li>방법 1~9에서 만든 계산 로직을 조건 입력만 받으면 채워지는 표준 템플릿으로 정리해, 의뢰가 오면 통상임금·휴직 기간·배우자 동시휴직 여부·한부모 여부만 받아 빠르게 리포트를 완성하는 구조로 만든다</li>
+      <li>처음에는 임신·출산을 앞둔 동료·지인 대상으로 무료 또는 저가로 시작해, 실제 고용24 신청 결과와 대조한 후기를 쌓는다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 이 부업은 노무 대리가 아니라 추정 계산과 비교입니다. 상담 시작 전에 "제시 금액은 공개된 지급률·상한액 기준과 조건을 조합한 참고용 추정치이며, 실제 지급액은 신청 시점 고용24 심사 결과로 확인해야 한다"는 점을 명확히 안내해 오해를 예방하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">13</span>흔한 실수</h2>
+    <div class="table-wrap">
+      <table>
+        <tr><th>실수</th><th>왜 위험한가</th><th>개선법</th></tr>
+        <tr><td>출산전후휴가급여(100%)와 육아휴직급여(80%)의 지급률을 혼동</td><td>두 급여는 지급률·상한액·기간 구조가 완전히 다른 별도 제도임</td><td>방법 2·4에서 두 급여의 지급률을 표에 각각 명시</td></tr>
+        <tr><td>사후지급금 폐지 전 기준으로 안내</td><td>2025년 1월부터 매달 전액 지급으로 바뀐 사실을 놓치면 수령 시점을 잘못 안내함</td><td>방법 6에서 "현재는 매달 전액 지급"을 먼저 확인</td></tr>
+        <tr><td>6+6 특례를 부모 중 한 명만 휴직해도 적용되는 것으로 안내</td><td>이 특례는 부모 모두 각각 휴직을 사용해야 적용되는 조건임</td><td>방법 7에서 부모 각각의 휴직 여부를 먼저 확인</td></tr>
+        <tr><td>기간 연장 조건을 확인하지 않고 18개월 전체로 계산</td><td>부모 각각 3개월 이상 사용 조건을 충족 못 하면 12개월에서 급여 종료</td><td>방법 9에서 연장 조건 충족 여부를 먼저 판단</td></tr>
+        <tr><td>작년 기준 상한액·하한액을 올해 계산에 그대로 사용</td><td>상한액·하한액·특례 조건은 저출생 대책으로 자주 개편됨</td><td>계산 전 그해 고용24·고용노동부 고시를 먼저 확인</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>지금 계산 중인(또는 가상의) 휴직 조건을 위 표와 하나씩 대조한다</li>
+      <li>해당하는 실수가 있으면, 관련 방법 장으로 돌아가 즉시 보완한다</li>
+      <li>이 표를 그대로 체크리스트로 저장해, 새로운 의뢰가 들어올 때마다 확인한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">14</span>나만의 대행 시스템 구축</h2>
+    <p>매번 새로 계산하지 않도록, 지금까지 만든 것을 하나의 재사용 가능한 시스템으로 묶습니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>방법 1~3(출산전후휴가·배우자출산휴가)과 방법 4~9(육아휴직급여 기본구조부터 기간연장 판단까지)을 하나의 문서 템플릿에 급여 종류별로 나눠 통합한다</li>
+      <li>방법 10의 의뢰 접수 질문지(월 통상임금, 수당 구성, 휴직 예정 기간, 배우자 동시휴직 계획, 한부모·장애아 여부)를 저장해두고, 새 의뢰가 올 때마다 그대로 사용한다</li>
+      <li>상한액·하한액·특례 조건처럼 자주 개편되는 값은 의뢰가 들어올 때마다 AI에게 최신 고시 기준을 재확인시켜, 템플릿 상단의 "기준값" 섹션만 갱신하는 구조로 설계한다</li>
+      <li>시스템이 안정되면 이 전체를 "출산전후휴가급여·육아휴직급여 추정 계산 대행 패키지"로 정식 서비스화한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">15</span>바로 쓰는 프롬프트 15선</h2>
+    <p class="lede">대괄호 부분만 바꿔서 그대로 붙여넣으세요. 카테고리별로 정리했습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 기준값·대상 확인</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">A1 통상임금 구분</div><div class="prompt">너는 고용보험 급여 계산 전문가야. 다음 월급 구성 항목을 보여줄 테니: [월급 구성 내역], 통상임금에 포함되는 항목과 제외되는 항목을 구분해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A2 상한·하한 확인</div><div class="prompt">올해 기준 출산전후휴가급여 월 상한액과 육아휴직급여 구간별(1~3개월/4~6개월/7개월 이후) 상한액·하한액을 최신 고시 기준으로 알려줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A3 6+6 대상 판단</div><div class="prompt">자녀 생년월일이 [날짜]이고 부모 각각의 육아휴직 시작일이 [날짜1], [날짜2]일 때, 6+6 부모육아휴직제 특례 대상인지 판단해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A4 숨은 항목 찾기</div><div class="prompt">다음 근무·가족 조건을 보여줄 테니: [조건], 출산휴가·육아휴직급여 계산에서 빠뜨리기 쉬운 항목이 있는지 찾아줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 핵심 급여 계산</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">B1 출산휴가급여</div><div class="prompt">월 통상임금 [금액]을 기준으로 출산전후휴가 90일(또는 다태아 120일) 급여를 상한액까지 반영해서 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B2 배우자 출산휴가급여</div><div class="prompt">배우자 월 통상임금 [금액]을 기준으로 배우자 출산휴가 급여를 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B3 육아휴직 월별급여</div><div class="prompt">월 통상임금 [금액], 휴직 기간 [개월]을 기준으로 구간별 상한액까지 반영한 월별 육아휴직급여를 표로 정리해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B4 하한액 반영</div><div class="prompt">월별 육아휴직급여 계산 결과 [데이터]에서 하한액보다 낮은 달이 있는지 확인하고, 있으면 하한액으로 보정해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 특례·연장 판단</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">C1 6+6 재계산</div><div class="prompt">6+6 부모육아휴직제 특례 대상 기간과 일반 기간을 구분해서, 전체 휴직 기간의 월별 급여를 다시 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C2 한부모·장애아</div><div class="prompt">한부모 여부 [예/아니오], 장애아 양육 여부 [예/아니오]를 반영해서 적용 가능한 특례와 조정되는 금액을 알려줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C3 기간 연장 판단</div><div class="prompt">부모 각각의 휴직 계획 [계획]을 기준으로 1년 6개월 연장 조건을 충족하는지 판단하고, 충족/미충족 시나리오의 총 수령액을 각각 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C4 전체 기간 총액</div><div class="prompt">지금까지 계산한 월별 급여 [데이터]를 모두 합산해서 전체 휴직 기간의 총 수령액을 계산해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 대행 서비스화</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">D1 접수 질문지</div><div class="prompt">출산휴가·육아휴직급여 계산 대행 서비스를 시작하려고 해. 의뢰인에게 받아야 할 정보(월 통상임금, 수당 구성, 휴직 예정 기간, 배우자 동시휴직 계획, 한부모·장애아 여부)를 빠짐없이 받을 수 있는 접수 질문지를 만들어줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D2 고객용 리포트</div><div class="prompt">다음 계산 결과를 의뢰인에게 보여줄 리포트로 정리해줘: [계산 결과 데이터]. 마지막에 '제시 금액은 공개된 지급률·상한액 기준과 조건을 조합한 참고용 추정치이며 실제 지급액은 고용24 심사 결과로 확인해야 한다'는 안내 문구를 포함해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D3 소개 문구</div><div class="prompt">출산휴가·육아휴직급여 계산 대행 서비스를 한 문단으로 소개하는 홍보 문구를 써줘. 신청 전에 미리 받을 금액을 가늠해볼 수 있다는 점을 강조해줘.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">16</span>실전 체크리스트</h2>
+
+    <div class="checklist-group">
+      <h4><span class="wk">오늘</span>30분</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 A1로 내(또는 가상의) 통상임금 구성 항목부터 구분해보기</li>
+        <li><input type="checkbox" disabled>프롬프트 A2로 올해 기준 상한액·하한액 확인해보기</li>
+        <li><input type="checkbox" disabled>프롬프트 A3으로 6+6 특례 대상인지 먼저 판단해보기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 주</span>1차 완성</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 B1~B4로 출산휴가급여·육아휴직급여 월별 계산과 하한액 보정까지 완성하기</li>
+        <li><input type="checkbox" disabled>프롬프트 C1~C2로 6+6 특례와 한부모·장애아 특례까지 반영하기</li>
+        <li><input type="checkbox" disabled>프롬프트 C3~C4로 기간 연장 시나리오와 전체 총 수령액까지 계산해보기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 달</span>확장</h4>
+      <ul>
+        <li><input type="checkbox" disabled>방법 14대로 계산 프로세스를 하나의 문서 템플릿 시스템으로 통합하기</li>
+        <li><input type="checkbox" disabled>프롬프트 D1~D3으로 접수 질문지·고객용 리포트·소개 문구 준비해서 동료·지인 대상 첫 의뢰 진행하기</li>
+        <li><input type="checkbox" disabled>첫 의뢰 후 실제 고용24 지급 결과와 대조한 후기를 바탕으로 서비스 범위·안내 문구를 다듬어 정식 서비스로 확장하기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>신청 전, "내가 얼마 받을 수 있을지" 막막한 그 질문을 AI와 함께라면 오늘 안에 숫자로 바꿀 수 있습니다.</p>
+    <div class="close">
+      <p>오늘, 프롬프트 A1로 내 통상임금 구성부터 확인해보세요.</p>
+      <div class="sign">— 끝 —</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
