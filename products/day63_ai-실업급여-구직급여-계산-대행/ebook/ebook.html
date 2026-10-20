@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>퇴사 전에, AI한테 실업급여부터 물어보세요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F; --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38; --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74; --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A; --cat-d-tint: #E3E6CE;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:780px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.0rem, 6vw, 3.1rem); line-height:1.3; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.1rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.7rem; font-weight:700; margin:0 0 20px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:18px; width:max-content; max-width:100%; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.1rem; margin:24px 0 10px; color:var(--ink); }
+  section.chapter{ padding:30px 0 34px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 14px; max-width:66ch; orphans:1; widows:1; }
+  .lede{ font-size:1.02rem; color:var(--ink-soft); max-width:62ch; margin-bottom:18px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  /* ---------- TOC ---------- */
+  .toc{ border-top:3px solid var(--gold); padding:20px 0 8px; margin-bottom:44px; }
+  .toc h2{ font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 16px; break-after:avoid; }
+  .toc ol{ list-style:none; margin:0; padding:0; }
+  .toc li{ display:flex; align-items:baseline; gap:6px; padding:6px 0; font-size:0.94rem; break-inside:avoid; }
+  .toc .n{ font-family:var(--font-mono); font-weight:700; color:var(--gold-strong); flex-shrink:0; }
+  .toc .leader{ flex:1; border-bottom:1px dotted var(--line); margin:0 2px 5px; min-width:16px; }
+  .toc .pg{ font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); flex-shrink:0; }
+
+  /* ---------- Method steps ---------- */
+  .method-meta{ display:inline-block; font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-bottom:16px; }
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; }
+  ol.steps li{ margin-bottom:9px; padding-left:4px; break-inside:avoid; }
+
+  /* ---------- Note callouts ---------- */
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:6px 0 4px; }
+
+  /* ---------- Table ---------- */
+  .table-wrap{ overflow-x:auto; margin-bottom:14px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.88rem; background:var(--paper); }
+  th,td{ text-align:left; padding:8px 13px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.72rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+
+  /* ---------- Prompt cards (categorized grid) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:6px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-label{ display:table; font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); border-radius:6px; padding:4px 12px; margin:0 0 8px; break-after:avoid-page; }
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:13px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:8px 10px 8px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.76rem; color:var(--accent); font-weight:700; margin-bottom:4px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:7px 9px; font-family:var(--font-mono); font-size:0.76rem; line-height:1.45; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:15px 18px; margin-bottom:10px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.88rem; letter-spacing:0.05em; margin:0 0 12px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.78rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:4px 0; font-size:0.92rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; }
+  .epilogue .close{ break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:10px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{
+    .cover{ page-break-after:always; margin-left:0; margin-right:0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 63</span>
+    <span class="badge">CLAUDE가 기획 · 집필</span>
+    <h1>퇴사 전에,<br>AI한테 <span class="nowrap">실업급여부터</span> <span class="nowrap">물어보세요</span></h1>
+    <p class="subtitle">AI로 <span class="nowrap">실업급여(구직급여)</span> <span class="nowrap">계산 대행하는 법</span> — <span class="nowrap">그대로 쓰는</span> <span class="nowrap">실업급여 프롬프트 15개</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>12</strong>가지 방법</div>
+      <div class="nowrap"><strong>15</strong>개 프롬프트</div>
+      <div class="nowrap"><strong>3</strong>단계 체크리스트</div>
+    </div>
+    <div class="byline">이 책의 목차·본문·프롬프트까지, 전부 <strong>클로드가 기획하고 작성</strong>했습니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">"저 실업급여 얼마나 받을 수 있어요?"</em> 퇴사를 앞둔 사람, 혹은 막 퇴사통지를 받은 사람이 가장 먼저 묻는 질문입니다. 고용24에서 모의계산을 해볼 수는 있지만, 평균임금을 정확히 계산하고 피보험단위기간과 이직사유까지 판단해야 숫자가 제대로 나옵니다. 대부분은 "일단 고용센터 가서 물어보지"라며 계산 자체를 미룹니다.</p>
+    <p>하지만 이 계산도 결국 구조화된 작업입니다. "이직 전 평균임금을 계산하고, 피보험단위기간을 확인하고, 이직사유를 판정하고, 상한·하한액을 적용한 1일 구직급여액을 구하고, 소정급여일수를 찾아 총수급액을 계산하는" 순서가 정해져 있고, 이 순서를 그대로 따라가면 누구나 자신이 받을 구직급여를 미리 가늠해볼 수 있습니다. 상한·하한액이나 소정급여일수 기준은 법 개정이나 최저임금 변동으로 조정될 수 있지만, "계산하는 순서" 자체는 거의 바뀌지 않습니다.</p>
+    <p>이 책은 AI를 <strong>"이직사유·가입기간·평균임금을 입력하면, 그 시점 고용노동부 고시 기준(상한액·하한액·소정급여일수표)을 전제로 구직급여 총액과 수급기간을 순서대로 계산해주는 실업급여 추정 조수"</strong>로 써서, 평균임금 산정부터 조기재취업수당·수급기간 연장까지 단계별로 계산하는 법을 다룹니다. 그리고 이 계산 결과물로 "저 실업급여 얼마 받아요?"라는 가족·지인·동료의 흔한 질문을 대행 서비스로 만드는 법까지 다룹니다.</p>
+  </section>
+
+  <div class="toc">
+    <h2>목차</h2>
+    <ol>
+      <li>왜 지금 AI로 실업급여(구직급여) 계산 대행인가<span class="leader"></span><span class="n">01</span></li>
+      <li>시작 전에 딱 3가지만 준비하세요<span class="leader"></span><span class="n">02</span></li>
+      <li>방법 1 — 이직 전 평균임금 산정하고 기준값 정리하기<span class="leader"></span><span class="n">03</span></li>
+      <li>방법 2 — 피보험단위기간 180일 충족 여부 점검하기<span class="leader"></span><span class="n">04</span></li>
+      <li>방법 3 — 이직사유(자발적/비자발적) 수급자격 판정하기<span class="leader"></span><span class="n">05</span></li>
+      <li>방법 4 — 일일 구직급여액 계산하기(평균임금 60%+상한·하한)<span class="leader"></span><span class="n">06</span></li>
+      <li>방법 5 — 소정급여일수 산정하기(연령·가입기간표)<span class="leader"></span><span class="n">07</span></li>
+      <li>방법 6 — 총수급액과 수급기간 계산하기(대기기간 포함)<span class="leader"></span><span class="n">08</span></li>
+      <li>방법 7 — 조기재취업수당 계산하기<span class="leader"></span><span class="n">09</span></li>
+      <li>방법 8 — 수급기간 연장 사유 점검하기<span class="leader"></span><span class="n">10</span></li>
+      <li>방법 9 — 실업급여와 퇴직금·다른 소득의 관계 점검하기<span class="leader"></span><span class="n">11</span></li>
+      <li>방법 10 — 계산 대행 부업으로 수익화하기<span class="leader"></span><span class="n">12</span></li>
+      <li>방법 11 — 흔한 실수와 개선법<span class="leader"></span><span class="n">13</span></li>
+      <li>방법 12 — 나만의 대행 시스템 구축하기<span class="leader"></span><span class="n">14</span></li>
+      <li>바로 쓰는 프롬프트 15선<span class="leader"></span><span class="n">15</span></li>
+      <li>실전 체크리스트<span class="leader"></span><span class="n">16</span></li>
+    </ol>
+  </div>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>왜 지금 AI로 실업급여(구직급여) 계산 대행인가</h2>
+    <p>실업급여(구직급여)는 회사의 재량이 아니라, 공개된 상한·하한액·소정급여일수 기준과 각자의 재직·소득 조건을 조합하는 계산입니다. 그런데도 대부분은 "퇴사하면 그때 가서 알아보지"라고 생각하고 계산 자체를 미룹니다.</p>
+    <ol class="steps">
+      <li><strong>AI는 노무사를 대신하는 전문가가 아니라 "상한·하한액까지 반영해 숫자로 미리 보여주는 조수"입니다.</strong> 고시 기준을 일일이 찾아볼 필요 없이, 재직·소득 조건만 알려주면 추정액을 정리해줍니다.</li>
+      <li><strong>한 번 만든 계산 로직은 의뢰가 들어올 때마다 조건만 바꿔서 재사용할 수 있습니다.</strong> 상한·하한액·소정급여일수표만 최신 고시로 갱신하면 됩니다.</li>
+      <li><strong>이 결과물 자체가 대행 서비스로 팔릴 수 있습니다.</strong> 퇴사 전에 "내가 얼마나 받을 수 있는지" 미리 알고 싶은 사람은 항상 있고, 숫자와 근거로 답해주는 서비스는 신뢰를 빠르게 얻습니다.</li>
+    </ol>
+    <p>이 책은 "실업급여 신청서를 대신 작성하는 법(신청 대리)"을 다루지 않습니다. 이미 정해진(또는 가정한) 재직·소득 조건을 가지고 "지금 이 조건이면 수급액이 얼마나 나오는지" 계산하고 비교하는 법만 다룹니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>시작 전에 딱 3가지만</h2>
+    <div class="method-meta">준비물은 딱 3가지 — 노무사 자격이나 인사·노무 경력이 없어도 괜찮습니다</div>
+    <ol class="steps">
+      <li><strong>AI 챗봇 계정</strong> — 재직 이력과 급여 내역을 넣으면 평균임금을 계산하고, 피보험단위기간·이직사유를 판정하고, 소정급여일수와 총수급액까지 순서대로 계산하는 과정을 시킬 수 있는 도구면 충분합니다</li>
+      <li><strong>실업급여 조건 1건</strong> — 실제로 퇴사(예정)를 앞둔 가족·지인·동료의 조건(출생연도, 재직기간, 이직 경위, 최근 3개월 급여 내역)이 있으면 가장 좋고, 없다면 가상의 조건(예: 1988년생, 가입기간 4년 2개월, 권고사직, 이직 전 3개월 월급여 270만 원)을 하나 정해도 됩니다</li>
+      <li><strong>고용24 접속 정보 1개</strong> — 고용24(work24.go.kr)의 "실업급여 모의계산"과 "고용보험 가입 이력 조회"를 즐겨찾기 해두면, 본인 기준 정확한 가입기간과 모의계산 결과를 바로 확인할 수 있습니다</li>
+    </ol>
+    <p>이 3가지가 준비되면, 방법 1부터 순서대로 따라 하기만 하면 오늘 안에 첫 구직급여 추정표를 완성할 수 있습니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>이직 전 평균임금 산정하고 기준값 정리하기</h2>
+    <p>구직급여 계산은 항상 "이직 전에 평균적으로 얼마를 받았는가"를 확인하는 데서 시작합니다. 평균임금은 이직일 이전 3개월간 지급된 임금총액을 그 기간의 총 일수로 나눈 값이라는 점이 첫 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "평균임금 = 이직일 이전 3개월간 지급된 임금총액(기본급+각종 수당+상여금의 3개월 반영분) ÷ 그 3개월의 총 일수"라는 원칙을 전제로, [최근 3개월 월별 급여 내역, 근무일수]를 보여줄 테니 1일 평균임금을 계산해달라고 요청한다</li>
+      <li>"평균임금이 통상임금보다 낮게 나오면, 통상임금을 평균임금으로 적용하는 비교 규정이 있다"는 원칙으로 [통상임금 수준]과 비교해 더 높은 쪽을 적용해달라고 요청한다</li>
+      <li>"상여금이 있다면 연간 상여금 중 최근 3개월에 해당하는 비율만 평균임금에 포함된다"는 점을 반영해달라고 요청한다</li>
+      <li>완성된 결과를 "월별 급여 / 근무일수 / 상여금 반영분 / 1일 평균임금"으로 정리한 표로 저장한다 — 이 표가 이후 모든 계산의 출발점이 된다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 평균임금은 실제 급여대장을 기준으로 계산하는 것이 가장 정확합니다. 급여대장이 없다면 "급여명세서 기준 추정치"임을 리포트에 반드시 표시하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>피보험단위기간 180일 충족 여부 점검</h2>
+    <p>평균임금이 나왔다면, 수급자격의 첫 번째 관문인 피보험단위기간을 확인합니다. 이직일 이전 18개월 동안 실제 근무일과 유급휴일을 합산한 피보험단위기간이 180일 이상이어야 한다는 점이 두 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "이직일 이전 18개월 동안의 피보험단위기간(실제 근무일+유급휴일 합산)이 180일 이상이어야 수급자격이 인정되는 구조"라는 원칙을 전제로, [이직일, 재직 시작일, 중간 무급휴직 기간]을 기준으로 피보험단위기간을 계산해달라고 요청한다</li>
+      <li>"여러 회사에서 짧게 근무한 이력이 있다면, 18개월 이내 여러 사업장의 재직기간을 합산할 수 있는 구조"라는 원칙으로 [이전 직장 재직 이력]을 함께 합산해달라고 요청한다</li>
+      <li>"180일에 미달한다면 부족한 일수와, 이후 추가 근무로 채울 수 있는 최소 기간"을 함께 안내해달라고 요청한다</li>
+      <li>완성된 결과를 "회사명 / 재직기간 / 산입 가능 일수 / 누적 피보험단위기간 / 180일 충족 여부"로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 무급휴직·결근 기간은 피보험단위기간에서 제외됩니다. 재직기간 전체가 아니라 "실제 근무+유급휴일" 일수만 합산해야 정확합니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">05</span>이직사유(자발적/비자발적) 수급자격 판정</h2>
+    <p>피보험단위기간을 채웠다면, 두 번째 관문인 이직사유를 판정합니다. 비자발적 이직은 원칙적으로 수급자격이 인정되지만, 자발적 이직은 특례사유가 있어야 인정된다는 점이 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>이직사유 구분</th><th>기본 판정</th><th>비고</th></tr>
+        <tr><td>해고·권고사직·계약만료·폐업·경영상 해고</td><td>인정</td><td>비자발적 이직의 대표 사례</td></tr>
+        <tr><td>단순 개인사정(이사, 단순 불만 등)</td><td>원칙적 불인정</td><td>특례사유 없으면 수급자격 없음</td></tr>
+        <tr><td>임금체불·최저임금 위반</td><td>특례 인정</td><td>급여대장·입금내역으로 증빙</td></tr>
+        <tr><td>직장 내 괴롭힘·성희롱</td><td>특례 인정</td><td>신고 이력·진술서 등으로 증빙</td></tr>
+        <tr><td>통근거리 왕복 3시간 이상(전근·이전)</td><td>특례 인정</td><td>이전 주소·근무지 거리 증빙</td></tr>
+        <tr><td>질병·부상으로 업무수행 불가(의사 소견)</td><td>특례 인정</td><td>진단서 등 증빙 필요</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 표를 전제로, [이직 경위 설명]을 보여줄 테니 비자발적/자발적 1차 분류를 해달라고 요청한다</li>
+      <li>자발적 이직으로 분류됐다면, "특례사유에 해당하는지 표의 항목과 하나씩 대조해달라"고 요청한다</li>
+      <li>"판정 근거로 필요한 증빙자료(사직서, 권고사직 통지서, 문자·메일, 급여대장, 진단서 등)를 함께 안내해달라"고 요청한다</li>
+      <li>완성된 결과를 "이직 경위 / 1차 분류 / 해당 특례사유(있다면) / 필요 증빙자료 / 최종 판정(추정)"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 이직사유의 최종 판정은 고용센터의 고유 권한입니다. 이 책의 계산은 "추정 판정"까지만 다루며, 최종 인정 여부는 고용센터 상담으로 반드시 재확인해야 합니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">06</span>일일 구직급여액 계산(평균임금 60%+상한·하한)</h2>
+    <p>수급자격이 확인됐다면, 이제 하루에 받을 구직급여액을 계산합니다. 평균임금의 60%를 기본으로 하되, 상한액과 하한액 사이로 보정한다는 점이 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>기준값(2026년)</th></tr>
+        <tr><td>구직급여 산정 비율</td><td>이직 전 평균임금의 60%</td></tr>
+        <tr><td>1일 상한액</td><td>68,100원</td></tr>
+        <tr><td>1일 하한액</td><td>66,048원(최저임금 10,320원 × 8시간 × 80% 기준)</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 기준값을 전제로, 방법 1에서 구한 [1일 평균임금]의 60%를 계산해달라고 요청한다</li>
+      <li>"계산된 금액이 1일 상한액(68,100원)을 넘으면 상한액으로, 1일 하한액(66,048원)보다 낮으면 하한액으로 보정하는 구조"라는 원칙으로 [계산값]을 상한·하한과 비교해 최종 금액을 확정해달라고 요청한다</li>
+      <li>"하한액은 최저임금과 연동되어 매년(또는 임금 고시 시점마다) 바뀌는 값"이라는 점을 리포트에 명시해달라고 요청한다</li>
+      <li>완성된 결과를 "평균임금의 60% / 상한액 비교 / 하한액 비교 / 최종 1일 구직급여액"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 상한액·하한액은 매년(또는 연중 고시 시점마다) 바뀌는 값입니다. 이 책의 수치는 계산 구조를 보여주는 기준값이며, 실제 적용 금액은 신청 시점 고용노동부 고시로 재확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">07</span>소정급여일수 산정(연령·가입기간표)</h2>
+    <p>1일 구직급여액이 나왔다면, 이제 "며칠 동안 받을 수 있는지"를 계산합니다. 이직일 현재 연령과 전체 가입기간(고용보험 가입기간 합산)에 따라 소정급여일수가 달라진다는 점이 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>가입기간</th><th>50세 미만</th><th>50세 이상·장애인</th></tr>
+        <tr><td>1년 미만</td><td>120일</td><td>120일</td></tr>
+        <tr><td>1년 이상 3년 미만</td><td>150일</td><td>180일</td></tr>
+        <tr><td>3년 이상 5년 미만</td><td>180일</td><td>210일</td></tr>
+        <tr><td>5년 이상 10년 미만</td><td>210일</td><td>240일</td></tr>
+        <tr><td>10년 이상</td><td>240일</td><td>270일</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 표를 전제로, [이직일 현재 연령]이 50세 미만인지 50세 이상인지 먼저 구분해달라고 요청한다</li>
+      <li>방법 2에서 구한 [전체 가입기간]을 기준으로, 표에서 해당하는 구간을 찾아 소정급여일수를 확정해달라고 요청한다</li>
+      <li>"장애인인 경우 연령과 무관하게 50세 이상·장애인 구간이 적용된다"는 점을 함께 확인해달라고 요청한다</li>
+      <li>완성된 결과를 "이직일 현재 연령 / 전체 가입기간 / 적용 구간 / 소정급여일수"로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — "50세 이상"은 이직일 현재 연령 기준입니다. 생일이 지났는지까지 정확히 확인해야 구간이 바뀌는 경우가 있습니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">08</span>총수급액과 수급기간 계산(대기기간 포함)</h2>
+    <p>1일 구직급여액과 소정급여일수가 모두 나왔다면, 이제 전체 수급액과 실제 입금이 시작되는 시점을 계산합니다. 대기기간 7일 동안은 급여가 지급되지 않는다는 점이 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 방법 4에서 구한 [1일 구직급여액]과 방법 5에서 구한 [소정급여일수]를 곱해 총수급액을 계산해달라고 요청한다</li>
+      <li>"실업신고 후 수급자격이 인정되면, 최초 7일은 대기기간으로 급여가 지급되지 않고 그 이후부터 소정급여일수가 적용된다"는 원칙으로 [실업신고일]을 기준으로 대기기간 종료일과 첫 실업인정일을 계산해달라고 요청한다</li>
+      <li>"구직급여는 통상 4주(28일)마다 실업인정을 받아야 그 기간만큼 지급되는 구조"라는 점을 반영해 [수급기간 전체]를 4주 단위 구간으로 나눠달라고 요청한다</li>
+      <li>완성된 결과를 "총수급액 / 대기기간 종료일 / 첫 실업인정일(예상 첫 지급일) / 4주 단위 수급 구간표"로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 대기기간 7일은 "급여가 안 나오는 기간"일 뿐, 수급자격 자체가 없어지는 기간은 아닙니다. 이 차이를 리포트에서 혼동하지 않도록 명확히 표시하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">09</span>조기재취업수당 계산하기</h2>
+    <p>수급 도중 재취업에 성공하는 경우도 있습니다. 소정급여일수의 절반 이상을 남기고 재취업해 일정 기간 이상 계속 근무하면 남은 급여의 절반을 한 번에 받을 수 있다는 점이 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "소정급여일수의 1/2 이상을 남기고 재취업해 12개월 이상 계속 고용(또는 사업 유지)된 경우, 남은 소정급여일수의 1/2에 해당하는 금액을 조기재취업수당으로 일괄 지급하는 구조"라는 원칙을 전제로, 방법 6에서 구한 [소정급여일수]와 [재취업 시점까지 사용한 일수]를 기준으로 남은 일수를 계산해달라고 요청한다</li>
+      <li>"남은 일수가 전체 소정급여일수의 1/2 이상인지" 먼저 판정해달라고 요청한다</li>
+      <li>조건을 충족한다면, [남은 일수의 1/2] × [1일 구직급여액]으로 예상 조기재취업수당을 계산해달라고 요청한다</li>
+      <li>완성된 결과를 "재취업 시점 / 남은 소정급여일수 / 1/2 이상 충족 여부 / 예상 조기재취업수당 / 12개월 고용유지 조건 안내"로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 동일 사업장으로의 재고용이나 특수관계인 사업장 취업 등은 조기재취업수당 지급에서 제한될 수 있습니다. 이 제약을 리포트에 함께 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">10</span>수급기간 연장 사유 점검하기</h2>
+    <p>원래 구직급여를 받을 수 있는 수급기간은 이직일 다음날부터 12개월입니다. 질병·부상·임신·출산·육아 등으로 취업이 불가능한 기간이 있다면 그 기간만큼 연장할 수 있다는 점이 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "원래 수급기간(이직일 다음날부터 12개월) 내에 질병·부상·임신·출산·육아 등으로 취업이 불가능한 기간이 있으면, 그 기간만큼(최대 4년까지) 수급기간을 연장할 수 있는 구조"라는 원칙을 전제로, [연장 사유와 해당 기간]을 기준으로 연장 가능 기간을 계산해달라고 요청한다</li>
+      <li>"연장 신청은 해당 사유가 발생한 날로부터 30일 이내에 해야 하는 구조"라는 점을 반영해 [사유 발생일]을 기준으로 신청 기한을 계산해달라고 요청한다</li>
+      <li>"연장은 '수급기간'을 늘려주는 것이고, 소정급여일수나 총수급액 자체를 늘려주는 것은 아니다"라는 점을 리포트에 명시해달라고 요청한다</li>
+      <li>완성된 결과를 "연장 사유 / 해당 기간 / 연장 후 수급기간 만료일 / 신청 기한(30일)"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 수급기간이 끝나면 남은 소정급여일수가 있어도 더 이상 받을 수 없습니다. 연장이 필요한 사유가 있다면 기한(30일) 안에 신청하는 것이 가장 중요합니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">11</span>실업급여와 퇴직금·다른 소득의 관계 점검</h2>
+    <p>구직급여를 받는 동안에도 다른 소득이 생기는 경우가 있습니다. 퇴직금은 중복수급 제한이 없지만, 수급기간 중 발생하는 근로·사업소득은 신고 의무가 있다는 점이 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "퇴직금은 구직급여와 별개로 동시에 받을 수 있어 중복수급 제한이 없는 구조"라는 원칙을 전제로, [퇴직금 수령 여부]가 구직급여 계산에 영향을 주지 않음을 리포트에 명시해달라고 요청한다</li>
+      <li>"수급기간 중 단기 근로나 프리랜서 활동으로 소득이 생기면 실업인정일에 신고해야 하고, 소득 수준에 따라 그 날의 구직급여가 감액되거나 지급되지 않을 수 있는 구조"라는 원칙으로 [예상 소득활동 내용과 금액]을 기준으로 신고 의무 대상인지 점검해달라고 요청한다</li>
+      <li>"신고하지 않고 소득활동을 하다 적발되면 부정수급으로 전액 반환 및 추가 제재를 받을 수 있다"는 점을 안내해달라고 요청한다</li>
+      <li>완성된 결과를 "소득 유형 / 예상 금액 / 신고 의무 여부 / 해당 일자 구직급여 영향 / 주의사항"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — "잠깐 알바라서 신고 안 해도 되겠지"가 가장 흔한 부정수급 사례입니다. 소득활동이 있다면 작든 크든 신고 대상인지부터 확인하도록 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">12</span>계산 대행 부업으로 수익화</h2>
+    <p>여기까지 만든 계산 로직은 퇴사를 앞둔 거의 모든 직장인에게 필요합니다. "저 실업급여 얼마 받아요?"라는 질문은 퇴사 통보를 받을 때마다, 이직을 고민할 때마다 반복됩니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>서비스 범위를 명확히 정한다 — "재직·소득 조건 기반 평균임금 산정, 피보험단위기간·이직사유 1차 판정, 1일 구직급여액·소정급여일수·총수급액 계산, 조기재취업수당·수급기간 연장 추정 리포트 제공"까지만 하고, "이직사유 최종 심사·수급자격 최종 인정·실업 인정·실제 신청서 대리 작성"은 고용센터의 고유 업무라는 점을 안내문에 명시한다</li>
+      <li>가격을 "구직급여 추정 리포트 1건", "이직사유 판정 추가 분석", "조기재취업수당·연장 시나리오 추가"로 나눠 설계한다 — 1건 5,000~15,000원으로 시작해, 재직 이력이 복잡하거나 시나리오가 많을수록 추가 요금을 받는 구조를 권장한다</li>
+      <li>방법 1~9에서 만든 계산 로직을 조건 입력만 받으면 채워지는 표준 템플릿으로 정리해, 의뢰가 오면 출생연도·재직 이력·이직 경위·최근 3개월 급여내역만 받아 빠르게 리포트를 완성하는 구조로 만든다</li>
+      <li>처음에는 퇴사(예정)를 앞둔 가족·지인·동료 대상으로 무료 또는 저가로 시작해, 실제 신청 결과나 만족도와 대조한 후기를 쌓는다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 이 부업은 수급자격 심사나 신청 대행이 아니라 추정 계산입니다. 상담 시작 전에 "제시 금액은 공개된 고용보험법 고시 기준과 조건을 조합한 참고용 추정치이며, 실제 수급자격과 금액은 고용센터·고용24 확인이 필요하다"는 점을 명확히 안내해 오해를 예방하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">13</span>흔한 실수</h2>
+    <div class="table-wrap">
+      <table>
+        <tr><th>실수</th><th>왜 위험한가</th><th>개선법</th></tr>
+        <tr><td>평균임금을 기본급만으로 계산</td><td>상여금·수당 반영분을 빠뜨리면 실제보다 낮게 추정됨</td><td>방법 1에서 최근 3개월 상여금 반영분까지 포함</td></tr>
+        <tr><td>자발적 이직은 무조건 수급 불가로 안내</td><td>특례사유(임금체불, 괴롭힘, 통근거리 등)가 있으면 인정 가능</td><td>방법 3에서 특례사유 표와 하나씩 대조</td></tr>
+        <tr><td>소정급여일수를 가입기간만으로 산정(연령 무시)</td><td>50세 이상·장애인은 같은 가입기간이라도 일수가 더 많음</td><td>방법 5에서 연령 구간을 먼저 확인</td></tr>
+        <tr><td>대기기간 7일을 빼지 않고 "신고하면 바로 입금"으로 안내</td><td>실제 첫 입금은 대기기간 종료 이후부터 시작됨</td><td>방법 6에서 예상 첫 지급일을 명확히 계산</td></tr>
+        <tr><td>조기재취업수당 조건(남은 일수 1/2 이상, 고용유지 12개월)을 누락</td><td>조건 미충족 상태로 기대했다가 수당을 못 받는 경우 발생</td><td>방법 7에서 조건 충족 여부를 먼저 판정</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>지금 계산 중인(또는 가상의) 실업급여 조건을 위 표와 하나씩 대조한다</li>
+      <li>해당하는 실수가 있으면, 관련 방법 장으로 돌아가 즉시 보완한다</li>
+      <li>이 표를 그대로 체크리스트로 저장해, 새로운 의뢰가 들어올 때마다 확인한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">14</span>나만의 대행 시스템 구축</h2>
+    <p>매번 새로 계산하지 않도록, 지금까지 만든 것을 하나의 재사용 가능한 시스템으로 묶습니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>방법 1~3(평균임금·피보험단위기간·이직사유)과 방법 4~9(급여액·일수·총수급액부터 조기재취업·연장·중복수급까지)를 하나의 문서 템플릿에 자격판정/급여계산/부가사항 섹션으로 나눠 통합한다</li>
+      <li>방법 10의 의뢰 접수 질문지(출생연도, 재직 이력, 이직 경위, 최근 3개월 급여내역, 예상 재취업 시점)를 저장해두고, 새 의뢰가 올 때마다 그대로 사용한다</li>
+      <li>상한·하한액·소정급여일수표처럼 자주 개편되는 값은 의뢰가 들어올 때마다 AI에게 최신 고용노동부 고시 기준을 재확인시켜, 템플릿 상단의 "기준값" 섹션만 갱신하는 구조로 설계한다</li>
+      <li>시스템이 안정되면 이 전체를 "실업급여(구직급여) 추정 계산 대행 패키지"로 정식 서비스화한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">15</span>바로 쓰는 프롬프트 15선</h2>
+    <p class="lede">대괄호 부분만 바꿔서 그대로 붙여넣으세요. 카테고리별로 정리했습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 기준값·자격 확인</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">A1 평균임금 정리</div><div class="prompt">너는 실업급여 계산 전문가야. 이직 전 3개월 급여내역을 보여줄 테니: [월별 급여, 상여금, 근무일수], 1일 평균임금을 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A2 피보험단위기간 확인</div><div class="prompt">최근 18개월 재직 이력을 보여줄 테니: [회사별 재직기간], 피보험단위기간 180일 충족 여부를 판정해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A3 이직사유 판정</div><div class="prompt">다음 이직 경위를 보여줄 테니: [경위], 자발적/비자발적 이직 여부와 해당 특례사유가 있는지 판정해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A4 숨은 항목 찾기</div><div class="prompt">다음 조건을 보여줄 테니: [조건], 실업급여 계산에서 빠뜨리기 쉬운 항목을 찾아줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 급여액·일수 계산</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">B1 일일 구직급여액</div><div class="prompt">1일 평균임금 [금액]을 기준으로, 2026년 상한액 68,100원·하한액 66,048원을 적용한 1일 구직급여액을 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B2 소정급여일수</div><div class="prompt">나이 [나이], 가입기간 [기간]을 기준으로 소정급여일수를 알려줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B3 총수급액·수급기간</div><div class="prompt">1일 구직급여액 [금액], 소정급여일수 [일수]를 기준으로 총수급액과 대기기간 7일을 반영한 예상 첫 지급일을 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B4 수급기간 연장</div><div class="prompt">이직일 [날짜]과 연장사유 [사유, 발생일]를 기준으로 수급기간 연장 가능 기간과 신청기한을 계산해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 조기재취업·연장·중복수급 점검</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">C1 조기재취업수당</div><div class="prompt">소정급여일수 [일수] 중 [남은 일수]가 남은 시점에 재취업했을 때, 조기재취업수당 지급 조건 충족 여부와 예상 지급액을 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C2 중복수급 점검</div><div class="prompt">수급기간 중 예상 소득활동 [내용]을 보여줄 테니, 신고 의무 대상인지와 실업 인정에 영향이 있는지 점검해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C3 전체 시나리오 요약</div><div class="prompt">다음 조건 [전체 조건]을 바탕으로 구직급여 총수급액, 수급기간, 예상 첫 지급일까지 요약 리포트로 정리해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C4 비교 시나리오</div><div class="prompt">이직사유가 [사유1]일 때와 [사유2]일 때 각각 수급자격과 예상 총수급액이 어떻게 달라지는지 비교해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 대행 서비스화</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">D1 접수 질문지</div><div class="prompt">실업급여 계산 대행 서비스를 시작하려고 해. 의뢰인에게 받아야 할 정보(출생연도, 재직 이력, 이직 경위, 최근 3개월 급여내역)를 빠짐없이 받을 수 있는 접수 질문지를 만들어줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D2 고객용 리포트</div><div class="prompt">다음 계산 결과를 의뢰인에게 보여줄 리포트로 정리해줘: [계산 결과 데이터]. 마지막에 '이 결과는 공개된 고용보험법 고시 기준과 조건을 조합한 참고용 추정치이며 실제 수급자격과 금액은 고용센터·고용24 확인이 필요하다'는 안내 문구를 포함해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D3 소개 문구</div><div class="prompt">실업급여 계산 대행 서비스를 한 문단으로 소개하는 홍보 문구를 써줘. 퇴사 전에 미리 얼마 받을 수 있는지 계산해볼 수 있다는 점을 강조해줘.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">16</span>실전 체크리스트</h2>
+
+    <div class="checklist-group">
+      <h4><span class="wk">오늘</span>30분</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 A1로 내(또는 가상의) 평균임금부터 계산해보기</li>
+        <li><input type="checkbox" disabled>프롬프트 A2로 피보험단위기간 180일 충족 여부 확인해보기</li>
+        <li><input type="checkbox" disabled>프롬프트 A3으로 이직사유 1차 판정부터 받아보기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 주</span>1차 완성</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 B1~B3으로 1일 구직급여액, 소정급여일수, 총수급액·첫 지급일까지 계산하기</li>
+        <li><input type="checkbox" disabled>프롬프트 B4~C2로 수급기간 연장, 조기재취업수당, 중복수급 여부까지 점검하기</li>
+        <li><input type="checkbox" disabled>프롬프트 C3~C4로 전체 요약 리포트와 이직사유별 비교 시나리오까지 만들어보기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 달</span>확장</h4>
+      <ul>
+        <li><input type="checkbox" disabled>방법 14대로 계산 프로세스를 하나의 문서 템플릿 시스템으로 통합하기</li>
+        <li><input type="checkbox" disabled>프롬프트 D1~D3으로 접수 질문지·고객용 리포트·소개 문구 준비해서 가족·지인·동료 대상 첫 의뢰 진행하기</li>
+        <li><input type="checkbox" disabled>첫 의뢰 후 실제 신청 결과나 만족도와 대조한 후기를 바탕으로 서비스 범위·안내 문구를 다듬어 정식 서비스로 확장하기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>퇴사를 앞두고 "저 얼마 받을 수 있어요?"라는 막막한 질문을 AI와 함께라면 오늘 안에 숫자로 바꿀 수 있습니다.</p>
+    <div class="close">
+      <p>오늘, 프롬프트 A1로 내 평균임금부터 계산해보세요.</p>
+      <div class="sign">— 끝 —</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
