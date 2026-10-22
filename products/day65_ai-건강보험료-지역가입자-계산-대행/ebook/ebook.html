@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>건강보험료 고지서 받기 전에, AI한테 먼저 물어보세요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F; --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38; --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74; --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A; --cat-d-tint: #E3E6CE;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:780px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.0rem, 6vw, 3.1rem); line-height:1.3; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.1rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.7rem; font-weight:700; margin:0 0 20px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:18px; width:max-content; max-width:100%; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.1rem; margin:24px 0 10px; color:var(--ink); }
+  section.chapter{ padding:30px 0 34px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 14px; max-width:66ch; orphans:1; widows:1; }
+  .lede{ font-size:1.02rem; color:var(--ink-soft); max-width:62ch; margin-bottom:18px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  /* ---------- TOC ---------- */
+  .toc{ border-top:3px solid var(--gold); padding:20px 0 8px; margin-bottom:44px; }
+  .toc h2{ font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 16px; break-after:avoid; }
+  .toc ol{ list-style:none; margin:0; padding:0; }
+  .toc li{ display:flex; align-items:baseline; gap:6px; padding:6px 0; font-size:0.94rem; break-inside:avoid; }
+  .toc .n{ font-family:var(--font-mono); font-weight:700; color:var(--gold-strong); flex-shrink:0; }
+  .toc .leader{ flex:1; border-bottom:1px dotted var(--line); margin:0 2px 5px; min-width:16px; }
+  .toc .pg{ font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); flex-shrink:0; }
+
+  /* ---------- Method steps ---------- */
+  .method-meta{ display:inline-block; font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-bottom:16px; }
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; }
+  ol.steps li{ margin-bottom:9px; padding-left:4px; break-inside:avoid; }
+
+  /* ---------- Note callouts ---------- */
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:6px 0 4px; }
+
+  /* ---------- Table ---------- */
+  .table-wrap{ overflow-x:auto; margin-bottom:14px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.88rem; background:var(--paper); }
+  th,td{ text-align:left; padding:8px 13px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.72rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+
+  /* ---------- Prompt cards (categorized grid) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:6px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-label{ display:table; font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); border-radius:6px; padding:4px 12px; margin:0 0 8px; break-after:avoid-page; }
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:13px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:8px 10px 8px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.76rem; color:var(--accent); font-weight:700; margin-bottom:4px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:7px 9px; font-family:var(--font-mono); font-size:0.76rem; line-height:1.45; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:15px 18px; margin-bottom:10px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.88rem; letter-spacing:0.05em; margin:0 0 12px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.78rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:4px 0; font-size:0.92rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; }
+  .epilogue .close{ break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:10px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{
+    .cover{ page-break-after:always; margin-left:0; margin-right:0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 65</span>
+    <span class="badge">CLAUDE가 기획 · 집필</span>
+    <h1>건강보험료 고지서 받기 전에,<br>AI한테 <span class="nowrap">먼저 물어보세요</span></h1>
+    <p class="subtitle">AI로 <span class="nowrap">건강보험료(지역가입자)</span> <span class="nowrap">계산 대행하는 법</span> — <span class="nowrap">그대로 쓰는</span> <span class="nowrap">건강보험료 프롬프트 15개</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>12</strong>가지 방법</div>
+      <div class="nowrap"><strong>15</strong>개 프롬프트</div>
+      <div class="nowrap"><strong>3</strong>단계 체크리스트</div>
+    </div>
+    <div class="byline">이 책의 목차·본문·프롬프트까지, 전부 <strong>클로드가 기획하고 작성</strong>했습니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">"저 이번에 퇴사하면 건강보험료 얼마나 나와요?"</em> 직장 다닐 때는 회사가 절반을 내줘서 신경 쓸 일이 없었는데, 퇴사하거나 피부양자 자격을 잃는 순간 이 질문이 현실이 됩니다. 지역가입자 건강보험료는 소득뿐 아니라 집·토지 같은 재산까지 계산에 들어가서, 소득이 없어도 보험료가 나오는 구조입니다. 대부분은 "고지서 오면 그때 보지"라며 계산 자체를 미룹니다.</p>
+    <p>하지만 이 계산도 결국 구조화된 작업입니다. "피부양자 자격을 유지할 수 있는지 먼저 확인하고, 유지가 안 된다면 소득보험료와 재산보험료를 각각 계산하고, 장기요양보험료를 더하고, 상한액과 비교해 최종 금액을 확정하는" 순서가 정해져 있고, 이 순서를 그대로 따라가면 누구나 자신이 낼 지역가입자 건강보험료를 미리 가늠해볼 수 있습니다. 보험료율이나 피부양자 기준은 고시가 바뀌지만, "계산하는 순서" 자체는 거의 바뀌지 않습니다.</p>
+    <p>이 책은 AI를 <strong>"소득·재산·가입 이력을 입력하면, 그 시점 국민건강보험공단 고시 기준(보험료율·점수당 금액·피부양자 기준·상한액)을 전제로 지역가입자 건강보험료를 순서대로 계산해주는 건강보험료 추정 조수"</strong>로 써서, 피부양자 자격 점검부터 소득·재산보험료 산정, 임의계속가입 활용까지 단계별로 계산하는 법을 다룹니다. 그리고 이 계산 결과물로 "저 건강보험료 얼마 나와요?"라는 가족·지인·동료의 흔한 질문을 대행 서비스로 만드는 법까지 다룹니다.</p>
+  </section>
+
+  <div class="toc">
+    <h2>목차</h2>
+    <ol>
+      <li>왜 지금 AI로 건강보험료(지역가입자) 계산 대행인가<span class="leader"></span><span class="n">01</span></li>
+      <li>시작 전에 딱 3가지만 준비하세요<span class="leader"></span><span class="n">02</span></li>
+      <li>방법 1 — 피부양자 자격 유지 가능 여부 먼저 점검하기<span class="leader"></span><span class="n">03</span></li>
+      <li>방법 2 — 소득보험료 계산하기(소득×보험료율)<span class="leader"></span><span class="n">04</span></li>
+      <li>방법 3 — 재산보험료 계산하기(1억 공제 후 점수제)<span class="leader"></span><span class="n">05</span></li>
+      <li>방법 4 — 장기요양보험료 추가 계산하기<span class="leader"></span><span class="n">06</span></li>
+      <li>방법 5 — 월 보험료 총액 확정하고 상한액 적용하기<span class="leader"></span><span class="n">07</span></li>
+      <li>방법 6 — 고지 시점·반영 지연 점검하기<span class="leader"></span><span class="n">08</span></li>
+      <li>방법 7 — 전환 시나리오별 비교하기<span class="leader"></span><span class="n">09</span></li>
+      <li>방법 8 — 임의계속가입 제도 활용 검토하기<span class="leader"></span><span class="n">10</span></li>
+      <li>방법 9 — 보험료 절감 전략 점검하기<span class="leader"></span><span class="n">11</span></li>
+      <li>방법 10 — 계산 대행 부업으로 수익화하기<span class="leader"></span><span class="n">12</span></li>
+      <li>방법 11 — 흔한 실수와 개선법<span class="leader"></span><span class="n">13</span></li>
+      <li>방법 12 — 나만의 대행 시스템 구축하기<span class="leader"></span><span class="n">14</span></li>
+      <li>바로 쓰는 프롬프트 15선<span class="leader"></span><span class="n">15</span></li>
+      <li>실전 체크리스트<span class="leader"></span><span class="n">16</span></li>
+    </ol>
+  </div>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>왜 지금 AI로 건강보험료(지역가입자) 계산 대행인가</h2>
+    <p>지역가입자 건강보험료는 회사의 재량이 아니라, 공개된 보험료율·점수당 금액·피부양자 기준과 각자의 소득·재산 조건을 조합하는 계산입니다. 그런데도 대부분은 "퇴사하면 그때 가서 알아보지"라고 생각하고 계산 자체를 미룹니다.</p>
+    <ol class="steps">
+      <li><strong>AI는 세무사·보험 설계사를 대신하는 전문가가 아니라 "고시 기준까지 반영해 숫자로 미리 보여주는 조수"입니다.</strong> 고시 기준을 일일이 찾아볼 필요 없이, 소득·재산 조건만 알려주면 추정액을 정리해줍니다.</li>
+      <li><strong>한 번 만든 계산 로직은 의뢰가 들어올 때마다 조건만 바꿔서 재사용할 수 있습니다.</strong> 보험료율·점수당 금액·피부양자 기준만 최신 고시로 갱신하면 됩니다.</li>
+      <li><strong>이 결과물 자체가 대행 서비스로 팔릴 수 있습니다.</strong> 퇴사·은퇴 전에 "내가 얼마나 낼지" 미리 알고 싶은 사람은 항상 있고, 숫자와 근거로 답해주는 서비스는 신뢰를 빠르게 얻습니다.</li>
+    </ol>
+    <p>이 책은 "피부양자 자격을 최종 심사하거나 보험료 이의신청을 대신 처리하는 법"을 다루지 않습니다. 이미 정해진(또는 가정한) 소득·재산 조건을 가지고 "지금 이 조건이면 보험료가 얼마나 나오는지" 계산하고 비교하는 법만 다룹니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>시작 전에 딱 3가지만</h2>
+    <div class="method-meta">준비물은 딱 3가지 — 보험 설계사 자격이나 세무·회계 경력이 없어도 괜찮습니다</div>
+    <ol class="steps">
+      <li><strong>AI 챗봇 계정</strong> — 소득·재산 내역을 넣으면 피부양자 자격을 점검하고, 소득보험료·재산보험료를 각각 계산하고, 장기요양보험료와 상한액까지 순서대로 반영하는 과정을 시킬 수 있는 도구면 충분합니다</li>
+      <li><strong>건강보험료 조건 1건</strong> — 실제로 퇴사(예정)이거나 피부양자 탈락이 걱정되는 가족·지인·동료의 조건(연 소득, 주택·토지 등 재산 과세표준, 피부양자 현재 상태)이 있으면 가장 좋고, 없다면 가상의 조건(예: 퇴사 예정, 연간 사업소득 1,800만 원, 주택 과세표준 2억 원)을 하나 정해도 됩니다</li>
+      <li><strong>국민건강보험공단 접속 정보 1개</strong> — nhis.or.kr의 지역보험료 모의계산과 자격득실확인서 조회를 즐겨찾기 해두면, 본인 기준 정확한 재산과표와 모의계산 결과를 바로 확인할 수 있습니다</li>
+    </ol>
+    <p>이 3가지가 준비되면, 방법 1부터 순서대로 따라 하기만 하면 오늘 안에 첫 건강보험료 추정표를 완성할 수 있습니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>피부양자 자격 유지 가능 여부 먼저 점검하기</h2>
+    <p>지역가입자 보험료를 계산하기 전에, 먼저 확인할 것은 "애초에 지역가입자가 되어야 하는가"입니다. 직장가입자의 피부양자로 계속 등록될 수 있다면 지역가입자 보험료 자체가 발생하지 않는다는 점이 첫 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "피부양자는 경제활동소득과 금융소득 등을 합산한 연간 소득이 2,000만 원을 넘으면 자격을 잃는 구조"라는 원칙을 전제로, [연간 사업·금융·연금·근로소득 합계]를 보여줄 테니 소득 기준 충족 여부를 판정해달라고 요청한다</li>
+      <li>"재산 기준은 재산세 과세표준이 9억 원을 초과하거나, 5.4억 원을 초과하면서 동시에 연소득이 1,000만 원을 넘으면 탈락하는 구조"라는 원칙으로 [보유 주택·토지 등 재산세 과세표준]을 기준으로 재산 기준도 함께 판정해달라고 요청한다</li>
+      <li>"소득 기준과 재산 기준 중 하나라도 걸리면 피부양자 자격을 잃는다"는 점을 반영해 [두 기준 판정 결과]를 종합해 최종 유지/탈락 여부를 정리해달라고 요청한다</li>
+      <li>완성된 결과를 "연소득 합계 / 소득 기준 충족 여부 / 재산과표 / 재산 기준 충족 여부 / 최종 판정(피부양자 유지 또는 지역가입자 전환)"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 피부양자 탈락 기준은 2022년 하반기 개편 이후의 수치이며, 수시로 조정될 수 있습니다. 이 책의 2,000만 원·9억 원·5.4억 원 기준값은 계산 구조를 보여주는 기준값이며, 실제 적용 수치는 신청 시점 공단 고시로 재확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>소득보험료 계산하기(소득×보험료율)</h2>
+    <p>피부양자 자격을 유지할 수 없다면, 지역가입자 보험료 계산을 시작합니다. 소득보험료는 더 이상 점수제가 아니라, 소득월액에 건강보험료율을 곱하는 정률제로 계산한다는 점이 두 번째 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>기준값(2026년)</th></tr>
+        <tr><td>건강보험료율(소득분)</td><td>소득월액 × 7.19%</td></tr>
+        <tr><td>적용 소득</td><td>사업·근로·연금·이자·배당·기타소득 등 종합소득 기준(일부 소득은 공제 후 반영)</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 기준값을 전제로, [연간 종합소득(사업·연금·이자·배당·기타소득 등)]을 12개월로 나눠 월 소득을 계산해달라고 요청한다</li>
+      <li>"소득 종류별로 공제 방식이 다를 수 있다"는 점을 전제로, [소득 종류별 세부 내역]을 보여줄 테니 보험료 산정에 반영되는 소득월액을 정리해달라고 요청한다</li>
+      <li>산출된 [소득월액]에 보험료율 7.19%를 곱해 월 소득보험료를 계산해달라고 요청한다</li>
+      <li>완성된 결과를 "소득 종류 / 연간 금액 / 보험료 산정 반영분 / 소득월액 / 월 소득보험료"로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 지역가입자의 소득보험료는 전년도 소득을 기준으로 당해 11월경부터 반영되는 구조입니다. 올해 소득이 줄었어도 보험료가 바로 내려가지 않는다는 점을 리포트에 함께 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">05</span>재산보험료 계산하기(1억 공제 후 점수제)</h2>
+    <p>소득보험료를 구했다면, 이제 재산보험료를 계산합니다. 재산보험료는 소득과 달리 여전히 점수제를 유지하며, 재산세 과세표준에서 1억 원을 먼저 공제한 나머지에 대해서만 점수를 매긴다는 점이 세 번째 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>기준값(2026년)</th></tr>
+        <tr><td>재산 공제</td><td>재산세 과세표준에서 일괄 1억 원 공제(2024년 2월부터)</td></tr>
+        <tr><td>점수당 금액</td><td>약 208~211원 수준(공단 고시로 매년 조정)</td></tr>
+        <tr><td>자동차보험료</td><td>2024년 2월부터 전면 폐지(부과하지 않음)</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 기준값을 전제로, [보유 주택·토지·건축물 등의 재산세 과세표준 합계]에서 1억 원을 먼저 공제해달라고 요청한다</li>
+      <li>"공제 후 남은 재산과표를 재산등급별 점수표(공단이 매년 고시)에 대입해 재산 점수를 산정하는 구조"라는 원칙으로 [공제 후 재산과표]를 기준으로 재산 점수를 추정해달라고 요청한다</li>
+      <li>산출된 [재산 점수]에 점수당 금액(약 208~211원)을 곱해 월 재산보험료를 계산해달라고 요청한다</li>
+      <li>완성된 결과를 "재산 항목별 과세표준 / 1억 원 공제 후 금액 / 추정 재산 점수 / 점수당 금액 / 월 재산보험료"로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 재산등급별 점수표는 공단이 수시로 고시하는 구간표라 출처마다 세부 구간이 다를 수 있습니다. 이 책의 점수당 금액은 계산 구조를 보여주는 기준값이며, 정확한 등급·점수는 공단 모의계산으로 반드시 재확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">06</span>장기요양보험료 추가 계산하기</h2>
+    <p>소득보험료와 재산보험료를 합쳤다면, 여기에 장기요양보험료를 추가로 더합니다. 장기요양보험료는 건강보험료(소득+재산 합산분)에 별도의 비율을 곱해 산정한다는 점이 네 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "장기요양보험료는 건강보험료(소득보험료+재산보험료 합산액)에 장기요양보험료율(약 12.95% 수준)을 곱해 별도로 산정되는 구조"라는 원칙을 전제로, 방법 2~3에서 구한 [월 소득보험료 + 월 재산보험료 합계]를 기준으로 장기요양보험료를 계산해달라고 요청한다</li>
+      <li>"장기요양보험료율은 건강보험료율과 별개로 매년 고시가 바뀐다"는 점을 리포트에 명시해달라고 요청한다</li>
+      <li>완성된 결과를 "건강보험료(소득+재산) / 장기요양보험료율 / 월 장기요양보험료"로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 장기요양보험료는 건강보험료와 별도 항목으로 고지서에 표시되지만, 실질적으로는 건강보험료에 비례해서 자동으로 따라오는 금액입니다. 건강보험료가 줄면 장기요양보험료도 같은 비율로 줄어듭니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">07</span>월 보험료 총액 확정하고 상한액 적용하기</h2>
+    <p>소득보험료, 재산보험료, 장기요양보험료가 모두 나왔다면, 이제 이들을 합산하고 상한액을 넘는지 확인해 최종 월 보험료를 확정합니다. 아무리 소득과 재산이 많아도 월 상한액을 넘을 수 없다는 점이 다섯 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 방법 2~4에서 구한 [월 소득보험료 + 월 재산보험료 + 월 장기요양보험료]를 모두 더해 월 총 납부액을 계산해달라고 요청한다</li>
+      <li>"지역가입자 건강보험료(소득+재산 합산분)에는 월 상한액(약 459만 원 수준)이 있어, 이를 초과하면 상한액으로 보정하는 구조"라는 원칙으로 [계산된 총액]을 상한액과 비교해달라고 요청한다</li>
+      <li>"상한액은 매년 공단 고시로 조정되는 값"이라는 점을 리포트에 명시해달라고 요청한다</li>
+      <li>완성된 결과를 "소득보험료 / 재산보험료 / 장기요양보험료 / 합계 / 상한액 비교 / 최종 월 납부액"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 상한액에 걸리는 경우는 재산이나 소득이 매우 큰 소수의 사례입니다. 대부분의 계산에서는 상한액 비교 단계가 "해당 없음"으로 끝나지만, 리포트에는 항상 이 단계를 거쳤다는 것을 명시해 신뢰도를 높이세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">08</span>고지 시점·반영 지연 점검하기</h2>
+    <p>월 보험료가 확정됐다면, 이제 "이 금액이 언제부터 실제로 청구되는지"를 점검합니다. 지역가입자로 전환된 시점과 실제 소득이 반영되는 시점 사이에 지연이 있다는 점이 여섯 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "지역가입자로 전환되면 전환 직후에는 전년도(또는 그 이전) 소득·재산 기준으로 임시 고지되고, 당해년도 종합소득세 신고 결과는 보통 다음 해 11월경부터 반영되는 구조"라는 원칙을 전제로, [전환 예정일]을 기준으로 임시 고지와 정식 반영 시점을 구분해달라고 요청한다</li>
+      <li>"퇴사로 전환된 경우, 퇴사 직전 소득이 아직 반영되지 않아 처음 몇 달은 실제보다 높게(또는 낮게) 고지될 수 있다"는 점을 반영해 [퇴사 전후 소득 변화]를 기준으로 예상되는 고지액 변화를 안내해달라고 요청한다</li>
+      <li>"소득이 줄었다면 공단에 소득 변동 신고(또는 조정)를 요청할 수 있는 절차가 있다"는 점을 함께 안내해달라고 요청한다</li>
+      <li>완성된 결과를 "전환일 / 임시 고지 기준 / 정식 반영 예상 시점 / 소득 변동 신고 가능 여부"로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — "소득이 줄었으니 보험료도 바로 줄 것"이라고 안내하면 혼란을 줄 수 있습니다. 반영 지연 구조를 먼저 설명하고, 조정 신청 절차는 별도로 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">09</span>전환 시나리오별 비교하기</h2>
+    <p>지역가입자 전환은 다양한 계기로 일어납니다. 퇴사, 은퇴, 피부양자 탈락 중 어떤 경로로 전환되는지에 따라 적용되는 세부 기준이 조금씩 달라진다는 점이 일곱 번째 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>전환 계기</th><th>주요 체크포인트</th></tr>
+        <tr><td>퇴사(실업)</td><td>임의계속가입 신청 가능 여부(방법 8 참고), 실업급여 수급 중 보험료 경감 여부</td></tr>
+        <tr><td>은퇴(소득 감소)</td><td>연금소득 반영 비중, 재산 보유 현황이 보험료의 주된 변수가 됨</td></tr>
+        <tr><td>피부양자 탈락(소득·재산 증가)</td><td>탈락 사유(소득 초과/재산 초과)에 따라 이의신청·소명 가능 여부 확인</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 표를 전제로, [전환 계기]를 보여줄 테니 해당 시나리오에서 추가로 확인해야 할 체크포인트를 안내해달라고 요청한다</li>
+      <li>각 시나리오별로 [방법 1~6에서 계산한 결과]를 적용해, 전환 계기가 다른 2~3가지 가상 사례를 비교 표로 만들어달라고 요청한다</li>
+      <li>완성된 결과를 "전환 계기 / 핵심 변수 / 월 예상 보험료 / 추가 확인사항"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 피부양자 탈락이 계기라면, 탈락 사유 자체에 이의가 있는 경우 공단에 소명·이의신청이 가능할 수 있습니다. 이 경우는 계산보다 절차 안내가 우선임을 명시하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">10</span>임의계속가입 제도 활용 검토하기</h2>
+    <p>퇴사로 지역가입자가 되는 경우, 바로 지역가입자 보험료를 내는 대신 쓸 수 있는 제도가 있습니다. 퇴사 전 1년 중 보험료를 많이 낸 기간이 일정 이상이면, 퇴사 후에도 일정 기간 직장가입자 수준의 보험료로 납부할 수 있는 임의계속가입 제도를 신청할 수 있다는 점이 여덟 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "퇴사일 이전 18개월 중 직장가입자로 보험료를 낸 기간이 통산 1년 이상이면, 퇴사 후 지역가입자 전환 고지서를 받고 나서 일정 기한 내에 임의계속가입을 신청할 수 있는 구조"라는 원칙을 전제로, [퇴사 전 직장가입자 재직 이력]을 기준으로 신청 자격이 있는지 판정해달라고 요청한다</li>
+      <li>자격이 있다면, "임의계속가입 기간 동안은 퇴사 직전 납부하던 직장가입자 보험료(본인부담분 기준)와 유사한 수준으로, 최대 일정 기간(통상 3년) 동안 유지되는 구조"라는 원칙으로 [퇴사 직전 직장가입자 보험료]와 방법 1~7에서 계산한 [지역가입자 예상 보험료]를 비교해달라고 요청한다</li>
+      <li>"두 금액 중 어느 쪽이 더 유리한지, 그리고 신청 기한(지역가입자 고지서를 받은 날로부터 일정 기한 이내)을 놓치지 않아야 한다"는 점을 안내해달라고 요청한다</li>
+      <li>완성된 결과를 "신청 자격 충족 여부 / 임의계속가입 예상 보험료 / 지역가입자 예상 보험료 / 유리한 쪽 / 신청 기한"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 임의계속가입 신청 기한은 매우 짧습니다(지역가입자 고지서를 받은 날로부터 일정 기한 이내). 비교 결과 유리하다고 나오면 기한을 놓치지 않도록 날짜를 명확히 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">11</span>보험료 절감 전략 점검하기</h2>
+    <p>전환 이후에도 보험료를 낮출 수 있는 합법적인 방법이 있는지 점검하는 것도 중요합니다. 재산과 소득 구조를 조정하면 보험료가 달라질 수 있다는 점이 아홉 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 방법 3에서 계산한 [재산보험료 산정 근거(재산 항목별 과세표준)]를 보여줄 테니, 재산 구조 조정(예: 공동명의, 임대 등록, 소규모 주택 처분 등)이 재산보험료에 어떤 영향을 줄 수 있는지 일반적인 원리를 설명해달라고 요청한다</li>
+      <li>방법 2에서 계산한 [소득 구조]를 보여줄 테니, 소득 종류 변경(예: 사업소득을 근로소득으로 전환 등)이 피부양자 재진입이나 보험료 산정에 어떤 영향을 줄 수 있는지 일반적인 원리를 설명해달라고 요청한다</li>
+      <li>"구체적인 자산 처분·명의 변경·세무 설계는 세무사·법무사 등 전문가 상담이 필요한 영역"이라는 점을 명시해달라고 요청한다</li>
+      <li>완성된 결과를 "현재 구조 / 검토 가능한 조정 방향(일반 원리 수준) / 전문가 상담이 필요한 부분"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 이 단계는 "이렇게 하면 보험료를 줄일 수 있다"는 구체적 설계가 아니라 "이런 방향이 있다"는 일반 원리 안내까지만 다룹니다. 실제 자산·세무 설계는 전문가 영역임을 반드시 명시하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">12</span>계산 대행 부업으로 수익화</h2>
+    <p>여기까지 만든 계산 로직은 퇴사·은퇴를 앞둔 거의 모든 사람, 그리고 소득이나 재산이 늘어 피부양자 탈락을 걱정하는 사람 모두에게 필요합니다. "저 건강보험료 얼마 나와요?"라는 질문은 생애 전환 시점마다 반복됩니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>서비스 범위를 명확히 정한다 — "소득·재산 조건 기반 피부양자 자격 점검, 소득보험료·재산보험료·장기요양보험료 계산, 전환 시나리오 비교, 임의계속가입 유불리 비교 리포트 제공"까지만 하고, "피부양자 자격 최종 심사, 보험료 최종 고지, 이의신청 심사"는 공단의 고유 업무라는 점을 안내문에 명시한다</li>
+      <li>가격을 "건강보험료 추정 리포트 1건", "임의계속가입 유불리 비교 추가", "전환 시나리오 다수 비교 추가"로 나눠 설계한다 — 1건 5,000~15,000원으로 시작해, 재산 항목이 많거나 시나리오가 많을수록 추가 요금을 받는 구조를 권장한다</li>
+      <li>방법 1~9에서 만든 계산 로직을 조건 입력만 받으면 채워지는 표준 템플릿으로 정리해, 의뢰가 오면 소득 종류·금액, 재산 과세표준, 피부양자 현재 상태만 받아 빠르게 리포트를 완성하는 구조로 만든다</li>
+      <li>처음에는 퇴사·은퇴를 앞둔 가족·지인·동료 대상으로 무료 또는 저가로 시작해, 실제 고지 결과나 만족도와 대조한 후기를 쌓는다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 이 부업은 보험료 심사나 이의신청 대행이 아니라 추정 계산입니다. 상담 시작 전에 "제시 금액은 공개된 공단 고시 기준과 조건을 조합한 참고용 추정치이며, 실제 보험료와 피부양자 자격은 공단 확인이 필요하다"는 점을 명확히 안내해 오해를 예방하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">13</span>흔한 실수</h2>
+    <div class="table-wrap">
+      <table>
+        <tr><th>실수</th><th>왜 위험한가</th><th>개선법</th></tr>
+        <tr><td>재산보험료를 전체 재산과표로 계산(1억 공제 누락)</td><td>공제 전 금액으로 계산하면 실제보다 훨씬 높게 추정됨</td><td>방법 3에서 1억 원 공제 후 금액만 점수 산정에 사용</td></tr>
+        <tr><td>소득보험료를 점수제 방식으로 계산</td><td>소득분은 더 이상 점수제가 아니라 정률제(소득×7.19%)로 바뀜</td><td>방법 2에서 정률제 공식 적용 여부 확인</td></tr>
+        <tr><td>자동차보험료를 별도로 더함</td><td>자동차보험료는 2024년 2월부터 전면 폐지됨</td><td>방법 3 기준값 표로 폐지 여부 확인</td></tr>
+        <tr><td>소득 감소를 즉시 보험료 인하로 안내</td><td>전년도 소득이 다음 해 11월경 반영되는 지연 구조를 무시한 설명</td><td>방법 6에서 반영 시점 지연을 먼저 설명</td></tr>
+        <tr><td>퇴사자에게 임의계속가입 제도를 안내하지 않음</td><td>지역가입자보다 유리한 경우가 많은데 기한이 짧아 놓치기 쉬움</td><td>방법 8에서 신청 자격·기한을 먼저 점검</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>지금 계산 중인(또는 가상의) 건강보험료 조건을 위 표와 하나씩 대조한다</li>
+      <li>해당하는 실수가 있으면, 관련 방법 장으로 돌아가 즉시 보완한다</li>
+      <li>이 표를 그대로 체크리스트로 저장해, 새로운 의뢰가 들어올 때마다 확인한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">14</span>나만의 대행 시스템 구축</h2>
+    <p>매번 새로 계산하지 않도록, 지금까지 만든 것을 하나의 재사용 가능한 시스템으로 묶습니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>방법 1(피부양자 자격 점검)과 방법 2~7(소득·재산·장기요양보험료 계산부터 상한액·고지시점·전환시나리오까지)을 하나의 문서 템플릿에 자격판정/보험료계산/전환점검 섹션으로 나눠 통합한다</li>
+      <li>방법 10의 의뢰 접수 질문지(연간 소득 종류·금액, 보유 재산 과세표준, 피부양자 현재 상태, 전환 계기)를 저장해두고, 새 의뢰가 올 때마다 그대로 사용한다</li>
+      <li>보험료율·점수당 금액·피부양자 기준·상한액처럼 자주 개편되는 값은 의뢰가 들어올 때마다 AI에게 최신 공단 고시 기준을 재확인시켜, 템플릿 상단의 "기준값" 섹션만 갱신하는 구조로 설계한다</li>
+      <li>시스템이 안정되면 이 전체를 "건강보험료(지역가입자) 추정 계산 대행 패키지"로 정식 서비스화한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">15</span>바로 쓰는 프롬프트 15선</h2>
+    <p class="lede">대괄호 부분만 바꿔서 그대로 붙여넣으세요. 카테고리별로 정리했습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 기준값·자격 확인</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">A1 피부양자 소득 기준</div><div class="prompt">너는 건강보험료 계산 전문가야. 연간 소득 내역을 보여줄 테니: [사업·근로·연금·금융소득 등], 피부양자 소득 기준(연 2,000만 원) 충족 여부를 판정해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A2 피부양자 재산 기준</div><div class="prompt">보유 재산세 과세표준을 보여줄 테니: [주택·토지 등 과세표준], 피부양자 재산 기준(9억 원 또는 5.4억 원+소득 1천만 원) 충족 여부를 판정해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A3 전환 여부 종합</div><div class="prompt">위 소득·재산 판정 결과를 종합해서 피부양자 유지 가능 여부와 지역가입자 전환 필요 여부를 정리해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A4 숨은 항목 찾기</div><div class="prompt">다음 조건을 보여줄 테니: [조건], 건강보험료 계산에서 빠뜨리기 쉬운 항목을 찾아줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 보험료 계산</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">B1 소득보험료</div><div class="prompt">월 소득월액 [금액]을 기준으로, 2026년 보험료율 7.19%를 적용한 월 소득보험료를 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B2 재산보험료</div><div class="prompt">재산세 과세표준 [금액]에서 1억 원을 공제한 뒤, 점수당 금액 약 210원을 기준으로 추정 재산보험료를 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B3 장기요양·총액</div><div class="prompt">월 소득보험료 [금액]과 월 재산보험료 [금액]을 더한 뒤, 장기요양보험료율 약 12.95%를 적용해 월 총 납부액을 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B4 상한액 비교</div><div class="prompt">월 총 납부액 [금액]이 2026년 상한액(약 459만 원)을 넘는지 비교해서 최종 금액을 확정해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 전환시나리오·절감전략 점검</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">C1 전환 시나리오 비교</div><div class="prompt">퇴사, 은퇴, 피부양자 탈락 각 시나리오에서 [조건]을 적용했을 때 예상 월 보험료를 비교해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C2 임의계속가입 유불리</div><div class="prompt">퇴사 직전 18개월 재직 이력 [이력]과 퇴사 직전 보험료 [금액]을 기준으로, 임의계속가입 신청 자격과 지역가입자 보험료 대비 유불리를 비교해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C3 고지 반영 시점</div><div class="prompt">전환일 [날짜]을 기준으로 임시 고지와 정식 소득 반영(통상 다음 해 11월경) 시점을 구분해서 설명해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C4 절감 방향 안내</div><div class="prompt">다음 재산·소득 구조 [구조]를 보여줄 테니, 보험료에 영향을 줄 수 있는 일반적인 조정 방향을 전문가 상담이 필요한 부분과 구분해서 안내해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 대행 서비스화</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">D1 접수 질문지</div><div class="prompt">건강보험료 계산 대행 서비스를 시작하려고 해. 의뢰인에게 받아야 할 정보(소득 종류·금액, 보유 재산 과세표준, 피부양자 현재 상태, 전환 계기)를 빠짐없이 받을 수 있는 접수 질문지를 만들어줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D2 고객용 리포트</div><div class="prompt">다음 계산 결과를 의뢰인에게 보여줄 리포트로 정리해줘: [계산 결과 데이터]. 마지막에 '이 결과는 공개된 국민건강보험공단 고시 기준과 조건을 조합한 참고용 추정치이며, 실제 보험료와 피부양자 자격은 공단 확인이 필요하다'는 안내 문구를 포함해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D3 소개 문구</div><div class="prompt">건강보험료(지역가입자) 계산 대행 서비스를 한 문단으로 소개하는 홍보 문구를 써줘. 퇴사·은퇴 전에 미리 얼마나 나올지 계산해볼 수 있다는 점을 강조해줘.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">16</span>실전 체크리스트</h2>
+
+    <div class="checklist-group">
+      <h4><span class="wk">오늘</span>30분</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 A1~A2로 내(또는 가상의) 피부양자 소득·재산 기준 충족 여부부터 확인해보기</li>
+        <li><input type="checkbox" disabled>프롬프트 A3으로 지역가입자 전환 필요 여부 종합 판정 받아보기</li>
+        <li><input type="checkbox" disabled>프롬프트 B1로 소득보험료부터 계산해보기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 주</span>1차 완성</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 B2~B4로 재산보험료, 장기요양보험료, 상한액 반영까지 월 총 납부액 계산하기</li>
+        <li><input type="checkbox" disabled>프롬프트 C1~C2로 전환 시나리오 비교와 임의계속가입 유불리까지 점검하기</li>
+        <li><input type="checkbox" disabled>프롬프트 C3~C4로 고지 반영 시점과 절감 방향까지 안내 문구 만들어보기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 달</span>확장</h4>
+      <ul>
+        <li><input type="checkbox" disabled>방법 14대로 계산 프로세스를 하나의 문서 템플릿 시스템으로 통합하기</li>
+        <li><input type="checkbox" disabled>프롬프트 D1~D3으로 접수 질문지·고객용 리포트·소개 문구 준비해서 가족·지인·동료 대상 첫 의뢰 진행하기</li>
+        <li><input type="checkbox" disabled>첫 의뢰 후 실제 고지 결과나 만족도와 대조한 후기를 바탕으로 서비스 범위·안내 문구를 다듬어 정식 서비스로 확장하기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>건강보험료 고지서를 받고 나서야 "왜 이렇게 많이 나왔지"라고 놀라지 마세요. AI와 함께라면 오늘 안에 숫자로 미리 확인할 수 있습니다.</p>
+    <div class="close">
+      <p>오늘, 프롬프트 A1로 피부양자 자격부터 점검해보세요.</p>
+      <div class="sign">— 끝 —</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
