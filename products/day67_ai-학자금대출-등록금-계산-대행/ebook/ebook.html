@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>등록금 고지서 받기 전에, AI한테 먼저 물어보세요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F; --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38; --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74; --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A; --cat-d-tint: #E3E6CE;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:780px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.0rem, 6vw, 3.1rem); line-height:1.3; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.1rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.7rem; font-weight:700; margin:0 0 20px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:18px; width:max-content; max-width:100%; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.1rem; margin:24px 0 10px; color:var(--ink); }
+  section.chapter{ padding:30px 0 34px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 14px; max-width:66ch; orphans:1; widows:1; }
+  .lede{ font-size:1.02rem; color:var(--ink-soft); max-width:62ch; margin-bottom:18px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  /* ---------- TOC ---------- */
+  .toc{ border-top:3px solid var(--gold); padding:20px 0 8px; margin-bottom:44px; }
+  .toc h2{ font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 16px; break-after:avoid; }
+  .toc ol{ list-style:none; margin:0; padding:0; }
+  .toc li{ display:flex; align-items:baseline; gap:6px; padding:6px 0; font-size:0.94rem; break-inside:avoid; }
+  .toc .n{ font-family:var(--font-mono); font-weight:700; color:var(--gold-strong); flex-shrink:0; }
+  .toc .leader{ flex:1; border-bottom:1px dotted var(--line); margin:0 2px 5px; min-width:16px; }
+  .toc .pg{ font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); flex-shrink:0; }
+
+  /* ---------- Method steps ---------- */
+  .method-meta{ display:inline-block; font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-bottom:16px; }
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; }
+  ol.steps li{ margin-bottom:9px; padding-left:4px; break-inside:avoid; }
+
+  /* ---------- Note callouts ---------- */
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:6px 0 4px; }
+
+  /* ---------- Table ---------- */
+  .table-wrap{ overflow-x:auto; margin-bottom:14px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.88rem; background:var(--paper); }
+  th,td{ text-align:left; padding:8px 13px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.72rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+
+  /* ---------- Prompt cards (categorized grid) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:6px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-label{ display:table; font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); border-radius:6px; padding:4px 12px; margin:0 0 8px; break-after:avoid-page; }
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:13px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:8px 10px 8px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.76rem; color:var(--accent); font-weight:700; margin-bottom:4px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:7px 9px; font-family:var(--font-mono); font-size:0.76rem; line-height:1.45; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:15px 18px; margin-bottom:10px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.88rem; letter-spacing:0.05em; margin:0 0 12px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.78rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:4px 0; font-size:0.92rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; }
+  .epilogue .close{ break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:10px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{
+    .cover{ page-break-after:always; margin-left:0; margin-right:0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 67</span>
+    <span class="badge">CLAUDE가 기획 · 집필</span>
+    <h1>등록금 고지서 받기 전에,<br>AI한테 <span class="nowrap">먼저 물어보세요</span></h1>
+    <p class="subtitle">AI로 <span class="nowrap">학자금대출·등록금</span> <span class="nowrap">계산 대행하는 법</span> — <span class="nowrap">그대로 쓰는</span> <span class="nowrap">학자금대출 프롬프트 15개</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>12</strong>가지 방법</div>
+      <div class="nowrap"><strong>15</strong>개 프롬프트</div>
+      <div class="nowrap"><strong>3</strong>단계 체크리스트</div>
+    </div>
+    <div class="byline">이 책의 목차·본문·프롬프트까지, 전부 <strong>클로드가 기획하고 작성</strong>했습니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">"학자금대출 받으면 나중에 얼마씩 갚아야 돼요?"</em> 등록 시즌마다 부모와 자녀, 신입생과 재학생 사이에서 반복되는 질문입니다. 국가장학금을 받을 수 있는 소득분위인지, 일반상환학자금대출과 취업후상환학자금대출(ICL) 중 뭐가 유리한지, 휴학하면 등록금을 돌려받을 수 있는지 — 대부분은 등록 마감일에 쫓겨 제대로 비교하지 못하고 "일단 되는 대로" 선택합니다.</p>
+    <p>하지만 이 계산도 결국 구조화된 작업입니다. "소득분위로 국가장학금 지원액을 먼저 추정하고, 실부담 등록금을 확인한 다음, 대출이 필요하다면 종류를 비교해서 선택하고, 선택한 종류에 맞는 상환액을 계산하고, 휴학·자퇴 시 반환 규정까지 점검하는" 순서가 정해져 있고, 이 순서를 그대로 따라가면 누구나 자신의 학자금 부담을 미리 가늠해볼 수 있습니다. 상환기준소득이나 대출금리는 매년 고시가 바뀌지만, "계산하는 순서" 자체는 거의 바뀌지 않습니다.</p>
+    <p>이 책은 AI를 <strong>"소득분위·학적 상태·대출 조건을 입력하면, 그 시점 한국장학재단·교육부 고시 기준(상환기준소득·대출금리·반환비율표)을 전제로 학자금대출·등록금 부담액을 순서대로 계산해주는 학자금 추정 조수"</strong>로 써서, 국가장학금 실부담액 추정부터 대출 종류 선택, 상환액 계산, 반환·휴학 규정 점검까지 단계별로 계산하는 법을 다룹니다. 그리고 이 계산 결과물로 "저 학자금대출 받으면 얼마씩 갚아요?"라는 가족·지인·후배의 흔한 질문을 대행 서비스로 만드는 법까지 다룹니다.</p>
+  </section>
+
+  <div class="toc">
+    <h2>목차</h2>
+    <ol>
+      <li>왜 지금 AI로 학자금대출·등록금 계산 대행인가<span class="leader"></span><span class="n">01</span></li>
+      <li>시작 전에 딱 3가지만 준비하세요<span class="leader"></span><span class="n">02</span></li>
+      <li>방법 1 — 국가장학금 소득분위로 등록금 실부담액 먼저 추정하기<span class="leader"></span><span class="n">03</span></li>
+      <li>방법 2 — 대출 종류 선택(일반상환 vs ICL) 비교하기<span class="leader"></span><span class="n">04</span></li>
+      <li>방법 3 — ICL 의무상환액 계산하기(기준소득 초과분×상환율)<span class="leader"></span><span class="n">05</span></li>
+      <li>방법 4 — 일반상환 대출 월 상환액 계산하기<span class="leader"></span><span class="n">06</span></li>
+      <li>방법 5 — 등록금 반환액 계산하기(휴학·자퇴 시점별)<span class="leader"></span><span class="n">07</span></li>
+      <li>방법 6 — 휴학 복학 시 추가 납부액 계산하기<span class="leader"></span><span class="n">08</span></li>
+      <li>방법 7 — 상환 유예·연체정보 등록 유예 점검하기<span class="leader"></span><span class="n">09</span></li>
+      <li>방법 8 — 졸업 시점 총 학자금 부채 시뮬레이션하기<span class="leader"></span><span class="n">10</span></li>
+      <li>방법 9 — 절감 전략 점검하기<span class="leader"></span><span class="n">11</span></li>
+      <li>방법 10 — 계산 대행 부업으로 수익화하기<span class="leader"></span><span class="n">12</span></li>
+      <li>방법 11 — 흔한 실수와 개선법<span class="leader"></span><span class="n">13</span></li>
+      <li>방법 12 — 나만의 대행 시스템 구축하기<span class="leader"></span><span class="n">14</span></li>
+      <li>바로 쓰는 프롬프트 15선<span class="leader"></span><span class="n">15</span></li>
+      <li>실전 체크리스트<span class="leader"></span><span class="n">16</span></li>
+    </ol>
+  </div>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>왜 지금 AI로 학자금대출·등록금 계산 대행인가</h2>
+    <p>학자금 부담은 학교의 재량이 아니라, 공개된 소득분위 기준·대출금리·반환비율표와 각자의 소득·학적 조건을 조합하는 계산입니다. 그런데도 대부분은 "등록 마감일 되면 그때 알아보지"라고 생각하고 계산 자체를 미룹니다.</p>
+    <ol class="steps">
+      <li><strong>AI는 재단 상담사를 대신하는 전문가가 아니라 "고시 기준까지 반영해 숫자로 미리 보여주는 조수"입니다.</strong> 고시 기준을 일일이 찾아볼 필요 없이, 소득·학적 조건만 알려주면 추정액을 정리해줍니다.</li>
+      <li><strong>한 번 만든 계산 로직은 의뢰가 들어올 때마다 조건만 바꿔서 재사용할 수 있습니다.</strong> 상환기준소득·대출금리·반환비율표만 최신 고시로 갱신하면 됩니다.</li>
+      <li><strong>이 결과물 자체가 대행 서비스로 팔릴 수 있습니다.</strong> 등록 전에 "내가 얼마나 부담할지" 미리 알고 싶은 학생·학부모는 항상 있고, 숫자와 근거로 답해주는 서비스는 신뢰를 빠르게 얻습니다.</li>
+    </ol>
+    <p>이 책은 "대출을 최종 심사하거나 반환금을 대신 처리하는 법"을 다루지 않습니다. 이미 정해진(또는 가정한) 소득·학적 조건을 가지고 "지금 이 조건이면 부담이 얼마나 되는지" 계산하고 비교하는 법만 다룹니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>시작 전에 딱 3가지만</h2>
+    <div class="method-meta">준비물은 딱 3가지 — 교육행정 경력이나 재무설계 자격이 없어도 괜찮습니다</div>
+    <ol class="steps">
+      <li><strong>AI 챗봇 계정</strong> — 소득·학적 내역을 넣으면 국가장학금 구간을 추정하고, 대출 종류별 상환액을 각각 계산하고, 반환·휴학 규정까지 순서대로 반영하는 과정을 시킬 수 있는 도구면 충분합니다</li>
+      <li><strong>학자금 조건 1건</strong> — 실제로 등록을 앞둔 가족·지인·후배의 조건(가구 소득·재산 정보, 등록금 총액, 대출 예정 여부, 학년·학기)이 있으면 가장 좋고, 없다면 가상의 조건(예: 신입생, 가구소득 중위소득 150% 수준, 등록금 450만 원, 생활비 대출 검토)을 하나 정해도 됩니다</li>
+      <li><strong>한국장학재단(KOSAF) 접속 정보 1개</strong> — studentloan.or.kr의 국가장학금 소득분위 산정결과 조회와 학자금대출 상환 시뮬레이션을 즐겨찾기 해두면, 본인 기준 정확한 소득분위와 시뮬레이션 결과를 바로 확인할 수 있습니다</li>
+    </ol>
+    <p>이 3가지가 준비되면, 방법 1부터 순서대로 따라 하기만 하면 오늘 안에 첫 학자금 추정표를 완성할 수 있습니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>국가장학금 소득분위로 등록금 실부담액 먼저 추정하기</h2>
+    <p>대출 계산에 들어가기 전에, 먼저 확인할 것은 "애초에 등록금을 얼마나 내야 하는가"입니다. 국가장학금으로 등록금 일부가 이미 감면된다면, 대출이 필요한 금액 자체가 줄어든다는 점이 첫 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "국가장학금은 가구원 소득·재산을 합산한 소득분위를 1~9구간으로 나눠 구간별로 지원액이 정해지는 구조(2026년 기준 9구간까지 지원, 기준중위소득 300% 수준까지 확대)"라는 원칙을 전제로, [가구원 소득·재산 정보]를 보여줄 테니 예상 소득분위를 추정해달라고 요청한다</li>
+      <li>"국가장학금 지원 외에도 직전 학기 성적(통상 B학점 또는 80점 이상, 신입생·장애학생 등은 성적 기준 완화)을 충족해야 한다"는 점을 전제로 [직전 학기 성적]을 기준으로 성적 요건 충족 여부도 함께 판정해달라고 요청한다</li>
+      <li>추정된 [소득분위]와 [등록금 총액]을 기준으로 국가장학금 지원 추정액을 계산해달라고 요청한다</li>
+      <li>완성된 결과를 "등록금 총액 / 추정 소득분위 / 성적 요건 충족 여부 / 국가장학금 지원 추정액 / 실부담 등록금"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 소득분위 산정에는 가구원 수, 재산의 소득환산액까지 포함되어 단순히 "부모님 연봉"만으로는 정확히 추정되지 않습니다. 이 책의 구간·기준값은 계산 구조를 보여주는 기준값이며, 실제 소득분위는 한국장학재단 소득분위 산정결과 조회로 반드시 재확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>대출 종류 선택(일반상환 vs ICL) 비교하기</h2>
+    <p>실부담 등록금이 나왔는데도 당장 낼 돈이 부족하다면, 학자금대출을 검토합니다. 대출은 크게 두 종류이고, 상환 방식이 완전히 다르다는 점이 두 번째 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>일반상환학자금대출</th><th>취업후상환학자금대출(ICL)</th></tr>
+        <tr><td>상환 시작</td><td>졸업(또는 졸업유예) 후 일정 기간 내 바로 원리금 상환 시작</td><td>소득이 발생해 상환기준소득을 넘을 때까지 상환 유예</td></tr>
+        <tr><td>상환 금액</td><td>대출금리·상환기간에 따른 고정 월 상환액</td><td>기준소득 초과분에만 상환율(학부 20%·대학원 25%)을 곱한 금액</td></tr>
+        <tr><td>대상</td><td>소득구간 제한 없음(2026년 1학기부터 등록금 대출 전 구간 확대)</td><td>소득구간 제한 없음(등록금 대출), 생활비대출은 구간 제한 있음(대학원생 6구간까지)</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 표를 전제로, [현재 학년·재학 상태, 졸업 예정 시기]를 보여줄 테니 두 대출의 상환 시작 시점이 자신의 상황에서 각각 언제가 되는지 비교해달라고 요청한다</li>
+      <li>"소득이 불확실한 재학생·취업준비생에게는 상환 유예가 가능한 ICL이 부담이 적고, 졸업 후 소득이 확실한 경우에는 일반상환이 총 이자 측면에서 유리할 수 있다"는 일반 원리를 전제로 [예상 졸업 후 소득 전망]을 기준으로 유불리를 비교해달라고 요청한다</li>
+      <li>"생활비대출까지 받을 계획이라면 소득구간 제한이 별도로 있다"는 점을 반영해 [생활비대출 필요 여부]를 기준으로 가능 여부를 함께 확인해달라고 요청한다</li>
+      <li>완성된 결과를 "학년·졸업예정 / 등록금대출 가능 여부(두 유형) / 생활비대출 가능 여부 / 예상 소득 전망 / 추천 대출 유형"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — "ICL은 안 갚아도 되는 대출"이라는 오해가 많습니다. 소득이 상환기준소득을 넘는 순간부터는 반드시 의무상환이 시작되는 대출이라는 점을 리포트에 명확히 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">05</span>ICL 의무상환액 계산하기(기준소득 초과분×상환율)</h2>
+    <p>취업후상환학자금대출(ICL)을 선택했다면, 취업 후 실제로 얼마를 상환하게 되는지 계산합니다. 소득 전체가 아니라 상환기준소득을 초과한 부분에만 상환율을 곱한다는 점이 세 번째 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>기준값(2026년)</th></tr>
+        <tr><td>상환기준소득</td><td>연 3,037만 원(전년도 2,851만 원에서 상향)</td></tr>
+        <tr><td>의무상환율</td><td>학부 20%, 대학원 25% (기준소득 초과분에만 적용)</td></tr>
+        <tr><td>차감 반영</td><td>전년도에 자발적으로 미리 상환한 금액은 당해 의무상환액에서 차감 가능</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 기준값을 전제로, [연간 소득(근로·사업소득 등)]에서 상환기준소득 3,037만 원을 초과하는 금액을 계산해달라고 요청한다</li>
+      <li>"학부 졸업자는 20%, 대학원 졸업자는 25%의 상환율이 적용된다"는 점을 전제로 [초과분]에 해당 상환율을 곱해 연간 의무상환액을 계산해달라고 요청한다</li>
+      <li>"전년도에 자발적으로 미리 상환한 금액이 있다면 당해 의무상환액에서 차감할 수 있다"는 점을 반영해 [전년도 자발적 상환액]을 기준으로 실제 상환액을 다시 계산해달라고 요청한다</li>
+      <li>완성된 결과를 "연간 소득 / 상환기준소득 / 초과분 / 상환율 / 연간 의무상환액 / 자발적 상환 차감 후 실제 상환액"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 상환기준소득은 매년 발표되는 값이라 이 책의 3,037만 원은 2026년 기준일 뿐입니다. 적용 연도가 다르면 한국장학재단 공지로 그 해의 상환기준소득을 반드시 다시 확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">06</span>일반상환 대출 월 상환액 계산하기</h2>
+    <p>일반상환학자금대출을 선택했다면, 졸업 후 매달 얼마씩 갚게 되는지 계산합니다. 소득과 무관하게 대출총액·금리·상환기간으로 정해지는 고정 상환 구조라는 점이 네 번째 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>기준값(2026년)</th></tr>
+        <tr><td>대출금리</td><td>약 1.7% 수준(시중 금리보다 낮게 유지, 학기별 고시)</td></tr>
+        <tr><td>상환방식</td><td>원리금균등분할상환이 일반적(원금균등 등 다른 방식도 선택 가능한 경우 있음)</td></tr>
+        <tr><td>상환기간</td><td>졸업 후 일정 유예기간 후 수년에 걸쳐 분할(학교·대출 조건별로 다름)</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 기준값을 전제로, [대출 총액, 적용 금리, 상환기간(년)]을 보여줄 테니 원리금균등분할상환 공식으로 월 상환액을 계산해달라고 요청한다</li>
+      <li>"상환기간을 늘리면 월 상환액은 줄지만 총 이자는 늘어난다"는 원리를 전제로 [상환기간을 2~3가지로 바꾼 시나리오]를 비교해달라고 요청한다</li>
+      <li>산출된 [월 상환액]을 기준으로 상환기간 전체의 총 납부액과 총 이자를 계산해달라고 요청한다</li>
+      <li>완성된 결과를 "대출총액 / 금리 / 상환기간 / 월 상환액 / 총 납부액 / 총 이자"로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 일반상환 대출은 재학 중에는 이자만 내고 졸업 후부터 원리금을 상환하는 구조인 경우가 많습니다. 재학 중 이자 상환분과 졸업 후 원리금 상환분을 구분해서 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">07</span>등록금 반환액 계산하기(휴학·자퇴 시점별)</h2>
+    <p>이미 등록금을 낸 뒤 휴학이나 자퇴를 하게 됐다면, 얼마를 돌려받을 수 있는지가 다음 질문입니다. 반환 비율이 학기 개시일 기준 경과일수에 따라 정해진다는 점이 다섯 번째 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>반환사유 발생 시점(학기 개시일 기준)</th><th>반환 비율(예시)</th></tr>
+        <tr><td>개시일 전</td><td>수업료·입학금 전액</td></tr>
+        <tr><td>개시일부터 30일 이내</td><td>수업료의 5/6</td></tr>
+        <tr><td>30일 경과 후 60일 이내</td><td>수업료의 2/3</td></tr>
+        <tr><td>60일 경과 후 90일 이내</td><td>수업료의 1/2</td></tr>
+        <tr><td>90일 경과 후</td><td>반환하지 않음</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 표를 전제로, [학기 개시일]과 [반환사유(자퇴·미등록 등) 발생일]을 보여줄 테니 경과일수를 계산해달라고 요청한다</li>
+      <li>산출된 [경과일수]를 반환비율표에 대입해 해당하는 반환 비율을 판정해달라고 요청한다</li>
+      <li>[기납부 등록금]과 판정된 [반환 비율]을 기준으로 예상 반환액을 계산해달라고 요청한다</li>
+      <li>완성된 결과를 "학기 개시일 / 사유 발생일 / 경과일수 / 적용 반환비율 / 기납부 등록금 / 예상 반환액"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 반환 비율표의 근거는 대학 등록금에 관한 규칙이지만, 실제 구간·일수 기준은 학교 학칙마다 세부적으로 다르게 운영될 수 있습니다. 이 책의 표는 계산 구조를 보여주는 예시이며, 정확한 수치는 재학 중인 학교의 학칙·학사운영규정으로 반드시 재확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">08</span>휴학 복학 시 추가 납부액 계산하기</h2>
+    <p>이번 학기 등록금을 이미 낸 상태에서 휴학한다면, 반환이 아니라 "다음 학기에 복학할 때 얼마를 더 내야 하는가"가 쟁점이 됩니다. 휴학 시점이 수업일수의 몇 분의 몇 지점이었는지에 따라 복학 시 추가 납부액이 달라진다는 점이 여섯 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "학기 수업일수의 1/2 이전에 휴학하면 복학 시 등록금을 추가로 납부하지 않고, 1/2을 넘기면 등록금의 1/2을, 3/4를 넘기면 전액을 복학 시 납부해야 하는 구조(학교별로 구체적 비율은 다를 수 있음)"라는 원칙을 전제로, [휴학 신청 시점의 수업일수 경과 비율]을 보여줄 테니 해당 구간을 판정해달라고 요청한다</li>
+      <li>판정된 구간을 기준으로 [해당 학기 등록금]에 적용될 복학 시 추가 납부 비율을 계산해달라고 요청한다</li>
+      <li>"휴학자의 등록금은 반환되지 않고 복학 학기로 이월되는 경우가 많다"는 점을 함께 리포트에 명시해달라고 요청한다</li>
+      <li>완성된 결과를 "휴학 시점(수업일수 경과 비율) / 판정 구간 / 해당 학기 등록금 / 복학 시 추가 납부 비율 / 복학 시 추가 납부액"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 이 구간 기준은 학교마다 다르게 운영되는 대표적인 영역입니다. 가상 사례로 연습할 때도 "이 학교는 다를 수 있다"는 점을 반드시 함께 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">09</span>상환 유예·연체정보 등록 유예 점검하기</h2>
+    <p>ICL 대출을 받은 뒤 취업 전후 상황에서 "지금 상환해야 하나, 유예되나"를 점검하는 것도 중요한 계산입니다. 소득 수준과 졸업 후 경과 시점에 따라 적용되는 유예 구조가 다르다는 점이 일곱 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "소득이 상환기준소득에 못 미치면 의무상환이 자동으로 유예되고, 기준소득을 넘겼더라도 일시적으로 어려운 경우에는 별도로 상환유예를 신청할 수 있는 구조(취업 후 학자금 상환 누리집에서 신청)"라는 원칙을 전제로, [현재 소득 수준과 상환 여력]을 보여줄 테니 자동유예·신청유예 대상 여부를 판정해달라고 요청한다</li>
+      <li>"정부 학자금대출이 일정 기간(통상 6개월) 이상 연체되면 신용정보원에 연체정보가 등록되지만, 졸업 후 최대 3년까지는 등록이 유예되는 구조(최근 2년에서 3년으로 확대)"라는 원칙으로 [졸업일로부터 경과 개월 수]를 기준으로 연체정보 등록까지 남은 기간을 계산해달라고 요청한다</li>
+      <li>"실직·폐업 등으로 어려운 채무자는 체납과 연체금 부과를 막는 별도 유예 제도가 있다"는 점도 함께 안내해달라고 요청한다</li>
+      <li>완성된 결과를 "현재 소득 / 자동유예 대상 여부 / 신청유예 필요 여부 / 졸업 후 경과 개월 / 연체정보 등록까지 남은 기간"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — "ICL은 연체돼도 신용에 전혀 영향 없다"고 안내하면 안 됩니다. 유예 기간이 끝난 뒤에도 계속 연체되면 결국 연체정보가 등록되는 구조라는 점을 함께 설명하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">10</span>졸업 시점 총 학자금 부채 시뮬레이션하기</h2>
+    <p>한 학기씩 계산했다면, 이제 이를 모두 더해 졸업 시점에 쌓일 총 학자금 부채를 시뮬레이션합니다. 등록금 대출과 생활비 대출을 학기마다 누적하면 생각보다 큰 금액이 될 수 있다는 점이 여덟 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 방법 1~2에서 계산한 [학기별 실부담 등록금]과 대출 예정 여부를 보여줄 테니, 남은 학기 수를 곱해 등록금 대출 예상 총액을 계산해달라고 요청한다</li>
+      <li>생활비대출을 받을 계획이 있다면 [학기별 생활비 대출 예정액]을 더해 전체 대출 예상 총액을 계산해달라고 요청한다</li>
+      <li>산출된 [총 대출 예상액]을 방법 3(ICL) 또는 방법 4(일반상환)의 계산 방식에 대입해, 졸업 후 총 상환기간과 총 이자를 각각 추정해달라고 요청한다</li>
+      <li>완성된 결과를 "남은 학기 수 / 등록금 대출 누적 예상액 / 생활비 대출 누적 예상액 / 총 대출 예상액 / 상환 방식별 총 상환기간·총 이자"로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 이 시뮬레이션의 목적은 "지금 대출을 더 받을지, 생활비를 줄여볼지"를 미리 고민하게 만드는 것입니다. 숫자를 보여주는 것만으로도 충분한 가치가 있습니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">11</span>절감 전략 점검하기</h2>
+    <p>대출을 받은 뒤에도 부담을 줄일 수 있는 합법적인 방법이 있는지 점검하는 것도 중요합니다. 장학금 중복 신청과 자발적 상환 활용이 핵심 포인트라는 점이 아홉 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 방법 1에서 계산한 [국가장학금 지원 현황]을 보여줄 테니, 교내 성적장학금·근로장학금 등 국가장학금과 중복 신청 가능한 장학금이 있는지 일반적인 원리를 설명해달라고 요청한다</li>
+      <li>방법 3에서 계산한 [ICL 의무상환 구조]를 보여줄 테니, 여유가 있을 때 자발적으로 미리 상환하면 다음 해 의무상환액에서 차감된다는 점을 활용한 절감 방향을 설명해달라고 요청한다</li>
+      <li>"구체적인 소득 설계나 세무상 영향은 한국장학재단 상담센터나 재무 전문가 상담이 필요한 영역"이라는 점을 명시해달라고 요청한다</li>
+      <li>완성된 결과를 "현재 구조 / 검토 가능한 조정 방향(일반 원리 수준) / 전문가·재단 상담이 필요한 부분"으로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 이 단계는 "이렇게 하면 무조건 줄어든다"는 구체적 설계가 아니라 "이런 방향이 있다"는 일반 원리 안내까지만 다룹니다. 실제 신청·설계는 한국장학재단과 소속 학교를 통해 진행해야 함을 반드시 명시하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">12</span>계산 대행 부업으로 수익화</h2>
+    <p>여기까지 만든 계산 로직은 매 학기 등록을 앞둔 거의 모든 대학생·학부모에게 필요합니다. "저 학자금대출 받으면 얼마씩 갚아요?"라는 질문은 입학부터 졸업까지 반복됩니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>서비스 범위를 명확히 정한다 — "소득분위 기반 등록금 실부담액 추정, 대출 종류 비교, ICL·일반상환 상환액 계산, 반환·휴학 규정 점검, 총 부채 시뮬레이션 리포트 제공"까지만 하고, "실제 대출 심사, 신용유의자 등록, 반환금 지급 처리"는 한국장학재단·학교의 고유 업무라는 점을 안내문에 명시한다</li>
+      <li>가격을 "학자금 추정 리포트 1건", "대출 종류 비교 추가", "졸업까지 총 부채 시뮬레이션 추가"로 나눠 설계한다 — 1건 5,000~15,000원으로 시작해, 학기 수가 많거나 시나리오가 많을수록 추가 요금을 받는 구조를 권장한다</li>
+      <li>방법 1~9에서 만든 계산 로직을 조건 입력만 받으면 채워지는 표준 템플릿으로 정리해, 의뢰가 오면 가구 소득·재산, 등록금 총액, 학년·학기, 휴학 계획만 받아 빠르게 리포트를 완성하는 구조로 만든다</li>
+      <li>처음에는 등록을 앞둔 후배·지인·동료 자녀 대상으로 무료 또는 저가로 시작해, 실제 등록 결과나 만족도와 대조한 후기를 쌓는다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 이 부업은 대출 심사나 실제 반환금 처리가 아니라 추정 계산입니다. 상담 시작 전에 "제시 금액은 공개된 한국장학재단·교육부 고시 기준과 조건을 조합한 참고용 추정치이며, 실제 지원 금액과 상환액은 재단 확인이 필요하다"는 점을 명확히 안내해 오해를 예방하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">13</span>흔한 실수</h2>
+    <div class="table-wrap">
+      <table>
+        <tr><th>실수</th><th>왜 위험한가</th><th>개선법</th></tr>
+        <tr><td>국가장학금 구간을 재산 없이 소득(연봉)만으로 판단</td><td>소득분위는 재산의 소득환산액까지 포함한 종합 지표라 실제보다 낮게(유리하게) 추정됨</td><td>방법 1에서 가구원 소득·재산을 모두 반영해 추정</td></tr>
+        <tr><td>ICL을 "안 갚아도 되는 대출"로 안내</td><td>소득이 기준을 넘으면 반드시 의무상환이 시작되는 대출임을 빠뜨림</td><td>방법 3에서 의무상환 구조를 먼저 설명</td></tr>
+        <tr><td>일반상환과 ICL의 금리 적용 방식을 혼동</td><td>유형별로 상환 시작 시점과 금액 산정 방식이 다름</td><td>방법 2 비교표로 유형별 구조 재확인</td></tr>
+        <tr><td>모든 학교에 동일한 등록금 반환비율표를 적용</td><td>반환 비율의 세부 구간은 학교 학칙마다 다르게 운영될 수 있음</td><td>방법 5에서 해당 학교 학칙 재확인 안내 포함</td></tr>
+        <tr><td>연체정보 등록 유예기간을 예전 기준(2년)으로 계산</td><td>졸업 후 유예기간이 3년으로 확대된 것을 반영하지 못함</td><td>방법 7에서 최신 유예기간 기준 재확인</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>지금 계산 중인(또는 가상의) 학자금 조건을 위 표와 하나씩 대조한다</li>
+      <li>해당하는 실수가 있으면, 관련 방법 장으로 돌아가 즉시 보완한다</li>
+      <li>이 표를 그대로 체크리스트로 저장해, 새로운 의뢰가 들어올 때마다 확인한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">14</span>나만의 대행 시스템 구축</h2>
+    <p>매번 새로 계산하지 않도록, 지금까지 만든 것을 하나의 재사용 가능한 시스템으로 묶습니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>방법 1(국가장학금 실부담액 추정)과 방법 2~8(대출 종류 비교부터 상환액 계산, 반환·휴학 점검, 총 부채 시뮬레이션까지)을 하나의 문서 템플릿에 장학금판정/대출비교/상환계산/반환점검 섹션으로 나눠 통합한다</li>
+      <li>방법 10의 의뢰 접수 질문지(가구 소득·재산, 등록금 총액, 학년·학기, 대출 예정 여부, 휴학 계획)를 저장해두고, 새 의뢰가 올 때마다 그대로 사용한다</li>
+      <li>상환기준소득·대출금리·반환비율표처럼 자주 개편되는 값은 의뢰가 들어올 때마다 AI에게 최신 한국장학재단 고시 기준을 재확인시켜, 템플릿 상단의 "기준값" 섹션만 갱신하는 구조로 설계한다</li>
+      <li>시스템이 안정되면 이 전체를 "학자금대출·등록금 추정 계산 대행 패키지"로 정식 서비스화한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">15</span>바로 쓰는 프롬프트 15선</h2>
+    <p class="lede">대괄호 부분만 바꿔서 그대로 붙여넣으세요. 카테고리별로 정리했습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 기준값·장학금 확인</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">A1 소득분위 추정</div><div class="prompt">너는 학자금 계산 전문가야. 가구원 소득·재산 정보를 보여줄 테니: [가구원 소득·재산], 국가장학금 소득분위(1~9구간)를 추정해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A2 등록금 실부담액</div><div class="prompt">등록금 총액 [금액]과 국가장학금 추정 지원액 [금액]을 기준으로 실부담 등록금을 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A3 대출종류 비교</div><div class="prompt">소득구간 [구간]과 학년 [학년]을 보여줄 테니 일반상환학자금대출과 취업후상환학자금대출(ICL) 중 어떤 게 유리한지 비교해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A4 숨은 항목 찾기</div><div class="prompt">다음 조건을 보여줄 테니: [조건], 학자금대출·등록금 계산에서 빠뜨리기 쉬운 항목을 찾아줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 상환액 계산</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">B1 ICL 의무상환액</div><div class="prompt">연소득 [금액]을 기준으로 2026년 상환기준소득 3,037만 원 초과분에 상환율 [20%/25%]를 적용한 연간 의무상환액을 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B2 일반상환 월 상환액</div><div class="prompt">대출총액 [금액], 금리 1.7%, 상환기간 [년]을 기준으로 원리금균등 월 상환액을 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B3 총이자 비교</div><div class="prompt">동일 대출총액 [금액]에 대해 일반상환과 ICL 각각의 예상 총 이자를 비교해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B4 총부채 시뮬레이션</div><div class="prompt">학기별 대출예정액 [내역]을 합산해서 졸업 시점 총 학자금 부채를 계산해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 반환·휴학·유예 점검</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">C1 등록금 반환액</div><div class="prompt">학기 개시일 [날짜]과 반환사유 발생일 [날짜]을 기준으로 경과일수를 계산하고, 대학 등록금에 관한 규칙 반환비율표에 대입해 반환액을 추정해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C2 휴학 복학 납부액</div><div class="prompt">휴학 시점이 수업일수의 [비율]에 해당할 때, 복학 시 추가로 납부해야 할 등록금 비율을 추정해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C3 상환 유예 판정</div><div class="prompt">현재 연소득 [금액]과 졸업 후 경과월 [개월]을 기준으로 자동유예·신청유예 대상 여부와 연체정보 등록까지 남은 기간을 판정해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C4 절감 전략</div><div class="prompt">다음 장학금·대출 조건 [조건]을 보여줄 테니 중복 신청 가능한 장학금과 절감 가능한 방향을 안내해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 대행 서비스화</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">D1 접수 질문지</div><div class="prompt">학자금대출·등록금 계산 대행 서비스를 시작하려고 해. 의뢰인에게 받아야 할 정보(가구 소득·재산, 학년·학기, 등록금 총액, 대출 예정 여부, 휴학 계획)를 빠짐없이 받을 수 있는 접수 질문지를 만들어줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D2 고객용 리포트</div><div class="prompt">다음 계산 결과를 의뢰인에게 보여줄 리포트로 정리해줘: [계산 결과 데이터]. 마지막에 '이 결과는 공개된 한국장학재단·교육부 고시 기준과 조건을 조합한 참고용 추정치이며, 실제 지원 금액과 상환액은 재단 확인이 필요하다'는 안내 문구를 포함해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D3 소개 문구</div><div class="prompt">학자금대출·등록금 계산 대행 서비스를 한 문단으로 소개하는 홍보 문구를 써줘. 등록 전에 미리 얼마나 부담이 될지 계산해볼 수 있다는 점을 강조해줘.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">16</span>실전 체크리스트</h2>
+
+    <div class="checklist-group">
+      <h4><span class="wk">오늘</span>30분</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 A1~A2로 내(또는 가상의) 국가장학금 소득분위와 등록금 실부담액부터 확인해보기</li>
+        <li><input type="checkbox" disabled>프롬프트 A3으로 대출 종류(일반상환 vs ICL) 비교 받아보기</li>
+        <li><input type="checkbox" disabled>프롬프트 B1로 ICL 의무상환액부터 계산해보기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 주</span>1차 완성</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 B2~B4로 일반상환 월 상환액, 총이자 비교, 졸업 후 총부채 시뮬레이션까지 계산하기</li>
+        <li><input type="checkbox" disabled>프롬프트 C1~C2로 등록금 반환액과 휴학 복학 납부액까지 점검하기</li>
+        <li><input type="checkbox" disabled>프롬프트 C3~C4로 상환 유예 판정과 절감 전략까지 안내 문구 만들어보기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 달</span>확장</h4>
+      <ul>
+        <li><input type="checkbox" disabled>방법 14대로 계산 프로세스를 하나의 문서 템플릿 시스템으로 통합하기</li>
+        <li><input type="checkbox" disabled>프롬프트 D1~D3으로 접수 질문지·고객용 리포트·소개 문구 준비해서 등록 앞둔 후배·지인 대상 첫 의뢰 진행하기</li>
+        <li><input type="checkbox" disabled>첫 의뢰 후 실제 등록 결과나 만족도와 대조한 후기를 바탕으로 서비스 범위·안내 문구를 다듬어 정식 서비스로 확장하기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>등록금 고지서를 받고 나서야 "대출을 어떻게 갚아야 하지"라고 당황하지 마세요. AI와 함께라면 오늘 안에 숫자로 미리 확인할 수 있습니다.</p>
+    <div class="close">
+      <p>오늘, 프롬프트 A1로 소득분위부터 확인해보세요.</p>
+      <div class="sign">— 끝 —</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
