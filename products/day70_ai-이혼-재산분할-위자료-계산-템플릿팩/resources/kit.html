@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이혼 재산분할·위자료 계산 대행 — 계산기 + 서류 체크리스트 템플릿팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 재산분할 순재산·분할액 계산기 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 퇴직금·연금 분할 계산기 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 위자료 예상범위 추정 계산기 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 청구기한 D-day + 서류 준비 체크리스트 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #8B5A83;   /* plum — 의뢰접수·고객리포트 템플릿 */
+    --cat-e-tint: #E7DAE5;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C994C0; --cat-e-tint: #332030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C994C0; --cat-e-tint: #332030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.02rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.62rem; font-weight:700; margin:0 0 10px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:12px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.06rem; margin:20px 0 9px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:11px 0 13px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 10px; max-width:68ch; }
+  .lede{ font-size:0.98rem; color:var(--ink-soft); max-width:62ch; margin-bottom:10px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:7px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:8px 12px 7px; margin:0 0 7px; break-inside:avoid; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:2px 0 6px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.85rem; background:var(--paper); }
+  th,td{ text-align:left; padding:5px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:6px 10px; margin-top:3px; }
+
+  /* ---------- Domain blocks (category-colored, 계산기·체크리스트·템플릿 5종) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:12px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:6px 9px 4px; margin:0 0 5px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Task grid (상담 진행 체크리스트, category-colored 2단 배치) ---------- */
+  .task-grid{ display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:7px; }
+  .task-card{ background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:10px; padding:6px 9px 7px; break-inside:avoid; }
+  .task-card .tn{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:999px; background:var(--accent); color:#fff; font-family:var(--font-mono); font-size:0.7rem; font-weight:700; margin-right:7px; flex-shrink:0; }
+  .task-card h5{ display:inline; font-size:0.89rem; font-weight:700; margin:0; color:var(--ink); }
+  .task-card p{ margin:5px 0 0; font-size:0.79rem; color:var(--ink-soft); line-height:1.5; }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin-bottom:5px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 10px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.9rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:30px 20px 18px; break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:14px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 70 · 실행 키트</span>
+    <span class="badge">『이혼 서류에 도장 찍기 전에, AI한테 먼저 물어보세요』 실전 부록</span>
+    <h1><span class="nowrap">이혼 재산분할·위자료,</span><br>계산기로 먼저 <span class="nowrap">확인받으세요</span></h1>
+    <p class="subtitle"><span class="nowrap">재산분할</span> <span class="nowrap">순재산·분할액</span> <span class="nowrap">계산기</span> + <span class="nowrap">퇴직금·연금</span> <span class="nowrap">분할 계산기</span> + <span class="nowrap">위자료 예상범위</span> <span class="nowrap">추정 계산기</span> + <span class="nowrap">청구기한 D-day</span> <span class="nowrap">서류 체크리스트</span> + <span class="nowrap">의뢰접수 템플릿</span> — <span class="nowrap">재산·혼인</span> <span class="nowrap">조건만</span> <span class="nowrap">넣으면</span> <span class="nowrap">예상 정산액이</span> <span class="nowrap">바로 나옵니다</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>계산기·체크리스트·템플릿</div>
+      <div class="nowrap"><strong>20</strong>종 준비서류 체크포인트</div>
+      <div class="nowrap"><strong>4</strong>단계 판매 체크리스트</div>
+    </div>
+    <div class="byline">『이혼 서류에 도장 찍기 전에, AI한테 먼저 물어보세요』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">계산은 이미 다 만들어져 있습니다. 재산·혼인 조건만 넣으면 됩니다.</em> 이 키트는 전자책 방법 1~11(재산 목록화, 기여도 추정, 순재산·분할액 계산, 퇴직금·연금 분할, 위자료 산정요소·예상범위, 양육비 구분, 청구기한 점검)을 이미 끝내둔 완성본입니다.</p>
+    <p>엑셀 계산기 3종·엑셀 D-day계산기+서류체크리스트 1종·워드 템플릿 1종을 같은 톤으로 만들었습니다.</p>
+    <ol class="steps">
+      <li><strong>안내 시트</strong> — "확정 재산분할액·위자료가 아니라 참고용 추정 계산 도구"라는 경계를 첫 화면에 명시합니다.</li>
+      <li><strong>계산기 시트</strong> — 노란색 칸에 값을 입력하면 올리브색 칸에 결과가 바로 뜹니다.</li>
+      <li><strong>드롭다운 선택지(해당 파일만)</strong> — 공동재산/특유재산 분류, 공동채무/개인채무 구분, 유책사유 Y/N, 서류 준비상태처럼 반복해서 쓰는 선택지는 드롭다운으로 바로 고르게 만들어뒀습니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 계산기·체크리스트별 빠른 참고표에서 원하는 것부터 확인하고, 실제 파일을 열어 본인(또는 의뢰인) 조건으로 한 번 테스트해본 뒤 의뢰 접수·고객 리포트 템플릿까지 이어서 진행하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>계산기·체크리스트·템플릿 5종 빠른 참고표</h2>
+    <p class="lede">각 파일의 입력값 예시, 결과값, 그리고 어떤 순서로 이어 쓰는지를 정리했습니다. 실제 파일에 그대로 입력해 결과를 재현할 수 있습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 재산분할 순재산·분할액 계산기</div>
+      <div class="cat-flow">파일 — 이혼재산분할_순재산분할액_계산기.xlsx · 재산목록(공동재산/특유재산-포함/특유재산-제외)과 채무목록(공동채무/개인채무)을 입력하면 분할대상 총재산·순재산을 자동 계산하고, 추정 기여도 비율(최소~최대%)을 입력하면 재산분할 예상액 범위까지 자동 계산</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>분할대상 총재산(채무 반영 전)</td><td>560,000,000원</td><td>공동채무(개인채무 제외)</td><td>128,000,000원</td></tr>
+            <tr><td>순재산</td><td>432,000,000원</td><td>기여도 40~50% 적용</td><td>172,800,000~216,000,000원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "이 집 팔면 저는 얼마 가져가는 거예요?"라는 가장 먼저 나오는 질문. 재산·채무 목록과 기여도 범위만 넣으면 순재산과 분할 예상액을 바로 보여줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 퇴직금·연금 분할 계산기</div>
+      <div class="cat-flow">파일 — 퇴직금연금분할_계산기.xlsx · 전체 재직기간·혼인기간·퇴직금(연금) 추정가액을 입력하면 혼인기간 비율과 분할대상 가액을 자동 계산하고, 기여도 비율을 입력하면 실제 분할예상액까지 계산. 공무원·사학·군인연금의 분할연금 청구기한(수급권 발생일+5년) D-day도 함께 계산</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>전체 재직 22년 중 혼인 14년</td><td>혼인기간 비율 63.6%</td><td>추정가액 1.8억 원</td><td>분할대상 가액 114,545,455원</td></tr>
+            <tr><td>기여도 50% 적용</td><td>실제 분할예상액 57,272,727원</td><td>분할연금 청구 마감일</td><td>수급권 발생일+5년</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "퇴직금은 아직 안 받았는데 분할 대상인가요?"라는 질문. 재직기간과 혼인기간만 넣으면 장래 퇴직급여도 분할 대상 가액으로 바로 계산해줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 위자료 예상범위 추정 계산기</div>
+      <div class="cat-flow">파일 — 위자료_예상범위_추정_계산기.xlsx · 유책사유 6개 항목(외도·폭력·유기·부당대우·채무도박·기타)에 해당여부를 체크하면 총점을 자동 계산하고, 혼인기간·쌍방과실 여부에 따른 조정계수를 반영해 참고용 위자료 예상범위를 자동 계산</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>외도만 해당(총점 20점)</td><td>혼인기간 12년(조정계수 1.2)</td><td>쌍방과실 없음(조정계수 1.0)</td><td>기본범위 2천~5천만 원</td></tr>
+            <tr><td>조정 적용 후</td><td>위자료 예상범위</td><td></td><td>4,800,000~12,000,000원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "바람피우면 위자료 얼마나 받아요?"라는 질문. 유책사유 체크와 혼인기간만 넣으면 법정 산정표가 없는 영역을 참고용 범위로 바로 보여줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 청구기한 D-day 계산기 + 이혼서류 준비 체크리스트</div>
+      <div class="cat-flow">파일 — 청구기한Dday_이혼서류준비_체크리스트.xlsx · 이혼 성립(예정)일·연금 수급권 발생(예정)일·불법행위를 안 날을 입력하면 재산분할 제척기간(2년)·분할연금 청구기한(5년)·위자료 참고 소멸시효(3년) 마감일과 남은 일수를 자동 계산하는 'D-day계산기' 시트 + 기본·재산분할·위자료증거·자녀관련 서류 20종을 준비상태 드롭다운으로 정리한 '체크리스트' 시트</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>이혼 성립(예정)일 2026-11-20</td><td>재산분할 청구 마감일 2028-11-20</td><td>남은 일수</td><td>약 755일</td></tr>
+            <tr><td>연금 수급권 발생일 2027-03-01</td><td>분할연금 청구 마감일 2032-03-01</td><td>남은 일수</td><td>약 1,952일</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "계산은 다 했는데 서류는 뭐부터 준비해요?"라는 사람. 날짜 세 개만 넣으면 모든 청구기한을, 체크리스트 한 장으로 20종 서류 준비 상태까지 관리할 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 의뢰접수·고객리포트 템플릿</div>
+      <div class="cat-flow">파일 — 의뢰접수_고객리포트_템플릿.docx · 의뢰 접수 질문지(14문항) + 기준값·한도 체크(5개) + 고객용 예상 이혼정산 리포트 템플릿(9단계) + 서비스 안내·가격 템플릿까지 대괄호만 바꿔서 바로 쓰는 문서</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구성</th><th>내용</th><th>구성</th><th>내용</th></tr>
+            <tr><td>의뢰 접수 질문지</td><td>14개 문항</td><td>고객용 리포트</td><td>9단계 요약 양식</td></tr>
+            <tr><td>기준값·한도 체크</td><td>5개 확인 항목</td><td>서비스 안내·가격표</td><td>5단계 패키지</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 의뢰가 들어오면 바로 접수할 수 있는 양식이 없어 매번 새로 질문을 만들던 상황. 질문지 한 장으로 빠짐없이 받고, 리포트 양식 그대로 전달하면 됩니다.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>패키지 구성 &amp; 검증 워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>패키지·가격 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지 유형</th><th>가격대</th><th>내 판매가</th></tr>
+          <tr><td>이혼 정산 추정 리포트 1건(직접 진행)</td><td>10,000~30,000원</td><td class="fill"></td></tr>
+          <tr><td>계산기 3종+D-day체크리스트+템플릿 5종 세트</td><td>20,000~30,000원</td><td class="fill"></td></tr>
+          <tr><td>전자책+계산기·체크리스트·템플릿 5종 묶음</td><td>24,900~34,900원</td><td class="fill"></td></tr>
+          <tr><td>위자료 산정요소 상세 분석 추가(직접 진행)</td><td>5,000~10,000원</td><td class="fill"></td></tr>
+          <tr><td>청구기한 점검·서류 체크리스트 추가(직접 진행)</td><td>3,000~5,000원</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">추천 — 처음엔 A(재산분할 순재산·분할액) 또는 C(위자료 예상범위) 단품으로 판매 기록부터 쌓고, 반응이 오면 5종 세트+전자책 묶음으로 객단가를 높이세요.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 판매 전 필수</h4></div>
+      <h3>내 조건으로 교차검증하기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>계산기</th><th>내 실제(또는 가상) 값 입력</th><th>판례 경향·공식자료와 비교</th></tr>
+          <tr><td>A. 재산분할 순재산·분할액 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>B. 퇴직금·연금 분할 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>C. 위자료 예상범위 추정 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">비교 대상 — 대한법률구조공단(klac.or.kr) 법률상담·대법원 종합법률정보(glaw.scourt.go.kr) 판례 검색으로 유사 사건의 판례 경향을 직접 확인. 오차가 크면 상담 전 기여도 비율·위자료 조정계수를 반드시 다시 점검하세요.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>상담 진행 체크리스트</h2>
+    <p class="lede">접수부터 사후관리까지 단계별로 정리했습니다. '의뢰접수_고객리포트_템플릿.docx'의 의뢰 접수 질문지에 완료 여부를 기록하면서 그대로 진행 관리표로 사용할 수 있습니다.</p>
+
+    <div class="cat-label" style="--accent:var(--cat-a);--accent-tint:var(--cat-a-tint)">접수·리서치 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">1</span><h5>접수 질문지 발송·회수</h5><p>혼인기간, 재산·채무 목록, 소득·가사기여 내역, 유책사유 유무까지 빠짐없이 받기</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">2</span><h5>청구기한 D-day 먼저 확인</h5><p>D. D-day계산기로 이혼 성립(예정)일 기준 재산분할 제척기간부터 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">3</span><h5>판례 경향 재확인</h5><p>klac.or.kr 법률상담·glaw.scourt.go.kr 판례 검색 결과를 받아 기준값으로 사용</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">4</span><h5>희망 결과물 확인</h5><p>재산분할만/위자료만/전체 리포트까지 범위 확정</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-e);--accent-tint:var(--cat-e-tint)">계산·검증 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">1</span><h5>재산 목록화·순재산 1차 계산</h5><p>계산기 A로 공동재산/특유재산 분류, 채무 반영한 순재산부터 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">2</span><h5>재산분할 예상액 범위 산출</h5><p>계산기 A로 기여도 비율 적용한 재산분할 예상액 계산</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">3</span><h5>퇴직금·연금 분할 가액 계산</h5><p>계산기 B로 혼인기간 비율 적용한 분할대상 가액 산출</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">4</span><h5>위자료 산정요소·예상범위 추정</h5><p>계산기 C로 유책사유 점검, 참고용 예상범위 산출</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">5</span><h5>양육비 별도 항목 구분</h5><p>재산분할·위자료와 합산하지 않고 별개 항목으로 안내 문구 정리</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">6</span><h5>판례 경향 자료 대조</h5><p>법률구조공단·종합법률정보 검색 결과와 교차검증</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-c);--accent-tint:var(--cat-c-tint)">납품·사후관리 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">1</span><h5>리포트 정리</h5><p>계산 근거(순재산·기여도 비율·위자료 조정계수·청구기한)를 표로 정리</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">2</span><h5>면책 문구 최종 확인</h5><p>"참고용 추정치이며 실제 금액은 변호사 상담·법원 판단이 필요하다" 문구 포함 여부 점검</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">3</span><h5>고객용 리포트 전달</h5><p>템플릿 E의 리포트 양식으로 함께 전달</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">4</span><h5>결과 피드백 수렴</h5><p>실제 조정·소송 결과나 만족도와 대조한 후기·결과 요청</p></div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>판매 준비 체크리스트</h2>
+    <p class="lede">브리프부터 등록까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>검증</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 2로 계산기 A·B·C 모두 내(또는 가상의) 조건으로 테스트하기</li>
+        <li><input type="checkbox" disabled>법률구조공단 법률상담·종합법률정보 판례 검색 결과와 대조해 기여도·조정계수 범위 확인하기</li>
+        <li><input type="checkbox" disabled>계산기 시트에 확인한 참고 기준과 확인 날짜 메모 남기기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>다듬기</h4>
+      <ul>
+        <li><input type="checkbox" disabled>입력 셀(노란색) 옆에 "여기에 값을 입력하세요" 안내 문구 확인하기</li>
+        <li><input type="checkbox" disabled>"참고용 추정치이며 실제 재산분할액·위자료는 변호사 상담과 법원의 판단이 필요하다"는 경계 문구가 각 파일에 붙어있는지 확인하기</li>
+        <li><input type="checkbox" disabled>파일명·시트명에 오탈자 없는지 최종 점검하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>등록</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 1로 패키지·가격 확정하기</li>
+        <li><input type="checkbox" disabled>래피드에 상품명 "계산기", "이혼", "재산분할", "위자료" 단어 포함해 등록하기</li>
+        <li><input type="checkbox" disabled>Day69 전자책과 세트 상품(업셀) 옵션도 함께 등록하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>갱신 관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>재산분할 기여도 경향, 위자료 산정 경향, 제척기간·소멸시효 관련 법령은 판례·법 개정으로 바뀔 수 있으므로, 신규 의뢰가 올 때마다 최신 판례 경향으로 재확인해 계산기에 반영하기</li>
+        <li><input type="checkbox" disabled>기존 상담 고객 연락처/알림 목록 만들어두기(법 개정·후속 문의 시 재안내용)</li>
+        <li><input type="checkbox" disabled>기준값 변경 시 참고표만 교체 후 Worksheet 2 검증 다시 거치기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>재산·혼인 조건을 넣고, 기준을 적용하고, 숫자와 근거로 답하세요.</p>
+    <p><strong>도장 찍고 나서 후회하는 것보다, 오늘 미리 확인하는 숫자 하나가 더 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
+</body>
+</html>
