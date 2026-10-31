@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>연말정산 환급액 계산 대행 — 계산기 + 공제서류 체크리스트 템플릿팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 소득공제·과세표준 계산기 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 산출세액·세액공제 계산기 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 결정세액·환급액 계산기 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 공제서류체크리스트+경정청구D-day */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #8B5A83;   /* plum — 의뢰접수·고객리포트 템플릿 */
+    --cat-e-tint: #E7DAE5;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C994C0; --cat-e-tint: #332030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C994C0; --cat-e-tint: #332030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.02rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.62rem; font-weight:700; margin:0 0 10px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:12px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.06rem; margin:20px 0 9px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:11px 0 13px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 10px; max-width:68ch; }
+  .lede{ font-size:0.98rem; color:var(--ink-soft); max-width:62ch; margin-bottom:10px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:7px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:8px 12px 7px; margin:0 0 7px; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:2px 0 6px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.85rem; background:var(--paper); }
+  th,td{ text-align:left; padding:5px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:6px 10px; margin-top:3px; }
+
+  /* ---------- Domain blocks (category-colored, 계산기·체크리스트·템플릿 5종) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:12px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:6px 9px 4px; margin:0 0 5px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Task grid (상담 진행 체크리스트, category-colored 2단 배치) ---------- */
+  .task-grid{ display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:7px; }
+  .task-card{ background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:10px; padding:6px 9px 7px; break-inside:avoid; }
+  .task-card .tn{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:999px; background:var(--accent); color:#fff; font-family:var(--font-mono); font-size:0.7rem; font-weight:700; margin-right:7px; flex-shrink:0; }
+  .task-card h5{ display:inline; font-size:0.89rem; font-weight:700; margin:0; color:var(--ink); }
+  .task-card p{ margin:5px 0 0; font-size:0.79rem; color:var(--ink-soft); line-height:1.5; }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin-bottom:5px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 10px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.9rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:30px 20px 18px; break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:14px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 74 · 실행 키트</span>
+    <span class="badge">『연말정산 서류 제출하기 전에, AI한테 환급액부터 물어보세요』 실전 부록</span>
+    <h1><span class="nowrap">연말정산 환급액,</span><br>계산기로 먼저 <span class="nowrap">확인받으세요</span></h1>
+    <p class="subtitle"><span class="nowrap">소득공제·과세표준</span> <span class="nowrap">계산기</span> + <span class="nowrap">산출세액·세액공제</span> <span class="nowrap">계산기</span> + <span class="nowrap">결정세액·환급액</span> <span class="nowrap">계산기</span> + <span class="nowrap">공제서류체크리스트</span> <span class="nowrap">·경정청구 D-day</span> + <span class="nowrap">의뢰접수 템플릿</span> — <span class="nowrap">급여와</span> <span class="nowrap">지출 내역만</span> <span class="nowrap">넣으면</span> <span class="nowrap">예상 환급액이</span> <span class="nowrap">바로 나옵니다</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>계산기·체크리스트·템플릿</div>
+      <div class="nowrap"><strong>20</strong>종 증빙서류 체크포인트</div>
+      <div class="nowrap"><strong>4</strong>단계 판매 체크리스트</div>
+    </div>
+    <div class="byline">『연말정산 서류 제출하기 전에, AI한테 환급액부터 물어보세요』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">계산은 이미 다 만들어져 있습니다. 급여와 지출 내역만 넣으면 됩니다.</em> 이 키트는 전자책 방법 1~8(근로소득금액, 인적공제, 특별소득공제, 과세표준·산출세액, 세액공제, 결정세액·환급액, 간소화 서비스 점검, 경정청구)을 이미 끝내둔 완성본입니다.</p>
+    <p>엑셀 계산기 3종·엑셀 체크리스트+D-day계산기 1종·워드 템플릿 1종을 같은 톤으로 만들었습니다.</p>
+    <ol class="steps">
+      <li><strong>안내 시트</strong> — "확정 환급액이 아니라 참고용 추정 계산 도구"라는 경계를 첫 화면에 명시합니다.</li>
+      <li><strong>계산기 시트</strong> — 노란색 칸에 값을 입력하면 올리브색 칸에 결과가 바로 뜹니다.</li>
+      <li><strong>이전 계산기 결과 이어받기</strong> — A→B→C 순서로 과세표준·산출세액·세액공제 합계를 그대로 다음 계산기에 입력하면 끝까지 이어집니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 계산기·체크리스트별 빠른 참고표에서 원하는 것부터 확인하고, 실제 파일을 열어 본인(또는 의뢰인) 급여·지출 내역으로 한 번 테스트해본 뒤 의뢰 접수·고객 리포트 템플릿까지 이어서 진행하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>계산기·체크리스트·템플릿 5종 빠른 참고표</h2>
+    <p class="lede">각 파일의 입력값 예시, 결과값, 그리고 어떤 순서로 이어 쓰는지를 정리했습니다. 실제 파일에 그대로 입력해 결과를 재현할 수 있습니다. (예시 — 연봉 4,800만원, 배우자·자녀 1명 부양, 신용카드 등 1,850만원 사용)</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 소득공제·과세표준 계산기</div>
+      <div class="cat-flow">파일 — A_소득공제_과세표준_계산기.xlsx · 연봉·비과세소득을 입력하면 총급여·근로소득금액이 자동 계산되고, 부양가족 인원과 보험료·주택자금 지출을 입력하면 인적공제·특별소득공제까지 반영한 과세표준이 자동 계산됩니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>연봉 48,000,000원</td><td>비과세 2,400,000원</td><td>근로소득금액</td><td>33,570,000원</td></tr>
+            <tr><td>기본공제 3명+경로우대 1명</td><td>보험료 등 지출</td><td>과세표준</td><td>24,710,000원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "연봉이랑 총급여가 같은 거 아니에요?"라는 질문. 비과세소득을 먼저 빼는 이유와 과정을 숫자로 바로 보여줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 산출세액·세액공제 계산기</div>
+      <div class="cat-flow">파일 — B_산출세액_세액공제_계산기.xlsx · 과세표준을 입력하면 8단계 누진세율표를 적용한 산출세액이 자동 계산되고, 자녀·연금계좌·특별세액공제·신용카드 등 사용액을 입력하면 세액공제 합계까지 자동 계산됩니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>과세표준 24,000,000원</td><td>적용세율 15%</td><td>산출세액</td><td>2,340,000원</td></tr>
+            <tr><td>신용카드 등 1,850만원</td><td>자녀 1명·연금 400만원</td><td>세액공제 합계</td><td>4,645,800원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "카드를 많이 썼는데 공제가 왜 이만큼만 돼요?"라는 질문. 총급여의 25%를 넘는 사용액부터 공제가 시작된다는 기준선을 숫자로 바로 보여줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 결정세액·환급액 계산기</div>
+      <div class="cat-flow">파일 — C_결정세액_환급액_계산기.xlsx · 산출세액과 세액공제 합계를 입력하면 결정세액이 자동 계산되고, 기납부세액과 비교한 환급액(또는 추가납부액)까지 바로 나옵니다. '가족비교' 시트로 부부 등 최대 3인을 나란히 비교 가능</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>결정세액 660,000원</td><td>기납부세액 1,150,000원</td><td>차감징수세액</td><td>-490,000원</td></tr>
+            <tr><td>판정</td><td></td><td>최종 결과</td><td>환급 490,000원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "저 올해 환급 받아요, 더 내요?"라는 가장 흔한 질문. 숫자 두 개만 넣으면 환급인지 추가납부인지 바로 판정해줍니다.</p>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 공제서류체크리스트 + 경정청구 D-day 계산기</div>
+      <div class="cat-flow">파일 — D_공제서류체크리스트_경정청구Dday_계산기.xlsx · 귀속 연도를 입력하면 경정청구 가능 마감일(5년)과 남은 일수가 자동 계산되는 'D-day계산기' 시트 + 간소화 서비스 증빙자료 20종을 준비상태 드롭다운으로 정리한 '체크리스트' 시트</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>귀속연도 2025</td><td>법정신고기한 2026-05-31</td><td>경정청구 마감일</td><td>2031-05-31</td></tr>
+            <tr><td>증빙서류</td><td>20종 체크포인트</td><td>판정</td><td>여유 있음</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "작년에 공제 빠뜨린 것 같은데 이미 늦었죠?"라는 사람. 연도 하나만 넣으면 경정청구 기한까지 5년이나 남아있다는 걸 바로 보여줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 의뢰접수·고객리포트 템플릿</div>
+      <div class="cat-flow">파일 — 의뢰접수_고객리포트_템플릿.docx · 의뢰 접수 질문지(14문항) + 기준값·한도 체크(5개) + 고객용 예상 연말정산 환급액 리포트 템플릿(9단계) + 서비스 안내·가격 템플릿까지 대괄호만 바꿔서 바로 쓰는 문서</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구성</th><th>내용</th><th>구성</th><th>내용</th></tr>
+            <tr><td>의뢰 접수 질문지</td><td>14개 문항</td><td>고객용 리포트</td><td>9단계 요약 양식</td></tr>
+            <tr><td>기준값·한도 체크</td><td>5개 확인 항목</td><td>서비스 안내·가격표</td><td>6단계 패키지</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 의뢰가 들어오면 바로 접수할 수 있는 양식이 없어 매번 새로 질문을 만들던 상황. 질문지 한 장으로 빠짐없이 받고, 리포트 양식 그대로 전달하면 됩니다.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>패키지 구성 &amp; 검증 워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>패키지·가격 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지 유형</th><th>가격대</th><th>내 판매가</th></tr>
+          <tr><td>기본 계산(본인 1인, 직접 진행)</td><td>10,000~20,000원</td><td class="fill"></td></tr>
+          <tr><td>계산기 A·B·C+D체크리스트+템플릿 5종 세트</td><td>15,000~25,000원</td><td class="fill"></td></tr>
+          <tr><td>전자책+계산기·체크리스트·템플릿 5종 묶음</td><td>19,900~29,900원</td><td class="fill"></td></tr>
+          <tr><td>부양가족 추가요금(직접 진행)</td><td>2,000~3,000원/인</td><td class="fill"></td></tr>
+          <tr><td>경정청구 대상 여부 추가 검토(직접 진행)</td><td>5,000~10,000원</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">추천 — 처음엔 A(소득공제·과세표준) 또는 C(결정세액·환급액) 단품으로 판매 기록부터 쌓고, 반응이 오면 5종 세트+전자책 묶음으로 객단가를 높이세요.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 판매 전 필수</h4></div>
+      <h3>내 조건으로 교차검증하기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>계산기</th><th>내 실제(또는 가상) 값 입력</th><th>공식자료와 비교</th></tr>
+          <tr><td>A. 소득공제·과세표준 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>B. 산출세액·세액공제 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>C. 결정세액·환급액 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">비교 대상 — 국세청 홈택스(hometax.go.kr) 연말정산 미리보기 서비스, 회사에서 실제 처리한 연말정산 결과와 직접 대조. 오차가 크면 비과세소득 구분·공제 한도·세율표 적용 연도를 다시 점검하세요.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>상담 진행 체크리스트</h2>
+    <p class="lede">접수부터 사후관리까지 단계별로 정리했습니다. '의뢰접수_고객리포트_템플릿.docx'의 의뢰 접수 질문지에 완료 여부를 기록하면서 그대로 진행 관리표로 사용할 수 있습니다.</p>
+
+    <div class="cat-label" style="--accent:var(--cat-a);--accent-tint:var(--cat-a-tint)">접수·리서치 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">1</span><h5>접수 질문지 발송·회수</h5><p>총급여, 부양가족 명단과 연소득, 각종 지출 내역, 기납부세액까지 빠짐없이 받기</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">2</span><h5>부양가족 자료제공 동의 안내</h5><p>간소화 서비스는 부모·배우자·자녀의 "자료제공 동의"가 있어야 조회됨을 먼저 안내</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">3</span><h5>홈택스 기준값 재확인</h5><p>hometax.go.kr 연말정산 미리보기 서비스에서 해당 연도 공제 한도·세율 최신 기준 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">4</span><h5>희망 결과물 확인</h5><p>환급액만/전체 계산과정 포함/경정청구 대상 여부까지 범위 확정</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-e);--accent-tint:var(--cat-e-tint)">계산·검증 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">1</span><h5>소득공제·과세표준 계산</h5><p>계산기 A로 근로소득금액, 인적공제, 특별소득공제를 반영한 과세표준 산출</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">2</span><h5>산출세액·세액공제 계산</h5><p>계산기 B로 세율표 적용 산출세액과 자녀·연금계좌·특별세액공제·신용카드공제 합계 산출</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">3</span><h5>결정세액·환급액 산출</h5><p>계산기 C로 결정세액과 기납부세액을 비교해 환급 또는 추가납부액 확정</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">4</span><h5>부부 귀속 시뮬레이션(해당 시)</h5><p>계산기 C의 '가족비교' 시트로 부양가족 귀속을 양쪽 다 계산해 유리한 쪽 선택</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">5</span><h5>증빙서류 체크</h5><p>D. 체크리스트로 간소화 서비스 자동조회 여부와 준비상태 20종 점검</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">6</span><h5>경정청구 대상 여부 확인</h5><p>D. D-day계산기로 과거 연도 누락 공제의 청구 가능 기한 확인</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-c);--accent-tint:var(--cat-c-tint)">납품·사후관리 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">1</span><h5>리포트 정리</h5><p>계산 근거(총급여·공제항목·과세표준·세액·환급액)를 9단계 표로 정리</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">2</span><h5>면책 문구 최종 확인</h5><p>"참고용 추정치이며 실제 환급·납부 책임은 본인에게 있다" 문구 포함 여부 점검</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">3</span><h5>고객용 리포트 전달</h5><p>템플릿 E의 리포트 양식으로 함께 전달</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">4</span><h5>결과 피드백 수렴</h5><p>실제 연말정산 결과(회사 처리분)와 추정치를 대조한 후기·결과 요청</p></div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>판매 준비 체크리스트</h2>
+    <p class="lede">브리프부터 등록까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>검증</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 2로 계산기 A·B·C 모두 내(또는 가상의) 조건으로 테스트하기</li>
+        <li><input type="checkbox" disabled>홈택스 연말정산 미리보기 서비스와 대조해 공제 한도·세율 최신 기준 확인하기</li>
+        <li><input type="checkbox" disabled>계산기 시트에 확인한 참고 기준과 확인 날짜 메모 남기기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>다듬기</h4>
+      <ul>
+        <li><input type="checkbox" disabled>입력 셀(노란색) 옆에 "여기에 값을 입력하세요" 안내 문구 확인하기</li>
+        <li><input type="checkbox" disabled>"참고용 추정치이며 실제 환급·납부 책임은 본인에게 있고 세법 개정사항은 국세청 홈택스에서 재확인이 필요하다"는 경계 문구가 각 파일에 붙어있는지 확인하기</li>
+        <li><input type="checkbox" disabled>파일명·시트명에 오탈자 없는지 최종 점검하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>등록</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 1로 패키지·가격 확정하기</li>
+        <li><input type="checkbox" disabled>래피드에 상품명 "계산기", "연말정산", "환급액", "세액공제" 단어 포함해 등록하기</li>
+        <li><input type="checkbox" disabled>Day73 전자책과 세트 상품(업셀) 옵션도 함께 등록하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>갱신 관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>공제 한도·세액공제율·세율표는 세법 개정으로 바뀔 수 있으므로, 매 연말정산 시즌(1~2월)마다 최신 기준으로 재확인해 계산기에 반영하기</li>
+        <li><input type="checkbox" disabled>기존 상담 고객 연락처/알림 목록 만들어두기(세법 개정·후속 문의 시 재안내용)</li>
+        <li><input type="checkbox" disabled>기준값 변경 시 참고표만 교체 후 Worksheet 2 검증 다시 거치기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>급여와 지출 내역을 넣고, 기준을 적용하고, 숫자와 근거로 답하세요.</p>
+    <p><strong>서류를 다 제출하고 나서 알게 되는 것보다, 오늘 미리 확인하는 숫자 하나가 더 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
+</body>
+</html>
