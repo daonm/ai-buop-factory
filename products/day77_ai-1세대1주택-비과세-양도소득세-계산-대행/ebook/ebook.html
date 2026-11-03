@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>집 팔기 전에, AI한테 비과세 되는지부터 물어보세요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F; --cat-a-tint: #F1E3C4;
+    --cat-b: #3E7C74; --cat-b-tint: #D9E6E2;
+    --cat-c: #A85A38; --cat-c-tint: #EEDBCB;
+    --cat-d: #6B7A3A; --cat-d-tint: #E3E6CE;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #6FC2B7; --cat-b-tint: #1E3230;
+      --cat-c: #DE9270; --cat-c-tint: #3A2A20;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #6FC2B7; --cat-b-tint: #1E3230;
+    --cat-c: #DE9270; --cat-c-tint: #3A2A20;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:780px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.0rem, 6vw, 3.1rem); line-height:1.3; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.1rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.7rem; font-weight:700; margin:0 0 20px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:18px; width:max-content; max-width:100%; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.1rem; margin:24px 0 10px; color:var(--ink); }
+  section.chapter{ padding:30px 0 34px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 14px; max-width:66ch; orphans:1; widows:1; }
+  .lede{ font-size:1.02rem; color:var(--ink-soft); max-width:62ch; margin-bottom:18px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  /* ---------- TOC ---------- */
+  .toc{ border-top:3px solid var(--gold); padding:20px 0 8px; margin-bottom:44px; }
+  .toc h2{ font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 16px; break-after:avoid; }
+  .toc ol{ list-style:none; margin:0; padding:0; }
+  .toc li{ display:flex; align-items:baseline; gap:6px; padding:6px 0; font-size:0.94rem; break-inside:avoid; }
+  .toc .n{ font-family:var(--font-mono); font-weight:700; color:var(--gold-strong); flex-shrink:0; }
+  .toc .leader{ flex:1; border-bottom:1px dotted var(--line); margin:0 2px 5px; min-width:16px; }
+  .toc .pg{ font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); flex-shrink:0; }
+
+  /* ---------- Method steps ---------- */
+  .method-meta{ display:inline-block; font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:9px 13px; margin-bottom:16px; }
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; }
+  ol.steps li{ margin-bottom:9px; padding-left:4px; break-inside:avoid; }
+
+  /* ---------- Note callouts ---------- */
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:6px 0 4px; }
+
+  /* ---------- Table ---------- */
+  .table-wrap{ overflow-x:auto; margin-bottom:14px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.88rem; background:var(--paper); }
+  th,td{ text-align:left; padding:8px 13px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.72rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+
+  /* ---------- Prompt cards (categorized grid) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:6px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-label{ display:table; font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); border-radius:6px; padding:4px 12px; margin:0 0 8px; break-after:avoid-page; }
+  .prompt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:13px; }
+  .prompt-block{ break-inside:avoid; background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:9px; padding:8px 10px 8px; }
+  .prompt-id{ font-family:var(--font-mono); font-size:0.76rem; color:var(--accent); font-weight:700; margin-bottom:4px; letter-spacing:0.02em; }
+  .prompt{ background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:7px 9px; font-family:var(--font-mono); font-size:0.76rem; line-height:1.45; margin:0; white-space:pre-wrap; overflow-x:auto; }
+  @media print{ .prompt-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:15px 18px; margin-bottom:10px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.88rem; letter-spacing:0.05em; margin:0 0 12px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.78rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:4px 0; font-size:0.92rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:34px 20px 20px; }
+  .epilogue .close{ break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:10px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{
+    .cover{ page-break-after:always; margin-left:0; margin-right:0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 77</span>
+    <span class="badge">CLAUDE가 기획 · 집필</span>
+    <h1>집 팔기 전에,<br>AI한테 <span class="nowrap">비과세 되는지부터</span><br><span class="nowrap">물어보세요</span></h1>
+    <p class="subtitle">AI로 <span class="nowrap">1세대1주택 비과세·부동산 양도소득세</span> <span class="nowrap">계산 대행하는 법</span> — <span class="nowrap">그대로 쓰는</span> <span class="nowrap">양도세 프롬프트 15개</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>12</strong>가지 방법</div>
+      <div class="nowrap"><strong>15</strong>개 프롬프트</div>
+      <div class="nowrap"><strong>3</strong>단계 체크리스트</div>
+    </div>
+    <div class="byline">이 책의 목차·본문·프롬프트까지, 전부 <strong>클로드가 기획하고 작성</strong>했습니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">"집 팔면 세금 얼마나 나와요?"</em> 집을 팔기로 마음먹은 순간 가장 먼저 드는 생각입니다. "1세대1주택이면 비과세라던데 나도 되나요?"부터 막힙니다. 보유기간은 언제부터 세는 건지, 거주는 꼭 해야 하는 건지, 이사 가려고 새 집을 먼저 사면 비과세가 깨지는 건 아닌지 질문이 끝없이 이어집니다.</p>
+    <p>하지만 이 계산도 정해진 틀이 있습니다. "먼저 1세대1주택 비과세 요건(보유기간·거주기간·주택수)을 확인하고, 비과세가 안 되거나 고가주택이면 양도차익을 계산하고, 장기보유특별공제를 적용하고, 기본공제와 세율을 순서대로 적용해 최종 세액을 구하는" 순서가 정해져 있고, 이 순서를 그대로 따라가면 누구나 자신의 비과세 여부와 예상 세금을 숫자로 가늠해볼 수 있습니다.</p>
+    <p>이 책은 AI를 <strong>"취득·보유·거주 정보와 양도가액을 입력하면 1세대1주택 비과세 요건부터 확인하고, 비과세가 안 되는 경우 양도차익과 세액까지 순서대로 계산해주는 양도소득세 추정 조수"</strong>로 써서, 비과세 요건 확인부터 양도차익·장기보유특별공제·세액 산출, 일시적 2주택 특례 판단, 주택수 특수 케이스 점검까지 단계별로 계산하는 법을 다룹니다. 그리고 이 결과물로 "저 집 팔면 세금 얼마 나오는지 좀 봐줘"라는 흔한 요청을 대행 서비스로 만드는 법까지 다룹니다.</p>
+  </section>
+
+  <div class="toc">
+    <h2>목차</h2>
+    <ol>
+      <li>왜 지금 AI로 1세대1주택 비과세·양도소득세 계산 대행인가<span class="leader"></span><span class="n">01</span></li>
+      <li>시작 전에 딱 3가지만<span class="leader"></span><span class="n">02</span></li>
+      <li>방법 1 — 1세대1주택 비과세 요건 확인하기<span class="leader"></span><span class="n">03</span></li>
+      <li>방법 2 — 12억 기준 고가주택 여부 판단하기<span class="leader"></span><span class="n">04</span></li>
+      <li>방법 3 — 양도차익 계산하기<span class="leader"></span><span class="n">05</span></li>
+      <li>방법 4 — 장기보유특별공제 계산하기<span class="leader"></span><span class="n">06</span></li>
+      <li>방법 5 — 기본공제·세율 적용해 세액 계산하기<span class="leader"></span><span class="n">07</span></li>
+      <li>방법 6 — 일시적 2주택 비과세 특례 판단하기<span class="leader"></span><span class="n">08</span></li>
+      <li>방법 7 — 주택수 판정의 특수 케이스 점검하기<span class="leader"></span><span class="n">09</span></li>
+      <li>방법 8 — 비과세 안 될 때 다주택자 세금 비교하기<span class="leader"></span><span class="n">10</span></li>
+      <li>방법 9 — 매년 바뀌는 양도세 기준 확인하기<span class="leader"></span><span class="n">11</span></li>
+      <li>방법 10 — 계산 대행 부업으로 수익화하기<span class="leader"></span><span class="n">12</span></li>
+      <li>방법 11 — 흔한 실수와 개선법<span class="leader"></span><span class="n">13</span></li>
+      <li>방법 12 — 나만의 대행 시스템 구축하기<span class="leader"></span><span class="n">14</span></li>
+      <li>바로 쓰는 프롬프트 15선<span class="leader"></span><span class="n">15</span></li>
+      <li>실전 체크리스트<span class="leader"></span><span class="n">16</span></li>
+    </ol>
+  </div>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>왜 지금 AI로 1세대1주택 비과세·양도소득세 계산 대행인가</h2>
+    <p>집을 파는 건 회사가 아니라 본인이 직접 계산하고 판단해야 하는 영역입니다. 비과세 요건 판단 자체도 헷갈리고, 비과세가 안 될 때 세금이 얼마인지 계산하는 건 더 어렵습니다.</p>
+    <ol class="steps">
+      <li><strong>AI는 세무사를 대신하는 것이 아니라 "계산 구조를 숫자로 먼저 보여주는 조수"입니다.</strong> 법령을 일일이 찾아볼 필요 없이, 조건만 알려주면 비과세 여부와 세액을 정리해줍니다.</li>
+      <li><strong>한 번 만든 계산 로직은 의뢰가 들어올 때마다 조건만 바꿔서 재사용할 수 있습니다.</strong> 기준이 되는 비과세 금액·세율표만 최신으로 갱신하면 됩니다.</li>
+      <li><strong>이 결과물 자체가 대행 서비스로 팔릴 수 있습니다.</strong> 집을 팔 때마다 "저 비과세 되는지 좀 봐줘"라고 묻는 사람은 늘 있고, 숫자와 근거로 답해주는 서비스는 신뢰를 빠르게 얻습니다.</li>
+    </ol>
+    <p>이 책은 "세무대리나 중개 업무를 대신하는 법"을 다루지 않습니다. 공개된 세법 조항과 입력된 조건을 가지고 "지금 이 조건이면 비과세가 되는지, 안 되면 세금이 얼마인지" 계산하고 정리하는 법만 다룹니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>시작 전에 딱 3가지만</h2>
+    <div class="method-meta">준비물은 딱 3가지 — 세무 경력이나 공인중개사 자격이 없어도 괜찮습니다</div>
+    <ol class="steps">
+      <li><strong>AI 챗봇 계정</strong> — 취득일·보유기간·거주기간·주택수 조건을 넣으면 비과세 요건을 순서대로 확인하고, 양도차익부터 최종 세액까지 계산하는 과정을 시킬 수 있는 도구면 충분합니다</li>
+      <li><strong>양도 조건 1건</strong> — 실제로 집을 팔 계획이 있는 지인·의뢰인의 취득일, 취득가액, 양도(예정)가액, 거주 이력, 보유 중인 다른 주택·분양권·입주권 여부가 있으면 가장 좋고, 없다면 가상의 조건(예: 8년 전 5억 원에 취득, 조정대상지역에서 3년 거주, 현재 양도가액 10억 원)을 하나 정해도 됩니다</li>
+      <li><strong>국세청 홈택스 접속 정보 1개</strong> — hometax.go.kr의 "양도소득세 모의계산" 메뉴를 즐겨찾기 해두면, 본인 입력값으로 나온 계산 결과를 직접 재확인할 수 있습니다</li>
+    </ol>
+    <p>이 3가지가 준비되면, 방법 1부터 순서대로 따라 하기만 하면 오늘 안에 첫 비과세·세액 추정표를 완성할 수 있습니다.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>1세대1주택 비과세 요건 확인하기</h2>
+    <p>비과세 판단의 첫 단계는 "1세대가 국내에 1주택만 보유하고 있는지"와 "그 주택을 얼마나 보유·거주했는지"입니다. 기본 요건은 양도일 현재 2년 이상 보유이고, 취득 당시 조정대상지역이었던 주택은 2년 이상 거주 요건이 추가된다는 점이 첫 번째 핵심입니다.</p>
+    <div class="worksheet-note">참고 — 보유기간·거주기간은 취득일부터 양도일까지로 계산하며, 등기부등본·매매계약서·주민등록초본으로 입증합니다. 조정대상지역 여부는 "취득 시점" 기준으로 판단하므로, 이후 그 지역이 해제돼도 거주요건은 그대로 유지됩니다.</div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "1세대1주택 비과세는 양도일 현재 2년 이상 보유가 기본 요건이고, 취득 당시 조정대상지역이었던 주택은 2년 이상 거주 요건이 추가된다"는 원칙을 전제로, [취득일, 취득 당시 조정대상지역 여부, 실제 거주 기간]을 보여줄 테니 보유·거주 요건을 각각 판정해달라고 요청한다</li>
+      <li>"세대 전원이 국내에 1주택만 보유해야 하며, 분양권·입주권·상속주택도 경우에 따라 주택수에 포함될 수 있다"는 전제로 [현재 보유 중인 다른 주택·분양권·입주권·상속주택 여부]를 보여줄 테니 세대 기준 주택수를 먼저 확정해달라고 요청한다</li>
+      <li>확정된 [보유기간], [거주기간], [주택수 판정]을 종합해 1세대1주택 비과세 기본 요건을 충족하는지 1차 결론을 내려달라고 요청한다</li>
+      <li>완성된 결과를 "취득일 / 조정대상지역 취득 여부 / 보유기간 / 거주기간 / 세대 주택수 / 기본 요건 충족 여부"로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — "비과세는 2년만 보유하면 끝"이라는 생각이 가장 흔한 오해입니다. 취득 당시 조정대상지역이었다면 거주 2년을 못 채우면 보유기간을 2년 넘게 채워도 비과세가 되지 않습니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>12억 기준 고가주택 여부 판단하기</h2>
+    <p>1세대1주택 비과세 요건을 충족해도, 양도가액이 일정 금액을 넘는 고가주택이라면 전액 비과세가 아니라 초과분에 대해서만 과세된다는 점이 두 번째 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>기준</th><th>과세 방식</th></tr>
+        <tr><td>일반주택</td><td>양도가액 12억 원 이하</td><td>비과세 요건 충족 시 전액 비과세</td></tr>
+        <tr><td>고가주택</td><td>양도가액 12억 원 초과</td><td>12억 원 초과분에 해당하는 양도차익만 과세</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "비과세 요건을 충족한 주택이라도 양도가액이 12억 원을 넘으면, 12억 원 이하분은 비과세되고 초과분에 해당하는 양도차익만 과세된다"는 원칙을 전제로, [방법 1의 비과세 요건 충족 여부]와 [양도가액]을 보여줄 테니 고가주택 해당 여부를 판정해달라고 요청한다</li>
+      <li>고가주택에 해당한다면, "과세대상 양도차익 = 전체 양도차익 × (양도가액 − 12억 원) ÷ 양도가액"이라는 비례식을 전제로 계산 순서를 정리해달라고 요청한다</li>
+      <li>비과세 기본 요건을 충족하지 못한 경우(2주택 이상, 보유·거주기간 미충족 등)에는 12억 원 기준과 무관하게 전체 양도차익이 과세대상이 된다는 점을 전제로, 어느 케이스에 해당하는지 구분해달라고 요청한다</li>
+      <li>완성된 결과를 "비과세 요건 충족 여부 / 양도가액 / 12억 원 초과 여부 / 과세 방식"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 12억 원이라는 기준금액 자체도 과거 9억 원에서 상향된 적이 있는 항목입니다. 이 책을 보는 시점의 기준금액이 여전히 12억 원인지 국세청 홈택스 공지로 먼저 확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">05</span>양도차익 계산하기</h2>
+    <p>과세 여부가 정리됐다면, 이제 실제 과세의 토대가 되는 양도차익을 계산합니다. 양도차익은 양도가액에서 취득가액과 필요경비를 뺀 금액이고, 고가주택이라면 여기서 한 번 더 12억 원 초과 비율만큼 비례 계산한다는 점이 세 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "양도차익 = 양도가액 − 취득가액 − 필요경비(취득세, 중개수수료, 법무사 비용, 자본적 지출인 수선비·확장비 등)"라는 계산식을 전제로, [양도가액, 취득가액, 보유 중 지출한 필요경비 항목과 금액]을 보여줄 테니 전체 양도차익을 계산해달라고 요청한다</li>
+      <li>"도배·장판 교체 같은 통상적인 수선비는 필요경비로 인정되지 않고, 베란다 확장·보일러 교체처럼 자산 가치를 높이는 자본적 지출만 인정된다"는 점을 전제로 [지출한 항목 목록]을 보여줄 테니 필요경비로 인정될 항목만 걸러달라고 요청한다</li>
+      <li>[방법 2]에서 고가주택으로 판정됐다면, "과세대상 양도차익 = 전체 양도차익 × (양도가액 − 12억 원) ÷ 양도가액" 비례식을 적용해 과세대상 양도차익을 산출해달라고 요청한다</li>
+      <li>완성된 결과를 "양도가액 / 취득가액 / 인정 필요경비 / 전체 양도차익 / 과세대상 양도차익"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 취득가액·필요경비 증빙(계약서, 세금계산서, 카드영수증)이 없으면 인정받지 못할 수 있습니다. 증빙이 부족한 지출은 보수적으로 제외하고 계산하도록 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">06</span>장기보유특별공제 계산하기</h2>
+    <p>과세대상 양도차익이 나왔다면, 오래 보유·거주한 만큼 공제해주는 장기보유특별공제를 적용합니다. 1세대1주택(고가주택 포함)은 보유기간과 거주기간 각각에 대해 공제율이 더해지는 별도 표가 적용되고, 둘을 합쳐 최대 80%까지 공제된다는 점이 네 번째 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>보유기간</th><th>공제율</th><th>거주기간</th><th>공제율</th></tr>
+        <tr><td>3년~4년 미만</td><td>12%</td><td>2년~3년 미만</td><td>8%</td></tr>
+        <tr><td>4년~5년 미만</td><td>16%</td><td>3년~4년 미만</td><td>12%</td></tr>
+        <tr><td>5년~6년 미만</td><td>20%</td><td>4년~5년 미만</td><td>16%</td></tr>
+        <tr><td>6년~7년 미만</td><td>24%</td><td>5년~6년 미만</td><td>20%</td></tr>
+        <tr><td>7년~8년 미만</td><td>28%</td><td>6년~7년 미만</td><td>24%</td></tr>
+        <tr><td>8년~9년 미만</td><td>32%</td><td>7년~8년 미만</td><td>28%</td></tr>
+        <tr><td>9년~10년 미만</td><td>36%</td><td>8년~9년 미만</td><td>32%</td></tr>
+        <tr><td>10년 이상</td><td>40%</td><td>9년~10년 미만</td><td>36%</td></tr>
+        <tr><td></td><td></td><td>10년 이상</td><td>40%</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 표를 전제로, "보유기간이 3년 미만이면 공제율이 0%"라는 원칙을 전제로 [보유기간, 거주기간]을 보여줄 테니 각각의 공제율을 산출해달라고 요청한다</li>
+      <li>산출된 [보유기간 공제율]과 [거주기간 공제율]을 더해 최종 장기보유특별공제율(최대 80%)을 계산해달라고 요청한다</li>
+      <li>"이 표는 비과세 요건을 충족한 1세대1주택 고가주택에 적용되는 표이고, 비과세 요건을 충족하지 못한 2주택 이상 보유자는 보유기간만 반영하는 별도의 공제율표(최대 30%)가 적용된다"는 점을 전제로 [방법 1의 주택수 판정 결과]를 보여줄 테니 어느 공제율표를 적용해야 하는지 확인해달라고 요청한다</li>
+      <li>완성된 결과를 "과세대상 양도차익 / 적용 공제율표 구분 / 보유기간 공제율 / 거주기간 공제율 / 합산 공제율 / 장기보유특별공제액"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — "보유만 오래 하면 80% 다 받는다"는 오해가 흔합니다. 거주기간이 짧으면 합산 공제율이 크게 줄어듭니다. 공제율 자체도 개편 논의가 진행 중인 항목이므로 반드시 최신 기준을 재확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">07</span>기본공제·세율 적용해 세액 계산하기</h2>
+    <p>장기보유특별공제까지 적용했다면, 이제 양도소득 기본공제를 빼고 세율을 적용해 실제 납부할 세액을 계산합니다. 기본공제는 연 250만 원이고, 세율은 과세표준 구간별로 단계적으로 올라가는 누진구조라는 점이 다섯 번째 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>과세표준</th><th>세율</th><th>과세표준</th><th>세율</th></tr>
+        <tr><td>1,400만 원 이하</td><td>6%</td><td>1.5억~3억 원</td><td>38%</td></tr>
+        <tr><td>1,400만~5,000만 원</td><td>15%</td><td>3억~5억 원</td><td>40%</td></tr>
+        <tr><td>5,000만~8,800만 원</td><td>24%</td><td>5억~10억 원</td><td>42%</td></tr>
+        <tr><td>8,800만~1.5억 원</td><td>35%</td><td>10억 원 초과</td><td>45%</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "양도소득금액 = 과세대상 양도차익 − 장기보유특별공제액"이라는 계산식을 전제로, [방법 3의 과세대상 양도차익]과 [방법 4의 장기보유특별공제액]을 보여줄 테니 양도소득금액을 계산해달라고 요청한다</li>
+      <li>"양도소득 기본공제는 보유 주택과 무관하게 연 1회, 1인당 250만 원이 적용된다"는 원칙을 전제로 [계산된 양도소득금액]에서 기본공제를 뺀 과세표준을 산출해달라고 요청한다</li>
+      <li>위 표를 전제로, "지방소득세(양도소득세의 10%)가 별도로 추가된다"는 점을 반영해 [산출된 과세표준]에 해당 구간의 세율과 누진공제액을 적용해 양도소득세와 지방소득세를 각각 계산해달라고 요청한다</li>
+      <li>완성된 결과를 "양도소득금액 / 기본공제 / 과세표준 / 적용 세율구간 / 양도소득세 / 지방소득세 / 최종 납부세액"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 2주택 이상 보유자가 조정대상지역 주택을 양도하면 추가 세율(중과)이 붙을 수 있으나, 2026년 들어 다주택 중과 완화 논의가 진행 중인 항목입니다. 중과 적용 여부는 양도 시점의 최신 기준으로 반드시 재확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">08</span>일시적 2주택 비과세 특례 판단하기</h2>
+    <p>이사를 가려고 새 집을 먼저 사면 일시적으로 2주택이 됩니다. 이 경우에도 일정 조건을 충족하면 종전주택을 비과세로 팔 수 있는 특례가 있고, 처분기한이 조정대상지역 여부에 따라 다르게 적용된다는 점이 여섯 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "일시적 2주택 비과세 특례는 종전주택 취득 후 1년 이상 지난 뒤 신규주택을 취득하고, 신규주택 취득일로부터 일정 기간 이내에 종전주택을 양도하면 1세대1주택으로 보아 비과세를 적용하는 제도"라는 원칙을 전제로, [종전주택 취득일, 신규주택 취득(예정)일, 종전주택 보유·거주기간]을 보여줄 테니 특례 대상 여부를 1차 판정해달라고 요청한다</li>
+      <li>"종전주택과 신규주택이 모두 조정대상지역에 있으면 처분기한이 더 짧게 적용되고, 어느 한 주택이라도 비조정대상지역이면 더 긴 처분기한이 적용되며, 정책 변경 시점을 기준으로 경과조치가 적용될 수 있다"는 전제로 [두 주택의 조정대상지역 지정 여부, 계약·취득 시점]을 보여줄 테니 적용 처분기한을 확인해달라고 요청한다</li>
+      <li>확인된 [처분기한]과 [종전주택 양도 예정 시점]을 비교해, 기한 내 처분이 가능한지, 기한을 넘기면 어떤 불이익이 있는지 정리해달라고 요청한다</li>
+      <li>완성된 결과를 "종전주택 취득일 / 신규주택 취득일 / 조정대상지역 해당 여부 / 적용 처분기한 / 처분 예정일 / 특례 충족 여부"로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 일시적 2주택 처분기한은 정책에 따라 자주 바뀌고, 변경 시점을 기준으로 종전 계약자에게는 종전 규정을 유지해주는 경과조치가 함께 발표되는 경우가 많습니다. "몇 년 전에 들었던 기한"을 그대로 쓰지 말고 반드시 현재 시점 기준으로 확인하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">09</span>주택수 판정의 특수 케이스 점검하기</h2>
+    <p>상속받은 주택, 분양권·입주권, 농어촌주택처럼 "내가 소유한 주택"이지만 주택수 산정에서 일반 주택과 다르게 취급되는 경우가 있습니다. 이 특수 케이스를 놓치면 비과세 판단 자체가 틀어진다는 점이 일곱 번째 핵심입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>유형</th><th>핵심 쟁점</th><th>확인 포인트</th></tr>
+        <tr><td>상속주택</td><td>조건 충족 시 일반주택 양도 시 주택수에서 제외 가능</td><td>상속 개시일, 공동상속 여부(최대 지분자 기준), 일반주택 보유 시점</td></tr>
+        <tr><td>분양권·입주권</td><td>취득 시점에 따라 주택수 포함 여부가 달라짐</td><td>분양권·입주권 취득일, 취득 당시 시행 중이던 규정</td></tr>
+        <tr><td>농어촌주택</td><td>일정 요건(가격·면적·소재지) 충족 시 제외 가능</td><td>기준시가·면적·소재지가 특례 요건에 해당하는지</td></tr>
+        <tr><td>일시적 보유(1년 미만)</td><td>세대 분리 직후 등 보유 경위에 따라 판단이 달라짐</td><td>세대 분리·합가 시점, 각 주택의 취득 경위</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 위 표를 전제로, [세대 구성원 전원이 보유한 주택·분양권·입주권 목록과 각각의 취득 경위]를 보여줄 테니 일반 주택수 산정에서 제외될 수 있는 특수 케이스가 있는지 먼저 추려달라고 요청한다</li>
+      <li>추려진 각 케이스별로 "상속 개시일과 일반주택 보유 시점의 선후관계", "분양권·입주권의 취득일", "농어촌주택의 가격·면적·소재지 요건" 등을 하나씩 대조해 주택수 제외 여부를 판정해달라고 요청한다</li>
+      <li>특수 케이스를 모두 반영한 뒤 [방법 1]의 주택수 판정 결과를 다시 계산해, 비과세 요건 충족 여부가 바뀌는지 재확인해달라고 요청한다</li>
+      <li>완성된 결과를 "자산 유형 / 취득 경위 / 특례 해당 여부 / 주택수 포함·제외 / 비과세 요건 재판정"으로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — "상속받은 집은 당연히 주택수에서 빠진다"는 단정이 가장 위험한 오해입니다. 상속주택 특례는 조건을 충족해야 적용되는 것이지 무조건 제외가 아니므로, 이 단계를 생략하면 비과세 판단 전체가 틀어집니다.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">10</span>비과세 안 될 때 다주택자 세금 비교하기</h2>
+    <p>비과세 요건을 충족하지 못해 2주택 이상 상태로 양도해야 한다면, 세율 적용 여부와 중과 여부를 비교해 가장 불이익이 적은 양도 순서·시점을 찾아야 한다는 점이 여덟 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 [방법 1~7]에서 비과세 요건을 충족하지 못한 것으로 판정된 경우를 전제로, [보유 중인 주택별 취득일·취득가액·예상 양도가액·조정대상지역 해당 여부]를 보여줄 테니 어느 주택을 먼저 양도하는 것이 세금상 유리한지 비교해달라고 요청한다</li>
+      <li>"다주택자가 조정대상지역 주택을 양도하면 기본세율에 추가 세율이 붙는 중과가 적용될 수 있으나, 중과 적용 여부와 유예·완화 여부는 정책에 따라 수시로 달라진다"는 점을 전제로 [양도 예정 주택의 조정대상지역 해당 여부, 현재 시점의 중과 적용·유예 여부]를 확인해달라고 요청한다</li>
+      <li>"먼저 양도한 주택이 비과세되지 않더라도, 남은 주택 1채만 보유하게 된 시점부터 다시 1세대1주택 비과세 보유·거주기간을 새로 산정해야 하는 경우가 있다"는 점을 전제로, 양도 순서에 따라 남은 주택의 비과세 가능 시점이 어떻게 달라지는지 비교해달라고 요청한다</li>
+      <li>완성된 결과를 "양도 순서 대안 / 각 대안의 예상 세액 / 남은 주택 비과세 재산정 시점 / 권장 순서"로 정리한 표로 저장한다</li>
+    </ol>
+    <div class="worksheet-note">참고 — "집을 먼저 파는 순서"만 바꿔도 세금이 크게 달라지는 경우가 많습니다. 급하게 팔기 전에 순서를 비교하는 이 단계를 반드시 거치도록 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">11</span>매년 바뀌는 양도세 기준 확인하기</h2>
+    <p>양도소득세의 계산 구조(양도차익 → 장기보유특별공제 → 기본공제 → 세율) 자체는 오래 유지돼 왔지만, 비과세 기준금액, 조정대상지역 지정 현황, 일시적 2주택 처분기한, 중과 적용 여부 같은 세부 기준은 정책에 따라 수시로 바뀐다는 점이 아홉 번째 핵심입니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>AI에게 "양도소득세 관련 제도는 세법 개정과 정부 정책에 따라 수시로 바뀌며, 특히 시행령 개정 시점을 기준으로 경과조치가 함께 적용되는 경우가 많다"는 전제로, [의뢰가 발생한 시점]을 기준으로 관련 항목의 최신 기준을 확인해달라고 요청한다</li>
+      <li>"국세청 홈택스 공지사항과 기획재정부·국토교통부 보도자료가 가장 정확한 1차 자료"라는 점을 전제로 [확인이 필요한 항목 목록(비과세 기준금액, 조정대상지역 지정 현황, 처분기한, 중과 여부, 장기보유특별공제율)]을 만들어, 새 의뢰가 들어올 때마다 점검하는 루틴으로 만들어달라고 요청한다</li>
+      <li>이전 의뢰에서 썼던 [계산 템플릿의 기준값]을 최신 공고·시행령 기준으로 다시 검증해, 그대로 쓸지 수정할지 판정해달라고 요청한다</li>
+      <li>완성된 결과를 "확인 시점 / 확인한 제도·기준 변경 사항 / 이전 대비 달라진 점 / 템플릿 갱신 필요 여부"로 정리해 저장한다</li>
+    </ol>
+    <div class="worksheet-note">주의 — 이 책에서 비과세 기준금액이나 처분기한의 구체적인 숫자를 절대값으로 못 박지 않고 "예시 기준값"이라고 밝히는 이유가 바로 이 지점입니다. 반드시 국세청 홈택스 최신 공지와 세무 전문가 확인을 거친 뒤 의뢰인에게 안내하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">12</span>계산 대행 부업으로 수익화</h2>
+    <p>여기까지 만든 계산 로직은 집을 팔려는 거의 모든 1세대1주택자·다주택자에게 필요합니다. "집 팔면 세금 얼마 나와요?"라는 질문은 부동산 거래가 있을 때마다 반복됩니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>서비스 범위를 명확히 정한다 — "조건 입력받아 비과세 요건 확인, 양도차익·장기보유특별공제·세액 계산, 일시적 2주택 특례 판단, 주택수 특수 케이스 점검"까지만 하고, "세무사의 세무대리·신고 대리 업무, 공인중개사의 중개 업무"는 하지 않는다는 점을 안내문에 명시한다</li>
+      <li>가격을 "기본 비과세 판정", "세액 계산 추가(고가주택·다주택 포함)", "일시적 2주택·특수 케이스 검토 추가"로 나눠 설계한다 — 1건 1만~3만 원으로 시작해, 케이스 복잡도에 따라 추가 요금을 받는 구조를 권장한다</li>
+      <li>방법 1~9에서 만든 계산 로직을 조건만 받으면 채워지는 표준 템플릿으로 정리해, 의뢰가 오면 몇 가지 정보만 받아 빠르게 비과세·세액 추정표를 완성하는 구조로 만든다</li>
+      <li>처음에는 주변 지인 대상으로 무료 또는 저가로 시작해, 실제 신고 결과(홈택스 모의계산·세무사 확인)와 추정값의 차이를 대조한 후기를 쌓는다</li>
+    </ol>
+    <div class="worksheet-note">참고 — 이 부업은 세무대리나 신고 대행이 아니라 추정 계산과 리포트 정리입니다. 상담 시작 전에 "제시된 세액은 공개된 세법 조항과 입력된 조건을 조합한 참고용 추정치이며, 실제 신고 세액은 국세청 홈택스 모의계산과 세무 전문가 확인에 따라 달라질 수 있다"는 점을 명확히 안내해 세무대리 서비스로 오인되지 않게 하세요.</div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">13</span>흔한 실수</h2>
+    <div class="table-wrap">
+      <table>
+        <tr><th>실수</th><th>왜 위험한가</th><th>개선법</th></tr>
+        <tr><td>보유기간만 2년 채우면 무조건 비과세라고 가정</td><td>취득 당시 조정대상지역이었다면 거주 2년 요건이 별도로 있음</td><td>방법 1에서 취득 시점 조정대상지역 여부부터 확인</td></tr>
+        <tr><td>12억 원 이하면 신경 안 써도 된다고 단정</td><td>비과세 기본 요건을 충족하지 못하면 12억 기준과 무관하게 전액 과세</td><td>방법 1~2 순서대로 요건부터 확정</td></tr>
+        <tr><td>도배·장판 비용을 필요경비로 넣음</td><td>통상적 수선비는 필요경비 불인정, 증빙 없으면 전액 부인 위험</td><td>방법 3에서 자본적 지출만 걸러서 반영</td></tr>
+        <tr><td>보유만 오래 하면 공제 80% 다 받는다고 가정</td><td>거주기간이 짧으면 합산 공제율이 크게 줄어듦</td><td>방법 4에서 보유·거주 공제율을 각각 계산</td></tr>
+        <tr><td>예전에 들었던 일시적 2주택 처분기한을 그대로 적용</td><td>처분기한은 정책에 따라 바뀌고 경과조치 적용 여부도 달라짐</td><td>방법 6에서 현재 시점 기준으로 재확인</td></tr>
+        <tr><td>상속주택은 무조건 주택수에서 빠진다고 단정</td><td>상속주택 특례는 조건 충족이 필요하며 무조건 제외가 아님</td><td>방법 7에서 특수 케이스 요건부터 대조</td></tr>
+      </table>
+    </div>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>지금 계산 중인(또는 가상의) 양도 조건을 위 표와 하나씩 대조한다</li>
+      <li>해당하는 실수가 있으면, 관련 방법 장으로 돌아가 즉시 보완한다</li>
+      <li>이 표를 그대로 체크리스트로 저장해, 새로운 의뢰가 들어올 때마다 확인한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">14</span>나만의 대행 시스템 구축</h2>
+    <p>매번 새로 계산하지 않도록, 지금까지 만든 것을 하나의 재사용 가능한 시스템으로 묶습니다.</p>
+    <h3>진행 순서</h3>
+    <ol class="steps">
+      <li>방법 1~5(비과세 요건·고가주택 판정·양도차익·장기보유특별공제·세액 계산)와 방법 6~8(일시적 2주택 특례·주택수 특수 케이스·다주택자 비교)를 하나의 문서 템플릿에 비과세판정/세액계산/전략비교 섹션으로 나눠 통합한다</li>
+      <li>방법 10의 의뢰 접수 질문지(취득일, 취득가액, 거주 이력, 보유 중인 다른 주택·분양권·입주권·상속주택 여부, 조정대상지역 해당 여부, 예상 양도가액)를 저장해두고, 새 의뢰가 올 때마다 그대로 사용한다</li>
+      <li>제도 기준값(비과세 기준금액, 조정대상지역 지정 현황, 처분기한, 중과 여부, 장기보유특별공제율)은 세법 개정에 따라 바뀔 수 있는 영역이므로, 의뢰가 들어올 때마다 AI에게 최신 기준을 다시 확인시켜, 템플릿 상단의 "확인 시점·기준값" 섹션만 갱신하는 구조로 설계한다</li>
+      <li>시스템이 안정되면 이 전체를 "1세대1주택 비과세·부동산 양도소득세 계산 대행 패키지"로 정식 서비스화한다</li>
+    </ol>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">15</span>바로 쓰는 프롬프트 15선</h2>
+    <p class="lede">대괄호 부분만 바꿔서 그대로 붙여넣으세요. 카테고리별로 정리했습니다.</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 비과세 판정</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">A1 기본 요건</div><div class="prompt">너는 양도소득세 계산 전문가야. 취득일 [날짜], 취득 당시 조정대상지역 여부 [여부], 실제 거주 기간 [기간], 현재 보유 중인 다른 주택·분양권·입주권 여부 [내용]을 보여줄 테니, 1세대1주택 비과세 기본 요건을 순서대로 판정해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A2 고가주택 판단</div><div class="prompt">비과세 기본 요건 충족 여부 [결과]와 양도가액 [금액]을 보여줄 테니, 12억 원 기준 고가주택 해당 여부와 과세 방식을 판정해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A3 주택수 특수 케이스</div><div class="prompt">세대원 전원이 보유한 주택·분양권·입주권·상속주택 목록 [목록]을 보여줄 테니, 주택수 산정에서 제외될 수 있는 특례 대상이 있는지 확인해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">A4 일시적 2주택 판단</div><div class="prompt">종전주택 취득일 [날짜], 신규주택 취득(예정)일 [날짜], 두 주택의 조정대상지역 해당 여부 [내용]을 보여줄 테니, 일시적 2주택 비과세 특례 적용 여부와 처분기한을 확인해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 세액 계산</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">B1 양도차익</div><div class="prompt">양도가액 [금액], 취득가액 [금액], 필요경비 항목과 금액 [내용]을 보여줄 테니, 전체 양도차익과 필요경비 인정 여부를 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B2 장기보유특별공제</div><div class="prompt">과세대상 양도차익 [금액], 보유기간 [기간], 거주기간 [기간]을 보여줄 테니 장기보유특별공제율과 공제액을 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B3 최종 세액</div><div class="prompt">양도소득금액 [금액]을 보여줄 테니, 기본공제 250만 원을 뺀 과세표준에 세율구간을 적용해 양도소득세와 지방소득세를 계산해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">B4 양도 순서 비교</div><div class="prompt">보유 중인 주택별 취득일·취득가액·예상 양도가액 [목록]을 보여줄 테니, 어느 주택을 먼저 양도하는 것이 세금상 유리한지 비교해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 전략·특례 점검</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">C1 상속주택 특례</div><div class="prompt">상속 개시일 [날짜], 공동상속 여부와 지분 [내용], 기존 보유 일반주택 [내용]을 보여줄 테니, 상속주택 주택수 제외 특례 적용 가능 여부를 판정해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C2 중과 여부 확인</div><div class="prompt">[양도 예정 주택의 조정대상지역 해당 여부]와 [현재 시점의 다주택자 중과 적용·유예 기준]을 보여줄 테니 중과 적용 여부를 확인해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C3 최신 기준 확인</div><div class="prompt">[올해 연도 또는 최근 개정 시점]을 기준으로 비과세 기준금액, 조정대상지역 지정 현황, 일시적 2주택 처분기한 중 이전과 달라진 점이 있는지 확인이 필요한 항목 리스트를 만들어줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">C4 경과조치 확인</div><div class="prompt">[제도 변경 시점]과 [본인의 계약·취득 시점]을 비교해서, 종전 규정을 적용받는 경과조치 대상인지 확인해줘.</div></div>
+      </div>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 대행 서비스화</div>
+      <div class="prompt-grid">
+        <div class="prompt-block"><div class="prompt-id">D1 접수 질문지</div><div class="prompt">1세대1주택 비과세·부동산 양도소득세 계산 대행 서비스를 시작하려고 해. 의뢰인에게 받아야 할 정보(취득일, 취득가액, 거주 이력, 보유 중인 다른 주택·분양권·입주권·상속주택 여부, 조정대상지역 해당 여부, 예상 양도가액)를 빠짐없이 받을 수 있는 접수 질문지를 만들어줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D2 고객용 리포트</div><div class="prompt">다음 계산 결과를 의뢰인에게 보여줄 리포트로 정리해줘: [계산 결과 데이터]. 마지막에 '제시된 세액은 공개된 세법 조항과 입력된 조건을 조합한 참고용 추정치이며, 실제 신고 세액은 국세청 홈택스 모의계산과 세무 전문가 확인에 따라 달라질 수 있다'는 안내 문구를 포함해줘.</div></div>
+        <div class="prompt-block"><div class="prompt-id">D3 소개 문구</div><div class="prompt">1세대1주택 비과세·부동산 양도소득세 계산 대행 서비스를 한 문단으로 소개하는 홍보 문구를 써줘. 집 팔기 전에 미리 비과세 여부와 세금을 숫자로 가늠해볼 수 있다는 점을 강조해줘.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">16</span>실전 체크리스트</h2>
+
+    <div class="checklist-group">
+      <h4><span class="wk">오늘</span>30분</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 A1로 1세대1주택 비과세 기본 요건부터 확정해보기</li>
+        <li><input type="checkbox" disabled>프롬프트 A2로 고가주택 해당 여부와 과세 방식 확인해보기</li>
+        <li><input type="checkbox" disabled>프롬프트 A3으로 주택수 특수 케이스까지 점검해보기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 주</span>1차 완성</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 B1~B3으로 양도차익부터 최종 세액까지 계산하기</li>
+        <li><input type="checkbox" disabled>프롬프트 A4로 일시적 2주택 특례 적용 여부까지 확인하기</li>
+        <li><input type="checkbox" disabled>프롬프트 B4로 다주택인 경우 양도 순서까지 비교하기</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <h4><span class="wk">이번 달</span>확장</h4>
+      <ul>
+        <li><input type="checkbox" disabled>프롬프트 C1~C4로 상속주택 특례·중과 여부·최신 기준·경과조치까지 확인하기</li>
+        <li><input type="checkbox" disabled>방법 14대로 계산 프로세스를 하나의 문서 템플릿 시스템으로 통합하기</li>
+        <li><input type="checkbox" disabled>프롬프트 D1~D3으로 접수 질문지·고객용 리포트·소개 문구 준비해서 주변 지인 대상 첫 의뢰 진행하고, 실제 신고 결과와 대조한 후기를 바탕으로 서비스 범위를 다듬어 정식 서비스로 확장하기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>집 팔기 전에 세금을 눈대중으로 짐작하지 마세요. AI와 함께라면 오늘 안에 숫자로 미리 가늠해볼 수 있습니다.</p>
+    <div class="close">
+      <p>오늘, 프롬프트 A1로 비과세 요건 확인부터 시작해보세요.</p>
+      <div class="sign">— 끝 —</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
