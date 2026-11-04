@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1세대1주택 비과세·부동산 양도소득세 계산 대행 — 계산기 + 서류 체크리스트 템플릿팩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E8;
+    --paper-raised: #F7F8F2;
+    --ink: #262C3D;
+    --ink-soft: #565F72;
+    --line: #D9DACB;
+    --gold: #B87F1F;
+    --gold-strong: #8F6215;
+    --gold-tint: #F1E3C4;
+    --code-bg: #E6E4D6;
+    --font-display: 'Gowun Batang', 'Noto Serif KR', serif;
+    --font-body: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --font-mono: 'Nanum Gothic Coding', 'Consolas', monospace;
+
+    --cat-a: #B87F1F;   /* gold — 비과세요건·주택수판정 */
+    --cat-a-tint: #F1E3C4;
+    --cat-b: #A85A38;   /* terracotta — 양도차익·장기보유특별공제 */
+    --cat-b-tint: #EEDBCB;
+    --cat-c: #3E7C74;   /* teal — 최종세액 */
+    --cat-c-tint: #D9E6E2;
+    --cat-d: #6B7A3A;   /* olive — 일시적2주택·다주택비교 */
+    --cat-d-tint: #E3E6CE;
+    --cat-e: #8B5A83;   /* plum — 의뢰접수·고객리포트 템플릿 */
+    --cat-e-tint: #E7DAE5;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+      --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+      --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+      --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+      --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+      --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+      --cat-e: #C994C0; --cat-e-tint: #332030;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1B2030; --paper-raised: #232941; --ink: #ECEAE0; --ink-soft: #A8ACC0;
+    --line: #3A4160; --gold: #E0AC4E; --gold-strong: #F0C374; --gold-tint: #3A3020; --code-bg: #262C46;
+    --cat-a: #E0AC4E; --cat-a-tint: #3A3020;
+    --cat-b: #DE9270; --cat-b-tint: #3A2A20;
+    --cat-c: #6FC2B7; --cat-c-tint: #1E3230;
+    --cat-d: #ABBE72; --cat-d-tint: #2B3020;
+    --cat-e: #C994C0; --cat-e-tint: #332030;
+  }
+
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .page{ max-width:800px; margin:0 auto; padding:0 28px 100px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position:relative; padding:88px 40px 64px; text-align:center; margin:0 -28px 60px;
+    background: radial-gradient(ellipse 620px 320px at 50% 0%, var(--gold-tint) 0%, transparent 68%), var(--paper);
+    border-bottom:3px double var(--line); overflow:hidden;
+  }
+  .cover::before, .cover::after{ content:""; position:absolute; left:50%; width:120px; height:3px; background:var(--gold); transform:translateX(-50%); }
+  .cover::before{ top:40px; }
+  .cover::after{ bottom:28px; }
+  .kicker{ display:block; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-strong); margin:0 0 22px; position:relative; z-index:1; }
+  .badge{ display:inline-block; position:relative; z-index:1; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.08em; color:var(--gold-strong); background:var(--gold-tint); border:1px solid var(--gold); border-radius:999px; padding:6px 16px; margin-bottom:30px; }
+  .cover h1{ position:relative; z-index:1; font-family:var(--font-display); font-weight:700; font-size:clamp(2.1rem, 6.2vw, 3.3rem); line-height:1.26; margin:0 0 20px; text-wrap:balance; }
+  .cover .subtitle{ position:relative; z-index:1; font-size:1.02rem; color:var(--ink-soft); margin:0 0 32px; text-wrap:balance; }
+  .nowrap{ white-space:nowrap; }
+  .cover .contents-preview{ position:relative; z-index:1; display:flex; justify-content:center; gap:22px; flex-wrap:wrap; font-family:var(--font-mono); font-size:0.82rem; color:var(--ink-soft); margin-bottom:34px; }
+  .cover .contents-preview strong{ color:var(--gold-strong); display:block; font-size:1.3rem; }
+  .cover .byline{ position:relative; z-index:1; font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); }
+  .cover .byline strong{ color:var(--ink); }
+
+  /* ---------- Typography ---------- */
+  h2.chapter{ font-family:var(--font-display); font-size:1.62rem; font-weight:700; margin:0 0 10px; display:flex; align-items:center; gap:16px; border-top:3px solid var(--gold); padding-top:12px; width:max-content; max-width:100%; break-after:avoid-page; }
+  h2.chapter .num{ font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:8px; padding:6px 13px; flex-shrink:0; line-height:1; }
+  h3{ font-family:var(--font-body); font-weight:700; font-size:1.06rem; margin:20px 0 9px; color:var(--ink); break-after:avoid; }
+  section.chapter{ padding:11px 0 13px; border-bottom:1px solid var(--line); }
+  section.chapter:last-of-type{ border-bottom:none; }
+  p{ margin:0 0 10px; max-width:68ch; }
+  .lede{ font-size:0.98rem; color:var(--ink-soft); max-width:62ch; margin-bottom:10px; }
+  strong{ color:var(--ink); }
+  em.hook{ font-style:normal; font-family:var(--font-display); color:var(--gold-strong); }
+
+  ol.steps{ margin:0 0 8px; padding-left:1.4em; break-inside:avoid; }
+  ol.steps li{ margin-bottom:7px; padding-left:4px; }
+
+  /* ---------- Fillable worksheet cards ---------- */
+  .worksheet{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:8px 12px 7px; margin:0 0 7px; position:relative; overflow:hidden; }
+  .worksheet::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .worksheet-head{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .worksheet-num{ font-family:var(--font-mono); font-weight:700; font-size:0.82rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:7px; width:26px; height:26px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .worksheet h4{ font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-strong); margin:0; }
+  .worksheet h3{ margin:2px 0 6px; }
+  .table-wrap{ overflow-x:auto; margin-bottom:8px; border-radius:8px; border:1px solid var(--line); }
+  table{ border-collapse:collapse; width:100%; font-size:0.85rem; background:var(--paper); }
+  th,td{ text-align:left; padding:5px 10px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:0.71rem; color:var(--paper-raised); letter-spacing:0.05em; background:var(--gold-strong); text-transform:uppercase; }
+  tr:nth-child(even) td{ background:var(--gold-tint); }
+  tr:last-child td{ border-bottom:none; }
+  td.fill{ min-width:90px; color:var(--ink-soft); }
+  .worksheet-note{ font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-soft); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:6px 10px; margin-top:3px; }
+
+  /* ---------- Domain blocks (category-colored, 계산기·체크리스트·템플릿 5종) ---------- */
+  .cat{ --accent:var(--cat-a); --accent-tint:var(--cat-a-tint); margin-bottom:12px; }
+  .cat-b{ --accent:var(--cat-b); --accent-tint:var(--cat-b-tint); }
+  .cat-c{ --accent:var(--cat-c); --accent-tint:var(--cat-c-tint); }
+  .cat-d{ --accent:var(--cat-d); --accent-tint:var(--cat-d-tint); }
+  .cat-e{ --accent:var(--cat-e); --accent-tint:var(--cat-e-tint); }
+  .cat-label{ font-family:var(--font-mono); font-size:0.84rem; letter-spacing:0.05em; color:var(--accent); background:var(--accent-tint); border:1px solid var(--accent); display:inline-block; border-radius:6px; padding:4px 11px; margin:0 0 5px; break-after:avoid; }
+  .cat-flow{ font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:7px 11px; margin:0 0 8px; line-height:1.55; }
+
+  .domain-block{ background:var(--paper-raised); border:1px solid var(--line); border-radius:12px; padding:6px 9px 4px; margin:0 0 5px; break-inside:avoid; position:relative; overflow:hidden; }
+  .domain-block::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--accent); }
+  .domain-block .table-wrap{ margin-bottom:0; border-color:var(--accent); }
+  .domain-block table th{ background:var(--accent); }
+  .domain-block tr:nth-child(even) td{ background:var(--accent-tint); }
+  .domain-block table td:first-child, .domain-block table th:first-child{ white-space:nowrap; }
+
+  /* ---------- Task grid (상담 진행 체크리스트, category-colored 2단 배치) ---------- */
+  .task-grid{ display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:7px; }
+  .task-card{ background:var(--paper-raised); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:10px; padding:6px 9px 7px; break-inside:avoid; }
+  .task-card .tn{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:999px; background:var(--accent); color:#fff; font-family:var(--font-mono); font-size:0.7rem; font-weight:700; margin-right:7px; flex-shrink:0; }
+  .task-card h5{ display:inline; font-size:0.89rem; font-weight:700; margin:0; color:var(--ink); }
+  .task-card p{ margin:5px 0 0; font-size:0.79rem; color:var(--ink-soft); line-height:1.5; }
+
+  /* ---------- Checklist ---------- */
+  .checklist-group{ background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin-bottom:5px; break-inside:avoid; position:relative; overflow:hidden; }
+  .checklist-group::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--gold); }
+  .checklist-group h4{ display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.87rem; letter-spacing:0.05em; margin:0 0 10px; color:var(--ink); }
+  .checklist-group h4 .wk{ font-family:var(--font-mono); font-weight:700; font-size:0.77rem; color:var(--paper-raised); background:var(--gold-strong); border-radius:999px; padding:4px 11px; flex-shrink:0; }
+  .checklist-group ul{ list-style:none; margin:0; padding:0; }
+  .checklist-group li{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; font-size:0.9rem; }
+  .checklist-group input{ margin-top:4px; accent-color:var(--gold); flex-shrink:0; }
+
+  /* ---------- Epilogue ---------- */
+  .epilogue{ text-align:center; padding:30px 20px 18px; break-inside:avoid; }
+  .epilogue p{ margin-left:auto; margin-right:auto; }
+  .epilogue .sign{ font-family:var(--font-display); font-size:1.2rem; color:var(--gold-strong); margin-top:14px; }
+
+  @page{ margin:18mm 16mm; }
+  @media print{ .cover{ page-break-after:always; margin-left:0; margin-right:0; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <span class="kicker">AI 부업 시리즈 · VOL. 78 · 실행 키트</span>
+    <span class="badge">『집 팔기 전에, AI한테 비과세 되는지부터 물어보세요』 실전 부록</span>
+    <h1><span class="nowrap">비과세·세액,</span><br>계산기로 먼저 <span class="nowrap">확인받으세요</span></h1>
+    <p class="subtitle"><span class="nowrap">비과세요건·주택수</span> <span class="nowrap">판정 계산기</span> + <span class="nowrap">양도차익·</span><span class="nowrap">장기보유특별공제</span> <span class="nowrap">계산기</span> + <span class="nowrap">최종세액</span> <span class="nowrap">계산기</span> + <span class="nowrap">일시적2주택·</span><span class="nowrap">다주택비교</span> + <span class="nowrap">의뢰접수 템플릿</span> — <span class="nowrap">취득일과</span> <span class="nowrap">양도조건만</span> <span class="nowrap">넣으면</span> <span class="nowrap">비과세 여부와</span> <span class="nowrap">세액이</span> <span class="nowrap">바로 나옵니다</span></p>
+    <div class="contents-preview">
+      <div class="nowrap"><strong>5</strong>계산기·체크리스트·템플릿</div>
+      <div class="nowrap"><strong>14</strong>항목 전략 체크리스트</div>
+      <div class="nowrap"><strong>4</strong>단계 판매 체크리스트</div>
+    </div>
+    <div class="byline">『집 팔기 전에, AI한테 비과세 되는지부터 물어보세요』를 <strong>읽은 다음날 바로 펼치는</strong> 실행용 워크북입니다.</div>
+  </div>
+
+  <section class="chapter">
+    <p class="lede"><em class="hook">계산은 이미 다 만들어져 있습니다. 취득일과 양도조건만 입력하면 됩니다.</em> 이 키트는 전자책 방법 1~9(비과세 요건 판정, 고가주택 판단, 양도차익, 장기보유특별공제, 최종세액, 일시적 2주택 특례, 주택수 특수케이스, 다주택자 비교, 제도 확인)를 이미 끝내둔 완성본입니다.</p>
+    <p>엑셀 계산기 3종·엑셀 일시적2주택특례판정+다주택비교+전략체크리스트 1종·워드 템플릿 1종을 같은 톤으로 만들었습니다.</p>
+    <ol class="steps">
+      <li><strong>안내 시트</strong> — "확정 세액이 아니라 참고용 추정 계산 도구"라는 경계를 첫 화면에 명시합니다.</li>
+      <li><strong>계산기 시트</strong> — 노란색 칸에 값을 입력하면 올리브색·금색 칸에 결과가 바로 뜹니다.</li>
+      <li><strong>이전 계산기 결과 이어받기</strong> — A→B→C 순서로 비과세 판정·양도차익·장특공·최종세액이 이어집니다.</li>
+    </ol>
+    <p><strong>사용법</strong> — 아래 계산기·체크리스트별 빠른 참고표에서 원하는 것부터 확인하고, 실제 파일을 열어 본인(또는 의뢰인) 조건으로 한 번 테스트해본 뒤 의뢰 접수·고객 리포트 템플릿까지 이어서 진행하세요.</p>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">01</span>계산기·체크리스트·템플릿 5종 빠른 참고표</h2>
+    <p class="lede">각 파일의 입력값 예시, 결과값, 그리고 어떤 순서로 이어 쓰는지를 정리했습니다. 실제 파일에 그대로 입력해 결과를 재현할 수 있습니다. (예시 — 10년 전 5억 원에 취득, 조정대상지역에서 3년 거주, 양도가액 15억 원, 1세대1주택)</p>
+
+    <div class="cat cat-a">
+      <div class="cat-label">A. 비과세요건·주택수판정 계산기</div>
+      <div class="cat-flow">파일 — A_비과세요건_주택수판정_계산기.xlsx · 취득일·조정대상지역·거주기간을 입력하면 보유·거주기간 요건이 자동 판정되고, 상속주택·분양권·입주권·농어촌주택 특수케이스까지 반영한 최종 세대주택수와 비과세 기본요건 충족 여부가 자동 계산됩니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>취득 2016-03-10</td><td>조정지역 Y, 거주 36개월</td><td>보유·거주 요건</td><td>충족</td></tr>
+            <tr><td>상속·분양권 등</td><td>없음</td><td>세대주택수</td><td>1세대1주택</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "보유만 2년 넘겼으면 비과세 아니에요?"라는 질문. 취득 당시 조정대상지역이었다면 거주 2년 요건이 별도로 있다는 걸 숫자로 바로 보여줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-b">
+      <div class="cat-label">B. 양도차익·장기보유특별공제 계산기</div>
+      <div class="cat-flow">파일 — B_양도차익_장기보유특별공제_계산기.xlsx · A계산기의 비과세요건 결과와 양도가액·취득가액·필요경비를 입력하면 고가주택(12억 초과) 여부와 과세대상 양도차익이 자동 계산되고, 보유·거주기간을 입력하면 장기보유특별공제율과 공제액까지 이어서 자동 계산됩니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>양도가 15억</td><td>고가주택(12억 초과)</td><td>과세대상 양도차익</td><td>1억9,300만원</td></tr>
+            <tr><td>보유10.66년·거주3년</td><td>공제율 52%</td><td>장기보유특별공제액</td><td>1억36만원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "12억 넘으면 그냥 다 과세되는 거 아니에요?"라는 질문. 12억 초과분에 대해서만 비례 과세된다는 걸 계산식으로 바로 보여줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-c">
+      <div class="cat-label">C. 최종세액 계산기</div>
+      <div class="cat-flow">파일 — C_최종세액_계산기.xlsx · B계산기의 과세대상 양도차익과 장기보유특별공제액을 입력하면 양도소득 기본공제를 뺀 과세표준이 산출되고, 세율구간표에 따라 양도소득세·지방소득세·최종 납부세액까지 자동 계산됩니다</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>양도소득금액</td><td>9,264만원</td><td>과세표준</td><td>9,014만원</td></tr>
+            <tr><td>적용세율 35%</td><td>누진공제1,544만</td><td>최종 납부세액</td><td>1,772만원</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "그래서 세금이 얼마 나오는데요?"라는 가장 핵심적인 질문. 세율구간과 누진공제까지 반영한 실제 납부세액을 숫자로 바로 보여줄 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-d">
+      <div class="cat-label">D. 일시적2주택특례·다주택비교 전략체크리스트</div>
+      <div class="cat-flow">파일 — D_일시적2주택특례_다주택비교_전략체크리스트.xlsx · 종전·신규주택 취득일과 조정대상지역 여부를 입력하면 처분기한 준수 여부가 자동 판정되는 '특례판정' 시트 + 보유 주택별 예상세액을 비교해 양도 순서를 정하는 '다주택비교' 시트 + 제도확인 14개 항목을 준비상태 드롭다운으로 정리한 '전략체크리스트' 시트</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>입력</th><th>값</th><th>결과</th><th>값</th></tr>
+            <tr><td>종전·신규취득일 간격</td><td>1년 이상 경과</td><td>처분기한</td><td>3년(준수)</td></tr>
+            <tr><td>보유주택 3채 비교</td><td>세액 8백~4천5백만</td><td>권장 순서</td><td>세액 낮은 순</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — "이사 가려고 집을 먼저 샀는데 지금 팔아도 비과세 되나요?"라는 질문. 처분기한을 숫자로 대조해 바로 답할 수 있습니다.</p>
+    </div>
+
+    <div class="cat cat-e">
+      <div class="cat-label">E. 의뢰접수·고객리포트 템플릿</div>
+      <div class="cat-flow">파일 — 의뢰접수_고객리포트_템플릿.docx · 의뢰 접수 질문지(14문항) + 기준값·한도 체크(5개) + 고객용 비과세·세액 리포트 템플릿(9단계) + 서비스 안내·가격 템플릿까지 대괄호만 바꿔서 바로 쓰는 문서</div>
+      <div class="domain-block">
+        <div class="table-wrap">
+          <table>
+            <tr><th>구성</th><th>내용</th><th>구성</th><th>내용</th></tr>
+            <tr><td>의뢰 접수 질문지</td><td>14개 문항</td><td>고객용 리포트</td><td>9단계 요약 양식</td></tr>
+            <tr><td>기준값·한도 체크</td><td>5개 확인 항목</td><td>서비스 안내·가격표</td><td>6단계 패키지</td></tr>
+          </table>
+        </div>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.92rem;color:var(--ink-soft)">이런 상담에게 — 의뢰가 들어오면 바로 접수할 수 있는 양식이 없어 매번 새로 질문을 만들던 상황. 질문지 한 장으로 빠짐없이 받고, 리포트 양식 그대로 전달하면 됩니다.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">02</span>패키지 구성 &amp; 검증 워크시트</h2>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">1</span><h4>Worksheet 1</h4></div>
+      <h3>패키지·가격 계산기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>패키지 유형</th><th>가격대</th><th>내 판매가</th></tr>
+          <tr><td>기본 비과세 판정(1세대1주택 여부만, 직접 진행)</td><td>10,000~20,000원</td><td class="fill"></td></tr>
+          <tr><td>세액 계산 추가(고가주택·다주택 포함)</td><td>10,000~30,000원</td><td class="fill"></td></tr>
+          <tr><td>일시적2주택·특수케이스 검토 추가</td><td>5,000~10,000원</td><td class="fill"></td></tr>
+          <tr><td>전자책+계산기·체크리스트·템플릿 5종 묶음</td><td>19,900~29,900원</td><td class="fill"></td></tr>
+          <tr><td>다주택자 양도순서 비교 추가요금(직접 진행)</td><td>5,000~15,000원</td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">추천 — 처음엔 A(비과세요건) 또는 C(최종세액) 단품으로 판매 기록부터 쌓고, 반응이 오면 5종 세트+전자책 묶음으로 객단가를 높이세요.</div>
+    </div>
+
+    <div class="worksheet">
+      <div class="worksheet-head"><span class="worksheet-num">2</span><h4>Worksheet 2 · 판매 전 필수</h4></div>
+      <h3>내 조건으로 교차검증하기</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>계산기</th><th>내 실제(또는 가상) 값 입력</th><th>공식자료와 비교</th></tr>
+          <tr><td>A. 비과세요건·주택수판정 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>B. 양도차익·장기보유특별공제 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+          <tr><td>C. 최종세액 계산기</td><td class="fill"></td><td class="fill"></td></tr>
+        </table>
+      </div>
+      <div class="worksheet-note">비교 대상 — 홈택스(hometax.go.kr)의 '양도소득세 모의계산' 메뉴에서 직접 재확인. 오차가 크면 보유·거주기간 산정, 필요경비 인정 항목, 공제율표 적용 구간을 다시 점검하세요.</div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">03</span>상담 진행 체크리스트</h2>
+    <p class="lede">접수부터 사후관리까지 단계별로 정리했습니다. '의뢰접수_고객리포트_템플릿.docx'의 의뢰 접수 질문지에 완료 여부를 기록하면서 그대로 진행 관리표로 사용할 수 있습니다.</p>
+
+    <div class="cat-label" style="--accent:var(--cat-a);--accent-tint:var(--cat-a-tint)">접수·리서치 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">1</span><h5>접수 질문지 발송·회수</h5><p>취득일, 거주 이력, 보유 중인 다른 주택·분양권·입주권·상속주택 여부, 조정대상지역 해당 여부까지 빠짐없이 받기</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">2</span><h5>희망 결과물 확인</h5><p>비과세 판정만/세액 계산까지/전략 비교까지 범위 확정</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">3</span><h5>홈택스 기준값 재확인</h5><p>hometax.go.kr 양도소득세 모의계산에서 최신 기준금액·공제율 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-a)"><span class="tn">4</span><h5>조정대상지역 지정 현황 확인</h5><p>취득 시점과 현재 시점의 조정대상지역 지정 여부 사전 확인</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-e);--accent-tint:var(--cat-e-tint)">계산·검증 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">1</span><h5>비과세요건·주택수 판정</h5><p>계산기 A로 보유·거주기간 요건과 특수케이스 반영 세대주택수 확정</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">2</span><h5>양도차익·장특공 계산</h5><p>계산기 B로 고가주택 여부, 과세대상 양도차익, 장기보유특별공제액 산출</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">3</span><h5>최종세액 산출</h5><p>계산기 C로 과세표준·세율·최종 납부세액 확정</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">4</span><h5>일시적2주택 특례 판단</h5><p>D. 특례판정 시트로 처분기한 준수 여부 확인</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">5</span><h5>다주택자 양도순서 비교</h5><p>D. 다주택비교 시트로 주택별 예상세액 대조 후 권장 순서 수립</p></div>
+      <div class="task-card" style="--accent:var(--cat-e)"><span class="tn">6</span><h5>제도확인 체크리스트 점검</h5><p>D. 전략체크리스트로 14개 항목 최신 기준 재확인</p></div>
+    </div>
+
+    <div class="cat-label" style="--accent:var(--cat-c);--accent-tint:var(--cat-c-tint)">납품·사후관리 단계</div>
+    <div class="task-grid">
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">1</span><h5>리포트 정리</h5><p>계산 근거(비과세요건·양도차익·장특공·최종세액·전략)를 9단계 표로 정리</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">2</span><h5>면책 문구 최종 확인</h5><p>"참고용 추정치이며 실제 신고 세액은 보장하지 않는다" 문구 포함 여부 점검</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">3</span><h5>고객용 리포트 전달</h5><p>템플릿 E의 리포트 양식으로 함께 전달</p></div>
+      <div class="task-card" style="--accent:var(--cat-c)"><span class="tn">4</span><h5>결과 피드백 수렴</h5><p>실제 신고 결과(홈택스·세무사 확인 결과)와 추정치를 대조한 후기·결과 요청</p></div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2 class="chapter"><span class="num">04</span>판매 준비 체크리스트</h2>
+    <p class="lede">브리프부터 등록까지, 순서대로 체크하며 진행하세요.</p>
+
+    <div class="checklist-group">
+      <h4><span class="wk">1단계</span>검증</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 2로 계산기 A·B·C 모두 내(또는 가상의) 조건으로 테스트하기</li>
+        <li><input type="checkbox" disabled>홈택스 양도소득세 모의계산과 대조해 기준금액·세율·공제율 최신 기준 확인하기</li>
+        <li><input type="checkbox" disabled>계산기 시트에 확인한 참고 기준과 확인 날짜 메모 남기기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">2단계</span>다듬기</h4>
+      <ul>
+        <li><input type="checkbox" disabled>입력 셀(노란색) 옆에 "여기에 값을 입력하세요" 안내 문구 확인하기</li>
+        <li><input type="checkbox" disabled>"참고용 추정치이며 실제 신고 세액은 국세청 홈택스 모의계산과 세무 전문가 확인에 따라 달라질 수 있고 비과세 기준·세율은 세법 개정에 따라 바뀔 수 있다"는 경계 문구가 각 파일에 붙어있는지 확인하기</li>
+        <li><input type="checkbox" disabled>파일명·시트명에 오탈자 없는지 최종 점검하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">3단계</span>등록</h4>
+      <ul>
+        <li><input type="checkbox" disabled>Worksheet 1로 패키지·가격 확정하기</li>
+        <li><input type="checkbox" disabled>래피드에 상품명 "계산기", "1세대1주택", "비과세", "양도소득세" 단어 포함해 등록하기</li>
+        <li><input type="checkbox" disabled>Day77 전자책과 세트 상품(업셀) 옵션도 함께 등록하기</li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <h4><span class="wk">4단계</span>갱신 관리</h4>
+      <ul>
+        <li><input type="checkbox" disabled>비과세 기준금액·조정대상지역 지정 현황·일시적2주택 처분기한·공제율표는 공고·정책에 따라 자주 바뀌므로, 새 의뢰가 들어올 때마다 최신 기준으로 재확인해 반영하기</li>
+        <li><input type="checkbox" disabled>기존 상담 고객 연락처/알림 목록 만들어두기(정책 변경·후속 문의 시 재안내용)</li>
+        <li><input type="checkbox" disabled>기준값 변경 시 참고표만 교체 후 Worksheet 2 검증 다시 거치기</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="epilogue">
+    <p>조건을 넣고, 세법 기준을 적용하고, 숫자와 근거로 답하세요.</p>
+    <p><strong>집을 팔고 나서 알게 되는 것보다, 오늘 미리 확인하는 숫자 하나가 더 낫습니다.</strong></p>
+    <div class="sign">— 끝 —</div>
+  </div>
+
+</div>
+</body>
+</html>
